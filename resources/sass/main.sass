@@ -1,0 +1,301 @@
+@import 'clean/clean'
+
+
+body
+    background: $bg-light
+
+
+.container
+    width: 100%
+    max-width: 1100px !important
+
+
+header .fa
+    margin: 0 4px
+
+.logo a
+    display: flex
+    align-items: center
+    column-gap: 0.5em
+    flex-wrap: nowrap
+
+
+    img
+        height: 36px
+        width: auto
+
+
+.dropdown-click
+    .fa
+        margin: 0 4px
+
+
+.main-navigation
+    display: flex
+    align-items: center
+
+    nav
+        display: inline-flex
+
+
+html.dark
+    .scroll-to-top-button
+        &:hover, &:focus
+            background-color: $primary-light
+
+    .admin
+        .admin-content
+            main, aside
+                background-color: rgba(255, 255, 255, 0.05)
+                border-color: $gray-80
+
+    .public
+        .public-content
+            main
+                background-color: rgba(255, 255, 255, 0.05)
+
+
+.admin
+    .admin-content
+        width: 100%
+        margin: 0.5em auto 0
+        display: grid
+        grid-template-columns: 360px calc(100% - 392px)
+        grid-template-areas: 'sidebar main-content'
+        gap: 2em
+
+        &.admin-nosidebar
+            grid-template-columns: 1fr
+            grid-template-areas: 'main-content'
+
+            @media screen and (max-width: 990px)
+                grid-template-columns: 100%
+                grid-template-areas: "main-content"
+
+        @media screen and (max-width: 990px)
+            grid-template-columns: 100%
+            grid-template-areas: "main-content" "sidebar"
+
+        main
+            border-radius: 0.5em
+            border: 1px solid $gray-20
+            box-sizing: border-box
+            grid-area: main-content
+            background-color: white
+
+            .header
+                border-top-left-radius: 0.5em
+                border-top-right-radius: 0.5em
+                padding: 0.5em 1em
+                background-color: $bg-primary
+                color: white
+
+                h1
+                    margin: 0
+
+        aside
+            border-radius: 0.5em
+            border: 1px solid $gray-20
+            box-sizing: border-box
+            grid-area: sidebar
+            height: fit-content
+            background-color: white
+
+            header
+                border-top-left-radius: 0.5em
+                border-top-right-radius: 0.5em
+                padding: 0.5em 1em
+                background-color: $gray-80
+                color: white
+
+                h3
+                    margin: 0
+
+            div.sidebar-content
+                padding: 0
+
+
+.public
+    .public-content
+        margin: 2em auto
+
+        @media screen and (max-width: $s-1023)
+            grid-template-columns: 1fr
+            grid-template-areas: "main-content" "sidebar"
+
+        main
+            box-sizing: border-box
+            grid-area: main-content
+            background-color: white
+
+            .header
+                border-top-left-radius: 0.5em
+                border-top-right-radius: 0.5em
+                padding: 1em 1.5em
+                background-color: $bg-primary
+                color: white
+
+                h1
+                    //font-size: $fs-36
+                    margin: 0
+
+
+header.page-header
+    width: 100%
+    background-color: white
+    box-shadow: 0 0.125rem 0.25rem rgb(0 0 0 / 8%)
+
+
+    .header-content
+        width: 95%
+        margin: 0 auto
+        display: flex
+        flex-direction: row
+        flex-wrap: nowrap
+        justify-content: space-between
+        gap: 0.5em
+
+        nav
+            a
+                margin: 0 0.5em
+                padding: 0 0.5em
+                text-decoration: underline
+
+
+footer.page-footer
+    background: $text
+    color: $gray-20
+    min-height: 100px
+    padding: 2em 0
+
+
+    .footer-content
+        width: 95%
+        margin: 0 auto
+
+        nav
+            margin-bottom: 1em
+
+            a
+                font-size: $fs-14
+                margin: 0 0.125em
+                padding: 0 0.125em
+                color: $gray-0
+
+                &:hover, &:focus
+                    color: $accent-dark
+
+            small
+                font-size: $fs-12
+
+
+.welcome-content
+    height: 100px
+
+    h1
+        width: 95%
+        margin: 0
+
+
+/* DROPDOWN */
+.caret
+    cursor: pointer
+    user-select: none
+
+    &::before
+        content: "\25B6"
+        color: black
+        display: inline-block
+        margin-right: 6px
+
+
+.active-list-item
+    background-color: whitesmoke
+
+
+/* rotate the arrow icon */
+.caret-down::before
+    transform: rotate(90deg)
+
+
+/* hide the nested ul */
+.nested
+    display: none
+
+    &.active
+        background-color: whitesmoke
+
+/* show the nested list */
+.active
+    display: block !important
+
+.active-category
+    background-color: gainsboro
+    border: 1px solid slategrey
+
+html.dark
+    .caret::before
+        color: white
+
+    .active-list-item
+        background-color: $gray-80
+
+    .nested.active
+        background-color: $gray-80
+
+    .active-category
+        background-color: $black
+        border: 1px solid $gray-60
+
+/* DROPDOWN END */
+
+[x-cloak], .hidden
+    display: none !important
+
+fieldset
+    padding: 0
+    border: none
+
+.upload-to-root
+    display: flex
+    flex-wrap: wrap
+    column-gap: 1em
+    justify-content: space-between
+    align-items: center
+
+    label, button
+        margin-top: 0
+
+.breadcrumb
+    ol
+        list-style-type: none
+        display: flex
+        flex-wrap: wrap
+        gap: 0.5em
+        padding-left: 0
+        margin-bottom: 0
+        margin-top: 0
+        font-size: 14px
+
+
+.notification
+    margin-top: 0
+    margin-bottom: 0
+    padding-top: 0.5em
+    padding-bottom: 0.5em
+
+    .notification-outer
+        display: flex
+        flex-direction: row
+        flex-wrap: wrap
+        align-items: center
+        justify-content: space-between
+
+        button
+            margin-top: 0
+
+        .notification-inner
+            display: flex
+            flex-direction: row
+            align-items: center
+            gap: 0.5em

@@ -1,0 +1,107 @@
+$round-values: ('0-125': 0.125em, '0-25': 0.25em, '0-5': 0.5em, '1': 1em)
+
+@each $round, $i in $round-values
+    .round-#{$round}
+        border-radius: $i
+
+    .round-top-#{$round}
+        border-top-left-radius: $i
+        border-top-right-radius: $i
+
+    .round-top-left-#{$round}
+        border-top-left-radius: $i
+
+    .round-top-right-#{$round}
+        border-top-right-radius: $i
+
+    .round-bottom-#{$round}
+        border-bottom-left-radius: $i
+        border-bottom-right-radius: $i
+
+    .round-bottom-left-#{$round}
+        border-bottom-left-radius: $i
+
+    .round-bottom-right-#{$round}
+        border-bottom-right-radius: $i
+
+
+.round
+    border-radius: 0.25em
+
+.round-top
+    border-top-left-radius: 0.25em
+    border-top-right-radius: 0.25em
+
+.round-top-left
+    border-top-left-radius: 0.25em
+
+.round-top-right
+    border-top-right-radius: 0.25em
+
+.round-bottom
+    border-bottom-left-radius: 0.25em
+    border-bottom-right-radius: 0.25em
+
+.round-bottom-left
+    border-bottom-left-radius: 0.25em
+
+.round-bottom-right
+    border-bottom-right-radius: 0.25em
+
+
+.border-0
+    border: 0
+
+
+.border-default
+    border-color: #ccc
+
+
+.border
+    border-width: 1px
+    border-style: solid
+
+
+.border-top
+    border-top-width: 1px
+    border-style: solid
+
+
+.border-bottom
+    border-bottom-width: 1px
+    border-style: solid
+
+
+.border-left
+    border-left-width: 1px
+    border-style: solid
+
+
+.border-right
+    border-right-width: 1px
+    border-style: solid
+
+
+.topbar
+    border-top-width: 6px
+    border-style: solid
+
+
+.bottombar
+    border-bottom-width: 6px
+    border-style: solid
+
+
+.leftbar
+    border-left-width: 6px
+    border-style: solid
+
+
+.rightbar
+    border-right-width: 6px
+    border-style: solid
+
+
+.circle
+    border-radius: 50%
+    line-height: initial !important

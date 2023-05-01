@@ -1,0 +1,33 @@
+.dropdown
+    position: relative
+    display: inline-block
+    cursor: pointer
+    border-radius: 6px
+
+    .fa
+        margin: 0 4px
+
+    &.mobile
+        top: 2px
+
+    .button.transparent,
+    button.transparent
+        border-color: transparent
+        background-color: transparent
+        color: $primary-light
+
+        &:hover, &:focus
+            background-color: transparent
+            color: $black
+
+
+.dropdown-content
+    cursor: auto
+    color: $black
+    background-color: #fff
+    position: absolute
+    min-width: 160px
+    //width: 100%
+    margin: 0
+    //padding: 0
+    z-index: 1

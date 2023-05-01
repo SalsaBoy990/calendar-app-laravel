@@ -1,0 +1,193 @@
+$white: #fff
+
+$gray-0: #f5f5f5
+$grey-0: $gray-0
+
+$gray-10: darken($gray-0, 5%)
+$grey-10: $gray-10
+
+$gray-20: #d8d8d8
+$grey-20: $gray-20
+
+$gray-40: #9e9e9e
+$grey-40: $gray-40
+
+$grey-60: $gray-60
+$grey-80: $gray-80
+
+$grays-with-black-text: ('0': $gray-0, '10': $gray-10, '20': $gray-20, '40': $gray-40)
+$grays-with-white-text: ('60': $gray-60, '80': $gray-80, 'black': $black)
+$light-colors: ('red': $error-light, 'cyan': $info-light, 'blue': $info-light, 'green': $success-light)
+$dark-colors: ('red-dark': $error-dark, 'cyan-dark': $info-dark, 'blue-dark': $info-dark, 'green-dark': $success-dark)
+$pale-colors: ('green-pale': $green-pale, 'red-pale': $red-pale, 'cyan-pale': $cyan-pale, 'orange-pale': $orange-pale)
+$other-colors: ('orange': $warning-light, 'orange-dark': $warning-dark, 'primary': $primary-light, 'primary-dark': $primary-dark, 'accent': $accent-light, 'accent-dark': $accent-dark)
+$color-borders: ('orange': $warning-light, 'red': $error-light, 'green': $success-light, 'cyan': $info-light, 'blue': $info-light, 'primary': $primary-light, 'accent': $accent-light)
+$dark-color-borders: ('orange-dark': $warning-dark, 'red-dark': $error-dark, 'green-dark': $success-dark, 'cyan-dark': $info-dark, 'blue-dark': $info-dark, 'primary': $primary-dark, 'accent-dark': $accent-dark)
+
+
+// Background- and foreground(text)-colors
+.white
+    color: $black
+    background-color: #fff
+
+.black
+    color: #fff
+    background-color: $black
+
+.white-transparent
+    background-color: rgba(255, 255, 255, 0.3)
+
+.black-transparent
+    background-color: rgba(0, 0, 0, 0.3)
+
+
+@each $gray, $i in $grays-with-black-text
+    .grey-#{$gray},
+    .gray-#{$gray},
+    .button.grey-#{$gray},
+    .button.gray-#{$gray},
+    .hover-grey-#{$gray}:hover,
+    .hover-gray-#{$gray}:hover,
+    .button.hover-grey-#{$gray}:hover,
+    .button.hover-gray-#{$gray}:hover
+        color: #000
+        background-color: $i
+
+
+@each $gray, $i in $grays-with-white-text
+    .grey-#{$gray},
+    .gray-#{$gray},
+    .button.grey-#{$gray},
+    .button.gray-#{$gray},
+    .hover-grey-#{$gray}:hover,
+    .hover-gray-#{$gray}:hover,
+    .button.hover-grey-#{$gray}:hover,
+    .button.hover-gray-#{$gray}:hover
+        color: #fff
+        background-color: $i
+
+
+@each $light, $i in $light-colors
+    .#{$light},
+    .button.#{$light},
+    .panel.#{$light},
+    .hover-#{$light}:hover,
+    .button.hover-#{$light}:hover
+        color: #fff
+        background-color: $i
+
+
+@each $dark, $j in $dark-colors
+    .#{$dark},
+    .button.#{$dark},
+    .panel.#{$dark},
+    .hover-#{$dark}:hover,
+    .button.hover-#{$dark}:hover
+        color: #fff
+        background-color: $j
+
+
+@each $other, $i in $other-colors
+    .#{$other},
+    .button.#{$other},
+    .panel.#{$other},
+    .hover-#{$other}:hover,
+    .button.hover-#{$other}:hover
+        color: #000
+        background-color: $i
+
+
+@each $pale, $i in $pale-colors
+    .#{$pale},
+    .button.#{$pale},
+    .panel.#{$pale},
+    .hover-#{$pale}:hover,
+    .button.hover-#{$pale}:hover
+        color: $black
+        background-color: $i
+
+
+// Border-colors
+@each $border, $i in $color-borders
+    .border-#{$border},
+    .button.border-#{$border},
+    .panel.border-#{$border},
+    .hover-border-#{$border}:hover,
+    .button.hover-border-#{$border}:hover,
+    .panel.hover-border-#{$border}:hover
+        border-color: $i
+
+
+@each $border, $i in $dark-color-borders
+    .border-#{$border},
+    .button.border-#{$border},
+    .panel.border-#{$border},
+    .hover-border-#{$border}:hover,
+    .button.hover-border-#{$border}:hover,
+    .panel.hover-border-#{$border}:hover
+        border-color: $i
+
+
+.button.border-white,
+.border-white,
+.border-hover-white:hover,
+.button.hover-border-white:hover,
+.panel.hover-border-white:hover
+    border-color: #fff
+
+
+.border-black,
+.button.border-black,
+.panel.border-black,
+.border-hover-black:hover,
+.button.hover-border-black:hover,
+.panel.hover-border-black:hover
+    border-color: #000
+
+
+@each $gray, $i in $grays-with-black-text
+    .border-#{$gray},
+    .button.border-#{$gray},
+    .panel.border-#{$gray},
+    .hover-border-#{$gray}:hover,
+    .button.hover-border-#{$gray}:hover,
+    .panel.hover-border-#{$gray}:hover
+        border-color: $i
+
+
+// Text-colors
+@each $gray, $i in $grays-with-white-text
+    .text-gray-#{$gray},
+    .hover-text-gray-#{$gray}:hover
+        color: $i
+
+
+@each $gray, $i in $grays-with-black-text
+    .text-gray-#{$gray},
+    .hover-text-gray-#{$gray}:hover
+        color: $i
+
+
+@each $light, $i in $light-colors
+    .text-#{$light},
+    .hover-text-#{$light}:hover
+        color: $i
+
+
+@each $dark, $j in $dark-colors
+    .text-#{$dark},
+    .hover-text-#{$dark}:hover
+        color: $j
+
+
+.text-white
+    color: white !important
+
+
+.text-black
+    color: $black
+
+
+.text-accent,
+.hover-text-accent:hover
+    color: $accent-light !important

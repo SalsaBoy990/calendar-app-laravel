@@ -1,0 +1,33 @@
+$margins: ("0": 0, "0-5": 0.5em, "1": 1em, "1-5": 1.5em, "2": 2em, "3": 3em, "4": 4em)
+$directions: ("left", "right", "top", "bottom")
+
+
+@each $margin, $i in $margins
+    @each $direction in $directions
+        .margin-#{$direction}-#{$margin}
+            margin-#{$direction}: $i
+
+
+@each $margin, $i in $margins
+    .margin-top-bottom-#{$margin}
+        margin-top: $i
+        margin-bottom: $i
+
+
+    .margin-bottom-top-#{$margin}
+        margin-top: $i
+        margin-bottom: $i
+
+
+    .margin-#{$margin}
+        margin: $i
+
+
+    .margin-left-right-#{$margin}
+        margin-left: $i
+        margin-right: $i
+
+
+    .margin-right-left-#{$margin}
+        margin-left: $i
+        margin-right: $i

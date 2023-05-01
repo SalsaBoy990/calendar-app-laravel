@@ -1,0 +1,58 @@
+// Banner
+.banner
+    width: 100%
+    display: flex
+    flex-direction: column
+    padding: 1.25em 6%
+    align-items: center
+    background-color: $bg-primary
+
+    h1, p
+        color: $white !important
+        margin-bottom: 1em
+
+    p
+        font-size: $fs-16
+
+
+    input[type="search"]
+        display: inline-flex
+        justify-content: space-between
+        width: 30em
+        color: $text
+        background-color: $gray-0
+        cursor: pointer
+        height: 44px
+        padding-left: 1.75em
+
+        &:hover
+            color: $text
+            background-color: $white !important
+
+
+    i
+        color: $gray-60
+
+    .searchbar button
+        margin-top: 0
+
+    @media screen and (max-width: $s-800)
+        .searchbar input[type="search"], .searchbar
+            width: 100%
+
+
+.search-results
+    width: 100%
+    display: flex
+    flex-direction: column
+    padding: 0 6%
+    margin-top: -1em
+    margin-bottom: 1em
+    align-items: center
+
+    .card
+        width: 30em
+
+        @media screen and (max-width: $s-800)
+            width: 88%
+

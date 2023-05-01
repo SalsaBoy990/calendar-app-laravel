@@ -1,0 +1,42 @@
+$paddings: ("0": 0, "0-5": 0.5em, "1": 1em, "1-5": 1.5em, "2": 2em, "3": 3em, "4": 4em)
+$directions: ("left", "right", "top", "bottom")
+
+@each $padding, $i in $paddings
+    @each $direction in $directions
+        .padding-#{$direction}-#{$padding}
+            padding-#{$direction}: $i
+
+
+@each $padding, $i in $paddings
+    .padding-top-bottom-#{$padding}
+        padding-top: $i
+        padding-bottom: $i
+
+    .padding-bottom-top-#{$padding}
+        padding-top: $i
+        padding-bottom: $i
+
+    .padding-#{$padding}
+        padding: $i
+
+    .padding-left-right-#{$padding}
+        padding-left: $i
+        padding-right: $i
+
+    .padding-right-left-#{$padding}
+        padding-left: $i
+        padding-right: $i
+
+
+.row-padding,
+.row-padding > .half,
+.row-padding > .third,
+.row-padding > .twothird,
+.row-padding > .threequarter,
+.row-padding > .quarter,
+.row-padding > .col
+    padding: 0 0.5em
+
+
+.row-padding
+    margin: 1em -1em

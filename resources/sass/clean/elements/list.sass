@@ -1,0 +1,49 @@
+ol, ul
+    list-style-position: outside
+    line-height: 2em
+    padding: 0 2em
+
+
+dl, ol, ul
+    margin-bottom: 2em
+
+
+ul
+    list-style-type: disc
+
+
+dt
+    font-weight: bold
+    margin-top: 1em
+
+
+dd
+    font-style: italic
+    padding: 0 2em
+    margin-top: 0.5em
+
+
+ul.card
+    padding: 0
+    list-style-type: none
+
+    li
+        padding: 1em
+        border-bottom: 1px solid $gray-20
+
+
+        &:first-of-type
+            &:hover, &:focus
+                border-top-left-radius: 0.5em
+                border-top-right-radius: 0.5em
+
+        &:last-of-type
+            border: none
+
+            &:hover
+                border-bottom-left-radius: 0.5em
+                border-bottom-right-radius: 0.5em
+
+
+.no-bullets
+    list-style-type: none

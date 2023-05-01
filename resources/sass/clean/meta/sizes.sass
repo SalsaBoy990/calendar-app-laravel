@@ -1,0 +1,18 @@
+// Media Sizes
+$s-1200: 1200px
+$s-1024: 1024px
+$s-1023: 1023px
+$s-960: 960px
+$s-800: 800px
+$s-601: 601px
+$s-600: 600px
+$s-250: 250px
+
+$content-sizes: ("1200": $s-1200, "1024": $s-1024, "1023": $s-1023, "960": $s-960, "800": $s-800, "600": $s-600,"250": $s-250)
+
+@each $content, $i in $content-sizes
+    .content-#{$content}
+        max-width: $i
+
+.fullwidth
+    width: 100%

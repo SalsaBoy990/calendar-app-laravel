@@ -1,0 +1,138 @@
+html.dark
+    body
+        background-color: $bg-dark !important
+        color: $gray-20
+
+
+    .content
+        background-color: $bg-content
+
+
+    h1, h2, h3, h4, h5, h6, label, form
+        color: $gray-20
+
+
+    button.alt, .button.alt
+        background-color: white
+
+    .accordion-button
+        border-color: $gray-20
+
+
+    input, textarea
+        color: $black
+        background: $gray-20
+        border-color: $gray-80
+
+        &:disabled
+            cursor: not-allowed
+            background: $gray-40
+            border-color: $gray-40
+
+        &:focus
+            border-color: $primary-light
+            background-color: rgba(255, 255, 225, 0.85)
+
+
+    .banner
+        h1, h2, h3, h4, h5, h6, p, ul, ol, span
+            color: $gray-20
+
+
+    #search-results
+        a
+            color: $link
+
+            &:hover
+                color: $gray-80
+
+    .bar
+        .dropdown
+            button
+                color: $primary-darkmode
+                text-decoration: underline
+
+                &:hover, &:focus
+                    color: $primary-darkmode-hover
+
+    .panel,
+    .box,
+    .card
+        h1, h2, h3, h4, h5, h6, p, ul, ol, span
+            color: inherit
+
+
+    ul:not(.card,.card-list,.box), ol
+        color: #c5c5c5
+
+
+    a:not(.button, .close-button, .link-button, .button-square, .button-circle)
+        color: $primary-darkmode
+
+        &:hover
+            color: $white
+
+
+    a.bar-item.button,
+    a.button.link-button
+        color: white
+
+
+    a.button.link-button:hover
+        color: $accent-light
+
+
+    header:not(.box)
+        color: #c5c5c5
+        background-color: $black
+
+
+    footer
+        background-color: #0d0e11
+        color: $gray-40
+
+
+    pre, code
+        color: $gray-20
+        background-color: $black
+
+
+    table
+        thead
+            th
+                background-color: $bg-primary
+                color: $gray-10
+
+        tr:nth-child(odd)
+            background-color: rgba(255, 255, 255, 0.15)
+
+        tr:nth-child(even)
+            background-color: rgba(255, 255, 255, 0.05)
+
+        tr:hover
+            background-color: rgba(0, 0, 0, 0.2)
+
+        td
+            color: $gray-10
+
+
+    .toc
+        background-color: $bg-content
+
+
+    ul.card
+        background-color: rgba(255, 255, 255, 0.15)
+        color: white
+
+
+    .clean-modal
+        background-color: rgba(255, 255, 255, 0.6)
+
+
+    .clean-modal-content
+        background-color: $gray-80
+
+
+    .dropdown-content
+        color: #fff
+        background-color: $black
