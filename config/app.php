@@ -194,6 +194,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\RolesServiceProvider::class, // registers @role Blade directive
+        App\Providers\PermissionServiceProvider::class, // add permissions to @can directive
 
     ],
 

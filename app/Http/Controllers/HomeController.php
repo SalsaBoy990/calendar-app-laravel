@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,6 +24,22 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+//        $user = User::findOrFail(1);
+//        dd($user->can('manage-workers'));
+//        dd($user->hasRole('administrator')); // will return true
+//        dd($user->hasRole('project-manager'));// will return false
+//        $user->givePermissionsTo( ['manage-workers', 'create-tasks']);
+//        dd($user->hasPermissionTo(null, 'create-tasks'));// will return true
+//        dd($user->getAllPermissions(['manage-workers']));
+
+//        $permissions = $user->permissions()->get();
+        $permissions = auth()->user()->permissions()->get();
+
+//        dd($permissions);
+
+        return view('home')->with([
+            'permissions' => $permissions,
+        ]);
+
     }
 }

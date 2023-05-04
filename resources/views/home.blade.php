@@ -13,6 +13,33 @@
                 </div>
             @endif
 
+            <table>
+                <thead>
+                    <tr>
+                        <th>Key</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @role ('administrator')
+                    <tr>
+                        <td>Role</td>
+                        <td>Adminisztrátor</td>
+                    </tr>
+                    @endrole
+
+                    @foreach($permissions as $permission)
+                        <tr>
+                            <td>{{ $permission->slug }}</td>
+                            <td>{{ $permission->name }}</td>
+                        </tr>
+
+                    @endforeach
+                </tbody>
+            </table>
+
+
             <h1> Heading 1 </h1>
             <h2> Buttons </h2>
 
