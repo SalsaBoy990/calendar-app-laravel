@@ -2,19 +2,19 @@
 *  Tab Switcher action
 *
 * */
-export function tabsData() {
+export function tabsData(tabId = 'London', activeColor = 'red') {
 
     return {
         tabId: '',
-        tabsClass: "tabs",
-        buttonClass: "tab-switcher",
-        activeButtonClass: "red",
+        tabsClass: "",
+        buttonClass: "",
+        activeButtonClass: '',
 
         init() {
-            this.tabId = 'London';
+            this.tabId = tabId;
             this.tabsClass = "tabs";
             this.buttonClass = "tab-switcher";
-            this.activeButtonClass = "red";
+            this.activeButtonClass = activeColor;
 
             this.switchTab(this.tabId);
         },

@@ -23,12 +23,33 @@
                     <li>
                         <span>/</span>
                     </li>
-                    <li>{{ __('Page name') }}</li>
+                    <li>{{ __('Dashboard') }}</li>
                 </ol>
             </nav>
 
             <div class="main-content">
-                Main content goes here.
+
+                <ul class="dashboard-card-grid">
+
+                    <li class="card padding-1 text-center">
+                        <a href="{{ url('/home') }}" class="padding-top-bottom-1">
+                            <i class="fa fa-home" aria-hidden="true"></i>{{ __('Home') }}
+                        </a>
+                    </li>
+
+                    <!-- Custom links -->
+                    <li class="card padding-1 text-center">
+                        <a class="padding-top-bottom-1" href="{{ route('user.manage') }}">
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                            {{ __('Manage users') }}</a>
+                    </li>
+
+                    <li class="card padding-1 text-center">
+                        <a class="padding-top-bottom-1" href="{{ route('role-permission.manage') }}">
+                            <i class="fa fa-lock" aria-hidden="true"></i>
+                            {{ __('Roles and Permissions') }}</a>
+                    </li>
+                </ul>
             </div>
         </main>
     @endsection

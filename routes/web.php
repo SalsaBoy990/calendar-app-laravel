@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,4 +31,16 @@ Route::group(['middleware' => 'role:administrator'], function () {
     });
 
 });
+
+// Routes only for authenticated users...
+Route::group(
+    ['middleware' => ['auth', 'verified', 'role:site-admin'], 'prefix' => 'admin'],
+    function () {
+
+        Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('user/manage', [UserController::class, 'index'])->name('user.manage');
+        Route::get('role-permission/manage', [RolePermissionController::class, 'index'])->name('role-permission.manage');
+    }
+);
+
 

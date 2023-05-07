@@ -7,7 +7,7 @@ body
 
 .container
     width: 100%
-    max-width: 1100px !important
+    max-width: 1400px !important
 
 
 header .fa
@@ -113,6 +113,10 @@ html.dark
 
             div.sidebar-content
                 padding: 0
+
+                .navbar-nav
+                    li
+                        margin-bottom: 0.5em
 
 
 .public
@@ -299,3 +303,39 @@ fieldset
             flex-direction: row
             align-items: center
             gap: 0.5em
+
+            p.message
+                margin: 0
+
+button, .button
+    i.fa
+        margin-right: 2px
+
+input[readonly]
+    background-color: $gray-20
+    cursor: not-allowed
+
+.checkbox-container
+    label
+        margin-top: 0
+
+        input
+            margin-bottom: 0
+
+.dashboard-card-grid
+    margin-bottom: 0
+    padding: 0
+    display: grid
+    justify-items: stretch
+    align-items: center
+    column-gap: 1em
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))
+    justify-content: space-between
+    list-style-type: none
+
+select
+    background: white
+
+a.nav-link.active
+    font-weight: 700
+    background-color: $gray-20

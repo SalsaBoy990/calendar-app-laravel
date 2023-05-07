@@ -12,7 +12,7 @@
         <?php } ?><!-- Custom content goes here END -->
 
         <div class="padding-1">
-            <ul class="navbar-nav ms-auto padding-left-0">
+            <ul class="navbar-nav margin-top-0 padding-left-0 no-bullets">
                 <!-- Authentication Links -->
                 @guest
                     @if (Route::has('login'))
@@ -27,6 +27,24 @@
                         </li>
                     @endif
                 @else
+                    <!-- Custom links -->
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('user.manage') ? 'active' : '' }}"
+                           href="{{ route('user.manage') }}"
+                        >
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                            {{ __('Manage users') }}</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('role-permission.manage') ? 'active' : '' }}"
+                           href="{{ route('role-permission.manage') }}"
+                        >
+                            <i class="fa fa-lock" aria-hidden="true"></i>
+                            {{ __('Roles and Permissions') }}</a>
+                    </li>
+
+                    <!-- Custom links END -->
                     <?php ?>
                     <li class="nav-item dropdown">
                         <a
@@ -49,6 +67,7 @@
                                 onclick="event.preventDefault();
                                      document.getElementById('logout-form').submit();"
                             >
+                                <i class="fa fa-sign-out" aria-hidden="true"></i>
                                 {{ __('Logout') }}
                             </a>
 
