@@ -92,12 +92,21 @@ trait HasRolesAndPermissions {
     /**
      * Get the role entity by the slug value
      *
-     * @param  Role  $slug
+     * @param  string  $slug
      *
      * @return Role|null
      */
-    protected function getRoleBySlug( Role $slug ): ?Role {
+    protected function getRoleBySlug( string $slug ): ?Role {
         return Role::where( 'slug', $slug )->first();
+    }
+
+    /**
+     * Get the role entity by the slug value
+     * User should have onl one role!
+     *
+     */
+    public function deleteUserRole(): void {
+        $this->roles()->detach();
     }
 
 
