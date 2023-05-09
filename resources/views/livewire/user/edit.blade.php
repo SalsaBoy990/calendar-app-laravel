@@ -25,7 +25,7 @@
                 <input
                     wire:model.defer="name"
                     type="text"
-                    class="{{ $errors->has('name') ? 'input-error' : '' }}"
+                    class="{{ $errors->has('name') ? 'border border-red' : '' }}"
                     name="name"
                     value=""
                 >
@@ -54,7 +54,7 @@
                 <input
                     wire:model.defer="password"
                     type="text"
-                    class="{{ $errors->has('password') ? 'input-error' : '' }}"
+                    class="{{ $errors->has('password') ? 'border border-red' : '' }}"
                     name="password"
                     value=""
                 >
@@ -68,11 +68,14 @@
                 <label for="role">{{ __('Role') }}</label>
                 <select
                     wire:model.defer="role"
-                    class="{{ $errors->has('role') ? 'input-error' : '' }}"
+                    class="{{ $errors->has('role') ? 'border border-red' : '' }}"
                     aria-label="{{ __("Select a role") }}"
                     name="role"
                     id="role"
                 >
+                    @if($role === null)
+                        <option selected>{{ __("Select the role") }}</option>
+                    @endif
 
                     @foreach ($roles as $key => $value)
                         <option {{ $role === $key ? "selected": "" }} value="{{ $key }}">{{ $value }}</option>

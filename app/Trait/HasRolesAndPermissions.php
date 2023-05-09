@@ -4,6 +4,7 @@ namespace App\Trait;
 
 use App\Models\Permission;
 use App\Models\Role;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
@@ -12,10 +13,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 trait HasRolesAndPermissions {
 
     /**
-     * @return BelongsToMany
+     * @return BelongsTo
      */
-    public function roles(): BelongsToMany {
-        return $this->belongsToMany( Role::class, 'users_roles' );
+    public function role(): BelongsTo {
+        return $this->belongsTo( Role::class );
     }
 
     /**
@@ -31,9 +32,8 @@ trait HasRolesAndPermissions {
      * @return bool
      */
     public function hasRole( ...$roles ): bool {
-
         foreach ( $roles as $role ) {
-            if ( $this->roles->contains( 'slug', $role ) ) {
+            if ( isset($this->role) && $this->role->slug === $role  ) {
                 return true;
             }
         }
@@ -106,7 +106,7 @@ trait HasRolesAndPermissions {
      *
      */
     public function deleteUserRole(): void {
-        $this->roles()->detach();
+        $this->role()->dissociate();
     }
 
 

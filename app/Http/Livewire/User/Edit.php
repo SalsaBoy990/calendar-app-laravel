@@ -23,16 +23,15 @@ class Edit extends Component {
     public string $email;
     public string $password;
     public User $user;
-    public $userId;
+    public int $userId;
 
-    public string $role;
+    public ?int $role;
     public array $roles;
 
     protected array $rules = [
         'name'     => [ 'required', 'string', 'max:255' ],
-//        'email'    => [ 'required', 'string', 'email', 'max:255', 'unique:users' ],
         'password' => [ 'string' ],
-        'role'     => [ 'required', 'string' ],
+        'role'     => [ 'required', 'integer' ],
         'userPermissions' => [ 'array' ]
     ];
 
@@ -50,13 +49,16 @@ class Edit extends Component {
         $this->userPermissions = $this->user->permissions()->get()->pluck(['id'])->toArray();
         $this->allPermissions = Permission::all();
 
-        $roleEntity = $this->user->roles()->first();
-
-        $this->role = $roleEntity->slug;
+        // initialize roleId property
+        if (isset($this->user->role)) {
+            $this->role = $this->user->role->id;
+        } else {
+            $this->role = null;
+        }
 
         $allRoles = Role::all();
         foreach ( $allRoles as $role ) {
-            $this->roles[ $role->slug ] = $role->name;
+            $this->roles[ $role->id ] = $role->name;
         }
     }
 
@@ -74,29 +76,36 @@ class Edit extends Component {
 
                 $user = User::findOrFail($this->userId);
 
+                if (!isset($this->user->role) ) {
+                    $role = Role::where( 'slug', 'worker' )->first();
+                    // attach can only be used on m-m relation
+                    // associate <-> dissociate
+                    $user->role()->associate( $role );
+                }
+
+                // Save new role if role is selected, and the value not equal to the current role of the user
+                else if ( $this->role && $this->role !== $this->user->role->id) {
+
+                    $user->deleteUserRole();
+
+                    $role = Role::where( 'id', $this->role )->first();
+                    $user->role()->associate( $role );
+                }
+
                 // only save password if a new one is supplied
                 if ($this->password !== '') {
                     $user->update( [
                         'name'           => htmlspecialchars( $this->name ),
-//                        'email'          => htmlspecialchars( $this->email ),
                         'password'       => Hash::make( $this->password ),
                     ] );
                 } else {
                     $user->update( [
                         'name'           => htmlspecialchars( $this->name ),
-//                        'email'          => htmlspecialchars( $this->email ),
                     ] );
                 }
 
                 $user->save();
 
-                // Save new role if role is selected, and the value not equal to the current role of the user
-                if ($this->role !== '' && $this->role !== $this->user->roles()->first()->slug) {
-                    $user->deleteUserRole();
-
-                    $role = Role::where( 'slug', $this->role )->first();
-                    $user->roles()->save( $role );
-                }
 
                 // Sync the permissions - permission ids from the checkbox
                 $user->permissions()->sync($this->userPermissions);

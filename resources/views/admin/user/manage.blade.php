@@ -43,7 +43,7 @@
                         <tr>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
-                            <td>{{ $user->roles()->get(['name'])[0]->name }}</td>
+                            <td>{{ isset($user->role) ? $user->role->name : '' }}</td>
                             <td>
                                 <div class="flex">
                                     <!-- Delete user -->

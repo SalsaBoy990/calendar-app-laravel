@@ -19,18 +19,20 @@
     >
         <form wire:submit.prevent="createUser">
 
+            <x-admin.validation-errors/>
+
             <fieldset>
                 <!-- Name -->
                 <label for="name">{{ __('Name') }}</label>
                 <input
                     wire:model.defer="name"
                     type="text"
-                    class="{{ $errors->has('name') ? 'input-error' : 'input-default' }}"
+                    class="{{ $errors->has('name') ? 'border border-red' : '' }}"
                     name="name"
                     value=""
                 >
 
-                <div class="{{ $errors->has('name') ? 'red' : 'gray-80' }}">
+                <div class="{{ $errors->has('name') ? 'red' : '' }}">
                     {{ $errors->has('name') ? $errors->first('name') : '' }}
                 </div>
 
@@ -40,12 +42,12 @@
                 <input
                     wire:model.defer="email"
                     type="email"
-                    class="{{ $errors->has('email') ? 'input-error' : 'input-default' }}"
+                    class="{{ $errors->has('email') ? 'border border-red' : '' }}"
                     name="name"
                     value=""
                 >
 
-                <div class="{{ $errors->has('email') ? 'red' : 'gray-80' }}">
+                <div class="{{ $errors->has('email') ? 'red' : '' }}">
                     {{ $errors->has('email') ? $errors->first('email') : '' }}
                 </div>
 
@@ -54,12 +56,12 @@
                 <input
                     wire:model.defer="password"
                     type="text"
-                    class="{{ $errors->has('password') ? 'input-error' : 'input-default' }}"
+                    class="{{ $errors->has('password') ? 'border border-red' : '' }}"
                     name="password"
                     value=""
                 >
 
-                <div class="{{ $errors->has('password') ? 'red' : 'gray-80' }}">
+                <div class="{{ $errors->has('password') ? 'red' : '' }}">
                     {{ $errors->has('password') ? $errors->first('password') : '' }}
                 </div>
 
@@ -67,7 +69,7 @@
                 <label for="role">{{ __('Role') }}</label>
                 <select
                     wire:model.defer="role"
-                    class="{{ $errors->has('role') ? 'input-error' : 'input-default' }}"
+                    class="{{ $errors->has('role') ? 'border border-red' : '' }}"
                     aria-label="{{ __("Select a role") }}"
                     name="role"
                     id="role"
@@ -76,12 +78,12 @@
                     <option selected>{{ __("Select the role") }}</option>
 
                     @foreach ($roles as $key => $value)
-                        <option value="{{ $key }}">{{ $value }}</option>
+                        <option name="role" value="{{ $key }}">{{ $value }}</option>
                     @endforeach
 
                 </select>
 
-                <div class="{{ $errors->has('role') ? 'red' : 'gray-80' }}">
+                <div class="{{ $errors->has('role') ? 'red' : '' }}">
                     {{ $errors->has('role') ? $errors->first('role') : '' }}
                 </div>
 

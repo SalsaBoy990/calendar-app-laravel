@@ -23,14 +23,14 @@ class Create extends Component {
     public string $name;
     public string $email;
     public string $password;
-    public string $role = 'administrator';
+    public ?int $roleId;
     public array $roles;
 
     protected array $rules = [
         'name'            => [ 'required', 'string', 'max:255' ],
         'email'           => [ 'required', 'string', 'email', 'max:255', 'unique:users' ],
         'password'        => [ 'required', 'string' ],
-        'role'            => [ 'required', 'string' ],
+        'role'            => [ 'required', 'integer' ],
         'userPermissions' => [ 'array' ]
     ];
 
@@ -42,11 +42,11 @@ class Create extends Component {
         $this->name     = '';
         $this->email    = '';
         $this->password = '';
-        $this->role     = 'administrator';
+        $this->role     = null;
 
         $allRoles = Role::all();
         foreach ( $allRoles as $role ) {
-            $this->roles[ $role->slug ] = $role->name;
+            $this->roles[ $role->id ] = $role->name;
         }
 
         $this->userPermissions = [];
@@ -70,11 +70,12 @@ class Create extends Component {
                     'password'       => Hash::make( $this->password ),
                     'remember_token' => Str::random( 10 ),
                 ] );
-                $newUser->save();
 
                 // Save the user-role relation
-                $role = Role::where( 'slug', $this->role )->first();
-                $newUser->roles()->save( $role );
+                $role = Role::where( 'id', $this->role )->first();
+                $newUser->role()->associate( $role );
+
+                $newUser->save();
 
                 // Sync the permissions - permission ids from the checkbox
                 $newUser->permissions()->sync($this->userPermissions);
