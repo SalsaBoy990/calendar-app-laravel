@@ -20,10 +20,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Auth endpoints from Laravel UI
 Auth::routes();
+// Auth endpoints from Laravel UI END
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+
+// 2FA endpoints
+Route::get('2fa', [App\Http\Controllers\UserCodeController::class, 'index'])->name('2fa.index');
+Route::post('2fa', [App\Http\Controllers\UserCodeController::class, 'store'])->name('2fa.post');
+Route::get('2fa/reset', [App\Http\Controllers\UserCodeController::class, 'resend'])->name('2fa.resend');
+// 2FA endpoints END
+
+
+// A test endpoint
 Route::group(['middleware' => 'role:administrator'], function () {
 
     Route::get('/admin-test', function() {
@@ -32,7 +44,7 @@ Route::group(['middleware' => 'role:administrator'], function () {
 
 });
 
-// Routes only for authenticated users...
+// Routes only for authenticated users
 Route::group(
     ['middleware' => ['auth', 'verified', 'role:site-admin'], 'prefix' => 'admin'],
     function () {
@@ -43,4 +55,14 @@ Route::group(
     }
 );
 
+
+Route::group(
+    ['middleware' => ['auth', 'verified', 'role:site-admin'], 'prefix' => 'admin'],
+    function () {
+
+        Route::get('user/account/{user}', [UserController::class, 'account'])->name('user.account');
+        Route::put('user/update/{user}', [UserController::class, 'update'])->name('user.update');
+    }
+);
+// Routes only for authenticated users END
 

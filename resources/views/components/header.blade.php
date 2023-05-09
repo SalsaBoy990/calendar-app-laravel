@@ -31,6 +31,15 @@
                             </a>
 
                             <div x-show="openDropdown" class="dropdown-content card padding-0-5">
+
+                                <a class="dropdown-item"
+                                   href="{{ route('user.account', auth()->id()) }}"
+                                >
+                                    <i class="fa fa-user" aria-hidden="true"></i>
+                                    <span>{{ __('My Account') }}</span>
+                                </a>
+
+
                                 <a
                                     class="dropdown-item"
                                     href="{{ route('logout') }}"

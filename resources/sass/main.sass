@@ -160,10 +160,14 @@ header.page-header
         gap: 0.5em
 
         nav
-            a
+            a:not(.dropdown-item)
                 margin: 0 0.5em
                 padding: 0 0.5em
                 text-decoration: underline
+
+            .dropdown-item
+                display: block
+                margin-bottom: 0.5em
 
 
 footer.page-footer
@@ -339,3 +343,5 @@ select
 a.nav-link.active
     font-weight: 700
     background-color: $gray-20
+
+

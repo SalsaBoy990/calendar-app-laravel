@@ -29,10 +29,19 @@
                 @else
                     <!-- Custom links -->
                     <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('user.account') ? 'active' : '' }}"
+                           href="{{ route('user.account', auth()->id()) }}"
+                        >
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                            {{ __('My Account') }}</a>
+                    </li>
+
+
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('user.manage') ? 'active' : '' }}"
                            href="{{ route('user.manage') }}"
                         >
-                            <i class="fa fa-user" aria-hidden="true"></i>
+                            <i class="fa fa-users" aria-hidden="true"></i>
                             {{ __('Manage users') }}</a>
                     </li>
 
@@ -46,40 +55,25 @@
 
                     <!-- Custom links END -->
                     <?php ?>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item">
                         <a
-                            id="navbarDropdown"
-                            class="nav-link dropdown-toggle"
-                            href="#"
-                            role="button"
-                            data-bs-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                            v-pre
+                            class="nav-link"
+                            href="{{ route('logout') }}"
+                            onclick="event.preventDefault();
+                                     document.getElementById('logout-form').submit();"
                         >
-                            {{ Auth::user()->name }}
+                            <i class="fa fa-sign-out" aria-hidden="true"></i>
+                            {{ __('Logout') }}
                         </a>
 
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                            <a
-                                class="dropdown-item"
-                                href="{{ route('logout') }}"
-                                onclick="event.preventDefault();
-                                     document.getElementById('logout-form').submit();"
-                            >
-                                <i class="fa fa-sign-out" aria-hidden="true"></i>
-                                {{ __('Logout') }}
-                            </a>
-
-                            <form
-                                id="logout-form"
-                                action="{{ route('logout') }}"
-                                method="POST"
-                                class="hide"
-                            >
-                                @csrf
-                            </form>
-                        </div>
+                        <form
+                            id="logout-form"
+                            action="{{ route('logout') }}"
+                            method="POST"
+                            class="hide"
+                        >
+                            @csrf
+                        </form>
                     </li>
                 @endguest
             </ul>

@@ -11,6 +11,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Support\InteractsWithBanner;
@@ -25,8 +26,7 @@ class UserController extends Controller
      * @return Application|Factory|View
      * @throws AuthorizationException
      */
-    public function index()
-    {
+    public function index(): Factory|View|Application {
 //        $this->authorize('viewAny', User::class);
 
         $users = User::orderBy('created_at', 'DESC')->get();
@@ -94,12 +94,58 @@ class UserController extends Controller
      * @throws AuthorizationException
      */
     public function destroy(User $user): RedirectResponse {
-        $this->authorize('delete', [User::class, $user]);
+//        $this->authorize('delete', [User::class, $user]);
 
         $oldName = htmlentities($user->name);
         $user->delete();
 
         $this->banner('Successfully deleted the user with the name of "' . $oldName . '"!');
-        return redirect()->route('user.index');
+        return redirect()->route('user.manage');
+    }
+
+
+    /**
+     * Show user account with current user data
+     * @param  User  $user
+     *
+     * @return Factory|View|Application
+     */
+    public function account(User $user): Factory|View|Application {
+        return view('admin.user.account')->with([
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  Request  $request
+     * @param  User  $user
+     *
+     * @return RedirectResponse
+     */
+    public function update(Request $request, User $user): RedirectResponse {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'password' => ['nullable', 'string', 'min:0'],
+            'enable2fa' => ['nullable', 'boolean'],
+        ]);
+
+
+        if ($request->password === null) {
+            $user->update([
+                'name' => strip_tags($request->name),
+                'enable_2fa' => intval($request->enable2fa),
+            ]);
+        } else {
+            $user->update([
+                'name' => $request->name,
+                'password' => Hash::make($request->password),
+                'enable_2fa' => intval($request->enable2fa),
+            ]);
+        }
+
+        $this->banner('Successfully updated your account!');
+        return redirect()->route('user.account', $user->id);
     }
 }
