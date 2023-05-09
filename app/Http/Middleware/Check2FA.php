@@ -18,7 +18,7 @@ class Check2FA
     public function handle(Request $request, Closure $next)
     {
         // if user did not submit the code, redirect to the 2fa index view
-        if (! Session::has('user_2fa')) {
+        if (auth()->user()->enable_2fa && ! Session::has('user_2fa')) {
             return redirect()->route('2fa.index');
         }
 
