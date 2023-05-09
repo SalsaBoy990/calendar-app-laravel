@@ -6,10 +6,6 @@
 
     <x-slot name="sidebar">
 
-        <div class="padding-1">
-            It is the unknown we fear when we look upon death and darkness, nothing more.
-        </div>
-
     </x-slot>
 
     @section('content')

@@ -108,4 +108,18 @@ class LoginController extends Controller {
 
                 return $this->sendFailedLoginResponse($request);*/
     }
+
+
+
+    /**
+     * The user has logged out of the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return mixed
+     */
+    protected function loggedOut(Request $request)
+    {
+        request()->session()->flash('flash.banner', __('Successful logout!'));
+        request()->session()->flash('flash.bannerStyle', 'success');
+    }
 }

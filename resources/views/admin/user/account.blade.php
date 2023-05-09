@@ -14,7 +14,7 @@
             <nav class="breadcrumb">
                 <ol>
                     <li>
-                        <a href="{{ url('/home') }}">{{ __('My Account') }}</a>
+                        <a href="{{ url('/home') }}">{{ __('Home') }}</a>
                     </li>
                     <li>
                         <span>/</span>
@@ -25,7 +25,7 @@
 
             <div class="main-content">
 
-                <h1 class="fs-24">{{ __('My Account') }}</h1>
+                <h1 class="h2 margin-0">{{ __('My Account') }}</h1>
 
                 <form action="{{ route('user.update', $user->id ) }}"
                       method="POST"
@@ -97,15 +97,54 @@
 
                     </fieldset>
 
+                    <button type="submit" class="primary">{{ __("Update") }}
+                    </button>
 
-                    <div>
-                        <button type="submit" class="primary">{{ __("Update") }}
-                        </button>
-
-                        <a href="{{ route('user.account', $user->id)}}"
-                           class="button alt bg-white">{{ __('Cancel') }}</a>
-                    </div>
                 </form>
+
+                <hr>
+
+                <h2 class="h3">Delete account</h2>
+
+                <div class="panel danger text-red-dark border border-red-dark">
+                    <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                    This action cannot be undone. It will permanently erase your account with all of your data.
+                </div>
+
+                <div x-data="modalData">
+
+                    <button @click="openModal()" class="danger">
+                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        <span>{{ __('Delete account?') }}</span>
+                    </button>
+
+                    <x-admin.form-modal trigger="modal"
+                                        title="{{ __('Are you sure you want to delete your account?') }}"
+                                        id="delete-account-{{$user->id}}">
+
+                        <form action="{{ route('user.destroy', $user->id ) }}"
+                              method="POST"
+                              enctype="application/x-www-form-urlencoded"
+                              accept-charset="UTF-8"
+                              autocomplete="off"
+                        >
+                            @csrf
+                            @method('DELETE')
+
+                            <h2>{{ __('Delete account') }}</h2>
+                            <p>This action cannot be undone.</p>
+
+                            <div>
+                                <button type="submit" class="danger">{{ __('Delete account') }}</button>
+                                <button type="button" class="danger alt" @click="closeModal()">
+                                    {{ __('Cancel') }}
+                                </button>
+                            </div>
+
+                        </form>
+
+                    </x-admin.form-modal>
+                </div>
 
 
             </div>

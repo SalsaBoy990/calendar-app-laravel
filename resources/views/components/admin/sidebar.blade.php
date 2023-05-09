@@ -1,6 +1,6 @@
 <aside>
     <header>
-        <h3 class="text-white">{{ __('Table of Content') }}</h3>
+        <h3 class="text-white h5">{{ __('Table of Content') }}</h3>
     </header>
     <div class="sidebar-content">
 
@@ -37,6 +37,7 @@
                     </li>
 
 
+                @role('site-admin')
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('user.manage') ? 'active' : '' }}"
                            href="{{ route('user.manage') }}"
@@ -52,6 +53,7 @@
                             <i class="fa fa-lock" aria-hidden="true"></i>
                             {{ __('Roles and Permissions') }}</a>
                     </li>
+                @endrole
 
                     <!-- Custom links END -->
                     <?php ?>

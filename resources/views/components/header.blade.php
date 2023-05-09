@@ -14,9 +14,11 @@
                             <i class="fa fa-home" aria-hidden="true"></i>{{ __('Home') }}
                         </a>
 
+                        @role('site-admin')
                         <a href="{{ url('/admin/dashboard') }}">
                             <i class="fa fa-tachometer" aria-hidden="true"></i>{{ __('Dashboard') }}
                         </a>
+                        @endrole
 
 
                         <div

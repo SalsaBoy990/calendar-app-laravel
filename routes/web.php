@@ -57,11 +57,12 @@ Route::group(
 
 
 Route::group(
-    ['middleware' => ['auth', 'verified', 'role:site-admin'], 'prefix' => 'admin'],
+    ['middleware' => ['auth', 'verified'], 'prefix' => 'admin'],
     function () {
 
         Route::get('user/account/{user}', [UserController::class, 'account'])->name('user.account');
         Route::put('user/update/{user}', [UserController::class, 'update'])->name('user.update');
+        Route::delete('user/destroy/{user}', [UserController::class, 'destroy'])->name('user.destroy');
     }
 );
 // Routes only for authenticated users END

@@ -23,6 +23,8 @@
 
 <x-header></x-header>
 
+<x-admin.banner/>
+
 <div class="public wrapper">
 
     <div class="public-content container relative">
