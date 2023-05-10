@@ -46,7 +46,7 @@ Route::group(['middleware' => 'role:administrator'], function () {
 
 // Routes only for authenticated users
 Route::group(
-    ['middleware' => ['auth', 'verified', '2fa', 'role:site-admin'], 'prefix' => 'admin'],
+    ['middleware' => ['auth', 'verified', '2fa', 'role:administrator'], 'prefix' => 'admin'],
     function () {
 
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -55,9 +55,8 @@ Route::group(
     }
 );
 
-
 Route::group(
-    ['middleware' => ['auth', 'verified', '2fa'], 'prefix' => 'admin'],
+    ['middleware' => ['auth', 'verified', '2fa', 'role:administrator-worker'], 'prefix' => 'admin'],
     function () {
 
         Route::get('user/account/{user}', [UserController::class, 'account'])->name('user.account');

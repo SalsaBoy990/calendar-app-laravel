@@ -42,6 +42,23 @@ trait HasRolesAndPermissions {
 
     }
 
+    /**
+     * Check if user has one of the roles from the array
+     * @param $roles
+     *
+     * @return bool
+     */
+    public function hasRoles( $roles ): bool {
+        foreach ( $roles as $role ) {
+            if ( isset($this->role) && $this->role->slug === $role  ) {
+                return true;
+            }
+        }
+
+        return false;
+
+    }
+
 
     /**
      * Checks if the user have the permission
