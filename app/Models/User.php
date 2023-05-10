@@ -6,6 +6,7 @@ namespace App\Models;
 use App\Mail\SendCodeMail;
 use App\Trait\HasRolesAndPermissions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Mail;
@@ -60,17 +61,25 @@ final class User extends Authenticatable {
         try {
 
             $details = [
-                'title' => __('Mail from Calendar App'),
-                'code' => $code
+                'title' => __( 'Mail from Calendar App' ),
+                'code'  => $code
             ];
 
             // Send the code in email
-            Mail::to(auth()->user()->email)->send(new SendCodeMail($details));
+            Mail::to( auth()->user()->email )->send( new SendCodeMail( $details ) );
 
 
-        } catch (\Exception $e) {
-            info("Error: " . $e->getMessage());
-            dd($e);
+        } catch ( \Exception $e ) {
+            info( "Error: " . $e->getMessage() );
+            dd( $e );
         }
+    }
+
+
+    /**
+     * @return BelongsToMany
+     */
+    public function events(): BelongsToMany {
+        return $this->belongsToMany( Event::class, 'users_events' );
     }
 }

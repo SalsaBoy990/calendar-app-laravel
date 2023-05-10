@@ -345,3 +345,73 @@ a.nav-link.active
     background-color: $gray-20
 
 
+#calendar-container
+    #calendar
+        table
+            border-radius: 0.25em
+            margin-top: 0
+            margin-bottom: 0
+            border-spacing: 0
+            display: table
+
+            a
+                color: $primary-light
+
+            td:hover
+                cursor: auto
+
+
+            tr:hover, tr:nth-child(odd):hover
+                background-color: inherit
+
+            tr:nth-child(odd)
+                background-color: inherit
+
+
+            td
+                font-weight: 700
+
+            th, td
+                border-color: $gray-20
+                font-size: $fs-16
+
+
+            th
+                text-align: center
+
+            thead
+                height: 2em
+                background-color: $gray-20
+
+                tr
+                    height: 2em
+
+                th
+                    color: $gray-0
+                    background-color: $gray-20
+
+
+            tbody
+                tr
+                    height: 2em
+
+                    td
+                        color: $gray-80
+
+
+            @media screen and (max-width: $s-600)
+                width: 100%
+
+            @media screen and (max-width: $s-800)
+                font-size: $fs-14
+
+
+.fc.fc-scroller-liquid-absolute
+    right: -20px !important
+
+#calendar-container
+    position: relative
+
+#calendar
+    max-width: 100%
+

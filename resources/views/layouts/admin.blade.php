@@ -64,6 +64,11 @@
 
 @livewireScripts
 
+<!-- To support inline scripts needed for the calendar library
+https://laravel-livewire.com/docs/2.x/inline-scripts
+-->
+@stack('scripts')
+
 <script src="{{ url('/js/prism.js') }}" type="text/javascript"></script>
 </body>
 </html>

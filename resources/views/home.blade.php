@@ -1,11 +1,11 @@
-@extends('layouts.admin')
+@extends('layouts.admin-nosidebar')
 
 @section('content')
 
     <main>
-        <div class="header">
+       {{-- <div class="header">
             <h1 class="text-white h3">{{ __('You are logged in!') }}</h1>
-        </div>
+        </div>--}}
         <div class="padding-1-5">
             @if (session('status'))
                 <div class="pale-green border border-green round" role="alert">
@@ -13,6 +13,13 @@
                 </div>
             @endif
 
+
+            <livewire:home.calendar></livewire:home.calendar>
+
+
+                <br>
+                <br>
+                <br>
             <table>
                 <thead>
                     <tr>
