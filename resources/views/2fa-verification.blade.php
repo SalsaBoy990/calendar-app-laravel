@@ -17,17 +17,13 @@
 
 
                 @if ($message = Session::get('success'))
-                    <div x-data="alertData" x-show="openAlert"
-                         class="panel success text-green-dark border border-green-dark relative">
-                        <span @click="hideAlert()" class="close-button fs-18 white-transparent topright">&times;</span>
+                    <div class="panel success text-green-dark border border-green-dark relative">
                         <p><strong class="margin-0">{{ $message }}</strong></p>
                     </div>
                 @endif
 
                 @if ($message = Session::get('error'))
-                    <div x-data="alertData" x-show="openAlert"
-                         class="panel danger text-red-dark border border-red-dark relative">
-                        <span @click="hideAlert()" class="close-button fs-18 white-transparent topright">&times;</span>
+                    <div class="panel danger text-red-dark border border-red-dark relative">
                         <p><strong class="margin-0">{{ $message }}</strong></p>
                     </div>
                 @endif

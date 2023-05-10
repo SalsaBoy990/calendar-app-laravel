@@ -16,30 +16,43 @@ class UserSeeder extends Seeder {
      */
     public function run() {
 
-        $worker        = Role::where( 'slug', 'worker' )->first();
-        $admin         = Role::where( 'slug', 'administrator' )->first();
-        $createTasks   = Permission::where( 'slug', 'create-tasks' )->first();
-        $manageWorkers = Permission::where( 'slug', 'manage-workers' )->first();
+        $worker            = Role::where( 'slug', 'worker' )->first();
+        $admin             = Role::where( 'slug', 'administrator' )->first();
+        $manageUsers       = Permission::where( 'slug', 'manage-users' )->first();
+        $manageAccount     = Permission::where( 'slug', 'manage-account' )->first();
+        $manageRoles       = Permission::where( 'slug', 'manage-roles' )->first();
+        $managePermissions = Permission::where( 'slug', 'manage-permissions' )->first();
+        $manageEvents      = Permission::where( 'slug', 'manage-events' )->first();
 
         $user1           = new User();
-        $user1->name     = 'John Doe';
-        $user1->email    = 'john@doe.com';
+        $user1->name     = 'Gulácsi András';
+        $user1->email    = 'gulandras90@gmail.com';
         $user1->password = bcrypt( 'password' );
+        $user1->role()->associate( $admin );
+        $user1->permissions()->saveMany( [
+            $manageAccount->id,
+            $manageUsers->id,
+            $manageRoles->id,
+            $managePermissions->id,
+            $manageEvents->id
+        ] );
         $user1->save();
-        $user1->roles()->attach( $worker );
-        $user1->permissions()->attach( $createTasks );
 
         $user2           = new User();
-        $user2->name     = 'Mike Thomas';
-        $user2->email    = 'mike@thomas.com';
+        $user2->name     = 'John Doe';
+        $user2->email    = 'john@doe.com';
         $user2->password = bcrypt( 'password' );
         $user2->save();
-        $user2->roles()->attach( $worker );
-        $user2->permissions()->attach( $createTasks );
+        $user2->role()->associate( $worker );
+        $user2->permissions()->attach( $manageAccount->id );
 
-        $user3 = User::findOrFail( 1 );
-        $user3->roles()->attach( $admin );
-        $user3->permissions()->attach( $manageWorkers );
-        $user3->permissions()->attach( $createTasks );
+        $user3           = new User();
+        $user3->name     = 'Mike Thomas';
+        $user3->email    = 'mike@thomas.com';
+        $user3->password = bcrypt( 'password' );
+        $user3->save();
+        $user3->role()->associate( $worker );
+        $user3->permissions()->saveMany( [ $manageUsers->id ] );
+
     }
 }

@@ -13,15 +13,30 @@ class PermissionSeeder extends Seeder {
      * @return void
      */
     public function run() {
-        $manageWorker       = new Permission();
-        $manageWorker->name = 'Manage workers';
-        $manageWorker->slug = 'manage-workers';
-        $manageWorker->save();
+        $manageUsers       = new Permission();
+        $manageUsers->name = 'Manage users';
+        $manageUsers->slug = 'manage-users';
+        $manageUsers->save();
 
-        $createTasks       = new Permission();
-        $createTasks->name = 'Create Tasks';
-        $createTasks->slug = 'create-tasks';
-        $createTasks->save();
+        $manageAccount       = new Permission();
+        $manageAccount->name = 'Manage Account';
+        $manageAccount->slug = 'manage-account';
+        $manageAccount->save();
+
+        $manageEvents       = new Permission();
+        $manageEvents->name = 'Manage Events';
+        $manageEvents->slug = 'manage-events';
+        $manageEvents->save();
+
+        $manageRoles       = new Permission();
+        $manageRoles->name = 'Manage Roles';
+        $manageRoles->slug = 'manage-roles';
+        $manageRoles->save();
+
+        $managePermissions       = new Permission();
+        $managePermissions->name = 'Manage Permissions';
+        $managePermissions->slug = 'manage-permissions';
+        $managePermissions->save();
 
     }
 }

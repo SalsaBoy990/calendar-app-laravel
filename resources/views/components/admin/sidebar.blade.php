@@ -37,7 +37,7 @@
                     </li>
 
 
-                @role('site-admin')
+                @role('administrator')
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('user.manage') ? 'active' : '' }}"
                            href="{{ route('user.manage') }}"
