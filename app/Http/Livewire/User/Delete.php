@@ -4,12 +4,14 @@ namespace App\Http\Livewire\User;
 
 use App\Models\User;
 use App\Support\InteractsWithBanner;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Delete extends Component
 {
     use InteractsWithBanner;
+    use AuthorizesRequests;
 
     // used by blade / alpinejs
     public string $modalId;
@@ -18,6 +20,7 @@ class Delete extends Component
 
     // inputs
     public int $userId;
+    private User $user;
     public string $name;
 
 
@@ -30,6 +33,7 @@ class Delete extends Component
         $this->modalId = $modalId;
         $this->isModalOpen = false;
         $this->hasSmallButton = $hasSmallButton;
+        $this->user = $user;
         $this->userId = $user->id;
         $this->name = $user->name;
     }
@@ -43,13 +47,16 @@ class Delete extends Component
 
     public function deleteUser()
     {
+        $user = User::findOrFail($this->userId);
+
+        $this->authorize('delete', [User::class, $user]);
+
         // validate user input
         $this->validate();
 
         // save category, rollback transaction if fails
         DB::transaction(
-            function () {
-                $user = User::findOrFail($this->userId);
+            function () use($user) {
                 $user->delete();
             },
             2

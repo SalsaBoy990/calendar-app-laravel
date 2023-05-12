@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\UserController;
@@ -45,18 +46,28 @@ Route::group(['middleware' => 'role:administrator'], function () {
 });
 
 // Routes only for authenticated users
-Route::group(
-    ['middleware' => ['auth', 'verified', '2fa', 'role:administrator'], 'prefix' => 'admin'],
-    function () {
 
-        Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
-        Route::get('user/manage', [UserController::class, 'index'])->name('user.manage');
+// for super admins only
+Route::group(
+    ['middleware' => ['auth', 'verified', '2fa', 'role:super-administrator'], 'prefix' => 'admin'],
+    function () {
         Route::get('role-permission/manage', [RolePermissionController::class, 'index'])->name('role-permission.manage');
     }
 );
 
+// for super admins and simple admins only
 Route::group(
-    ['middleware' => ['auth', 'verified', '2fa', 'role:administrator-worker'], 'prefix' => 'admin'],
+    ['middleware' => ['auth', 'verified', '2fa', 'role:super-administrator|administrator'], 'prefix' => 'admin'],
+    function () {
+        Route::get('user/manage', [UserController::class, 'index'])->name('user.manage');
+        Route::get('calendar', [CalendarController::class, 'index'])->name('calendar');
+        Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    }
+);
+
+// for super admins, simple admins, and workers
+Route::group(
+    ['middleware' => ['auth', 'verified', '2fa', 'role:super-administrator|administrator|worker'], 'prefix' => 'admin'],
     function () {
 
         Route::get('user/account/{user}', [UserController::class, 'account'])->name('user.account');

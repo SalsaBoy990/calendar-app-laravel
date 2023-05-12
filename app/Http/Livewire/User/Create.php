@@ -6,6 +6,7 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use App\Support\InteractsWithBanner;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -13,6 +14,7 @@ use Livewire\Component;
 
 class Create extends Component {
     use InteractsWithBanner;
+    use AuthorizesRequests;
 
     // used by blade / alpinejs
     public $modalId;
@@ -59,6 +61,8 @@ class Create extends Component {
     }
 
     public function createUser() {
+        $this->authorize('create', User::class);
+
         // validate user input
         $this->validate();
 

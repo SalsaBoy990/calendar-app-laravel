@@ -27,7 +27,7 @@ class UserController extends Controller
      * @throws AuthorizationException
      */
     public function index(): Factory|View|Application {
-//        $this->authorize('viewAny', User::class);
+        $this->authorize('viewAny', User::class);
 
         $users = User::orderBy('created_at', 'DESC')->get();
         $permissions = Permission::all();
@@ -94,7 +94,7 @@ class UserController extends Controller
      * @throws AuthorizationException
      */
     public function destroy(User $user): RedirectResponse {
-//        $this->authorize('delete', [User::class, $user]);
+        $this->authorize('delete', [User::class, $user]);
 
         $oldName = htmlentities($user->name);
         $user->delete();
@@ -111,6 +111,8 @@ class UserController extends Controller
      * @return Factory|View|Application
      */
     public function account(User $user): Factory|View|Application {
+        $this->authorize('view', [User::class, $user]);
+
         return view('admin.user.account')->with([
             'user' => $user
         ]);
@@ -125,6 +127,8 @@ class UserController extends Controller
      * @return RedirectResponse
      */
     public function update(Request $request, User $user): RedirectResponse {
+        $this->authorize('update', [User::class, $user]);
+
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'password' => ['nullable', 'string', 'min:0'],

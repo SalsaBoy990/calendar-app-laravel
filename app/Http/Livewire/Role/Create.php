@@ -9,11 +9,13 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Create extends Component {
     use InteractsWithBanner;
+    use AuthorizesRequests;
 
     // used by blade / alpinejs
     public $modalId;
@@ -29,7 +31,7 @@ class Create extends Component {
     protected array $rules = [
         'name' => [ 'required', 'string', 'max:255' ],
         'slug' => [ 'required', 'string', 'max:255', 'unique:roles' ],
-        'rolePermissions' => [ 'array']
+        'rolePermissions' => [ 'array' ]
     ];
 
     public function mount( bool $hasSmallButton = false ) {
@@ -50,6 +52,8 @@ class Create extends Component {
     }
 
     public function createRole() {
+        $this->authorize('create', Role::class);
+
         // validate user input
         $this->validate();
 

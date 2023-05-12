@@ -3,13 +3,16 @@
 namespace App\Http\Livewire\Role;
 
 use App\Models\Role;
+use App\Models\User;
 use App\Support\InteractsWithBanner;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Delete extends Component
 {
     use InteractsWithBanner;
+    use AuthorizesRequests;
 
     // used by blade / alpinejs
     public string $modalId;
@@ -43,13 +46,18 @@ class Delete extends Component
 
     public function deleteRole()
     {
+        $role = Role::findOrFail($this->roleId);
+
+        $this->authorize('delete', [Role::class, $role]);
+
+        dd('Nem!');
+
         // validate user input
         $this->validate();
 
         // delete role, rollback transaction if fails
         DB::transaction(
-            function () {
-                $role = Role::findOrFail($this->roleId);
+            function () use ($role) {
                 $role->delete();
             },
             2

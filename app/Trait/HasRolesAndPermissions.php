@@ -4,6 +4,7 @@ namespace App\Trait;
 
 use App\Models\Permission;
 use App\Models\Role;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -44,12 +45,30 @@ trait HasRolesAndPermissions {
 
     /**
      * Check if user has one of the roles from the array
-     * @param $roles
+     *
+     * @param  string  $roles
      *
      * @return bool
      */
-    public function hasRoles( $roles ): bool {
-        foreach ( $roles as $role ) {
+    public function hasRoles( string $roles ): bool {
+
+        // multiple roles from middleware arguments
+        if ( str_contains($roles, '|') ) {
+            $rolesTemp = explode('|', $roles);
+            $rolesArray = [];
+
+            foreach($rolesTemp as $role) {
+                $rolesArray[] = $role;
+            }
+        } else {
+            // only one role supplied through middleware
+            $roleSlug = $roles;
+            $rolesArray = [];
+            $rolesArray[] = $roleSlug;
+        }
+
+
+        foreach ( $rolesArray as $role ) {
             if ( isset($this->role) && $this->role->slug === $role  ) {
                 return true;
             }
@@ -137,11 +156,10 @@ trait HasRolesAndPermissions {
     public function hasPermissionThroughRole( Permission $permission ): bool {
 
         foreach ( $permission->roles as $role ) {
-            if ( $this->roles->contains( $role ) ) {
+            if ( $this->role->id === $role->id ) {
                 return true;
             }
         }
-
         return false;
     }
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\HtmlSpecialCharsCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -31,10 +32,25 @@ class Event extends Model {
 
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'title'       => HtmlSpecialCharsCast::class,
+        'start'       => HtmlSpecialCharsCast::class,
+        'end'         => HtmlSpecialCharsCast::class,
+        'address'     => HtmlSpecialCharsCast::class,
+        'description' => HtmlSpecialCharsCast::class,
+        'status'      => HtmlSpecialCharsCast::class,
+    ];
+
+
+    /**
      * @return BelongsToMany
      */
     public function users(): BelongsToMany {
-        return $this->belongsToMany( User::class, 'users_events' );
+        return $this->belongsToMany( User::class, 'users_events', 'event_id', 'user_id' );
     }
 
 }

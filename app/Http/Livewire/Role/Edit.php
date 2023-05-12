@@ -9,11 +9,13 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Edit extends Component {
     use InteractsWithBanner;
+    use AuthorizesRequests;
 
     // used by blade / alpinejs
     public string $modalId;
@@ -54,6 +56,9 @@ class Edit extends Component {
 
     public function updateRole() {
 
+        $role = Role::findOrFail( $this->roleId );
+        $this->authorize('update', [Role::class, $role]);
+
         // if slug is changed, enable this validation
         if ( $this->slug !== $this->role->slug ) {
             $this->rules['slug'] = [ 'required', 'string', 'max:255', 'unique:roles' ];
@@ -64,9 +69,7 @@ class Edit extends Component {
 
 
         DB::transaction(
-            function () {
-
-                $role = Role::findOrFail( $this->roleId );
+            function () use ($role) {
 
                 if ( $this->slug === $this->role->slug ) {
                     $role->update( [

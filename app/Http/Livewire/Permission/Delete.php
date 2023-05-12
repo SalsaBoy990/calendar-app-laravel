@@ -4,11 +4,13 @@ namespace App\Http\Livewire\Permission;
 
 use App\Models\Permission;
 use App\Support\InteractsWithBanner;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Delete extends Component {
     use InteractsWithBanner;
+    use AuthorizesRequests;
 
     // used by blade / alpinejs
     public string $modalId;
