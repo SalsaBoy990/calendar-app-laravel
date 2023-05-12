@@ -22,7 +22,7 @@
                        aria-hidden="true"></i>
                 </span>
 
-            <p x-text="message"></p>
+            <p x-text="message" class="message"></p>
         </div>
 
         <div>
