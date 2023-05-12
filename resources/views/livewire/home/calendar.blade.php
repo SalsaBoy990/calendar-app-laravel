@@ -6,10 +6,9 @@
 
     <div x-data="{ isModalOpen: $wire.entangle('isModalOpen') }">
 
-
         <x-admin.form-modal
             trigger="isModalOpen"
-            title="{{ __('Add event') }}"
+            title="{{ $updateId ? $event->title : __('Add event') }}"
             id="{{ $modalId }}"
         >
             <form wire:submit.prevent="createOrUpdateEvent">
@@ -108,17 +107,36 @@
                     >
 
                         @foreach ($statusArray as $key => $value)
-                            @if($status === '' && $key === 'opened')
-                                <option selected value="{{ $key }}">{{ $value }}</option>
-                            @else
-                                <option {{ $status === $key ? "selected": "" }} value="{{ $key }}">{{ $value }}</option>
-                            @endif
+                            <option {{ $status === $key ? "selected": "" }} value="{{ $key }}">{{ $value }}</option>
                         @endforeach
 
                     </select>
                     <div class="{{ $errors->has('status') ? 'red' : '' }}">
                         {{ $errors->has('status') ? $errors->first('status') : '' }}
                     </div>
+
+
+                        <label class="{{ $errors->has('workerIds') ? 'border border-red' : '' }}">
+                            {{ __('Assign workers') }}
+                        </label>
+                        <div class="checkbox-container">
+                            @foreach($workers as $worker)
+                                <label for="workerIds">
+                                    <input wire:model="workerIds"
+                                           type="checkbox"
+                                           name="workerIds[]"
+                                           value="{{ $worker->id }}"
+                                    >
+                                    {{ $worker->name }}
+                                </label>
+                            @endforeach
+
+                            <div class="{{ $errors->has('workerIds') ? 'red' : '' }}">
+                                {{ $errors->has('workerIds') ? $errors->first('workerIds') : '' }}
+                            </div>
+
+                            {{-- var_export($rolePermissions) --}}
+                        </div>
 
 
                 </fieldset>
@@ -137,12 +155,55 @@
                     >
                         {{ __('Cancel') }}
                     </button>
+
+                    @if( $updateId !== '' )
+                        <button wire:click="$emit('openDeleteEventModal')"
+                                type="button"
+                                class="danger"
+                        >
+                            {{  __('Delete?') }}
+                        </button>
+                    @endif
+
                 </div>
 
             </form>
 
+
         </x-admin.form-modal>
     </div>
+
+    @if( $updateId !== '' )
+        <div x-data="{ isDeleteModalOpen: $wire.entangle('isDeleteModalOpen') }">
+
+            <x-admin.form-modal
+                trigger="isDeleteModalOpen"
+                title="{{ __('Delete event') }}"
+                id="{{ $deleteModalId }}"
+            >
+                <div>
+                    <h3 class="h5">{{ $event->title }}</h3>
+
+                    <button wire:click="$emit('deleteEventListener')"
+                            type="button"
+                            class="danger"
+                    >
+                        {{  __('Confirm delete!') }}
+                    </button>
+
+                    <button
+                        type="button"
+                        class="alt"
+                        @click="isDeleteModalOpen = false"
+                    >
+                        {{ __('Cancel') }}
+                    </button>
+
+                </div>
+
+            </x-admin.form-modal>
+        </div>
+    @endif
 
 </div>
 @push('scripts')
@@ -159,15 +220,14 @@
                     right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                 },
                 locale: '{{ 'hu' ?? config('app.locale') }}',
-                allDaySlot: false,
+                allDaySlot: true,
                 slotMinTime: '08:00:00',
                 slotMaxTime: '20:00:00',
                 firstDay: 1,
                 fixedWeekCount: 5,
                 showNonCurrentDates: false,
                 nowIndicator: true,
-
-
+                eventBackgroundColor: '#3F57B9',
 
 
                 editable: true,
@@ -190,10 +250,78 @@
                 eventDrop: function (info) {
                 @this.eventChange(info.event);
                 },
+
+                eventDidMount: function (info) {
+                    // object destructuring
+                    const { el, event, view } = info;
+
+                    // inner flex container of the event
+                    const container = el.firstChild.firstChild;
+                    console.log(event);
+
+                    if (view.type === 'timeGridWeek' && container && event.extendedProps && event.allDay === false) {
+
+                        if (event.extendedProps.address) {
+                            const address = document.createElement('p');
+                            const bold = document.createElement('b');
+
+                            bold.innerText = event.extendedProps.address;
+                            address.classList.add('address');
+                            address.appendChild(bold);
+                            container.appendChild(address)
+                        }
+
+
+                        const description = document.createElement('p');
+
+                        if (event.end !== null) {
+                            const startTimestamp = new Date(event.start).getTime();
+                            const endTimestamp = new Date(event.end).getTime();
+
+                            // Calculate duration in hours
+                            const duration = (endTimestamp - startTimestamp) / (60*60*1000);
+
+                            description.innerText += duration + 'ó | ';
+                            // container.appendChild(durationParagraph);
+
+                        }
+
+
+                        if (event.extendedProps.description) {
+                            // const description = document.createElement('p');
+                            description.innerText += event.extendedProps.description;
+                            description.classList.add('description');
+                            container.appendChild(description)
+                        }
+
+                        if (event.extendedProps.users && event.extendedProps.users.length > 0) {
+                            const users = event.extendedProps.users;
+                            const bar = document.createElement('div');
+                            bar.classList.add('workers-container');
+
+                            for (let i = 0; i < users.length; i++) {
+                                console.log(users[i]);
+                                const badge = document.createElement('span');
+                                badge.classList.add('badge', 'accent');
+                                badge.innerText = users[i].name;
+                                bar.appendChild(badge);
+                            }
+
+                            container.appendChild(bar)
+                        }
+
+                    }
+
+
+                }
+
+
             });
 
             calendar.addEventSource( @json( $events ) )
             calendar.setOption('contentHeight', 600);
+
+
 
             calendar.render();
         });

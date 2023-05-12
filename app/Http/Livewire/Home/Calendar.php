@@ -3,6 +3,8 @@
 namespace App\Http\Livewire\Home;
 
 use App\Models\Event;
+use App\Models\Role;
+use App\Models\User;
 use App\Support\InteractsWithBanner;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -20,7 +22,9 @@ class Calendar extends Component {
 
     // used by blade / alpinejs
     public string $modalId;
+    public string $deleteModalId;
     public bool $isModalOpen;
+    public bool $isDeleteModalOpen;
 
     // inputs
     // uuid for new event
@@ -39,6 +43,8 @@ class Calendar extends Component {
     public string $status;
 
     public array $statusArray;
+    public Collection $workers;
+    public array $workerIds;
 
 
     // Is all-day event?
@@ -49,6 +55,7 @@ class Calendar extends Component {
 
     protected array $rules = [
         'updateId'    => [ 'nullable', 'uuid', 'max:255' ],
+        'workerIds'   => [ 'array' ],
         'title'       => [ 'required', 'string', 'max:255' ],
         'start'       => [ 'required', 'string', 'max:255' ],
         'end'         => [ 'nullable', 'string' ],
@@ -57,13 +64,37 @@ class Calendar extends Component {
         'status'      => [ 'required', 'in:pending,opened,completed,closed' ],
     ];
 
+    protected $listeners = [
+        'deleteEventListener'  => 'deleteEvent',
+        'openDeleteEventModal' => 'openDeleteEventModal',
+        'closeEventModal'      => 'closeEventModal',
+    ];
+
     public function mount() {
+        $this->initializeProperties();
+
+        $workerRole = Role::where( 'slug', 'worker' )->get()->first();
+
+        // query users that have worker role
+        $this->workers = User::whereHas(
+            'role',
+            function ( $q ) use ( $workerRole ) {
+                $q->where( 'id', $workerRole->id );
+            } )->get();
+
+
+    }
+
+    public function updatedIsModalOpen() {
         $this->initializeProperties();
     }
 
     public function initializeProperties() {
         // Alpine
-        $this->modalId = 'event-modal';
+        $this->modalId           = 'event-modal';
+        $this->deleteModalId     = 'delete-event-modal';
+        $this->isDeleteModalOpen = false;
+        $this->isModalOpen       = false;
 
         // Entity properties
         $this->title       = '';
@@ -71,7 +102,7 @@ class Calendar extends Component {
         $this->end         = null;
         $this->address     = '';
         $this->description = '';
-        $this->status      = '';
+        $this->status      = 'opened';
 
         //
         $this->allDay   = false;
@@ -85,6 +116,8 @@ class Calendar extends Component {
             'completed' => 'Completed',
             'closed'    => 'Opened'
         ];
+
+        $this->workerIds = [];
     }
 
 
@@ -92,14 +125,13 @@ class Calendar extends Component {
      * @return Application|Factory|View
      */
     public function render(): View|Factory|Application {
-        $this->events = Event::all();
+        $this->events = Event::with( 'users' )->get();
 
         return view( 'livewire.home.calendar' );
     }
 
 
     public function eventChange( $event ): void {
-
         $changedEvent        = Event::where( 'id', $event['id'] )->first();
         $changedEvent->start = $event['start'];
 
@@ -124,9 +156,11 @@ class Calendar extends Component {
         if ( array_key_exists( 'event', $args ) ) {
             $args           = $args['event'];
             $this->updateId = $args['id'];
-            $this->event    = Event::where('id', $this->updateId)->first();
+            $this->event    = Event::where( 'id', $this->updateId )->first();
 
-            $this->title    = $this->event->title;
+            $this->workerIds = $this->event->users()->get()->pluck( [ 'id' ] )->toArray();
+
+            $this->title       = $this->event->title;
             $this->address     = $this->event->address;
             $this->description = $this->event->description;
             $this->status      = $this->event->status;
@@ -135,14 +169,15 @@ class Calendar extends Component {
         $this->allDay = $args['allDay'];
         if ( $this->allDay === false ) {
             // datetime-local
-            $this->start = date( "Y-m-d\TH:i", strtotime( $this->event->start ?? $args['start'] ) );
-            $this->end   = date( "Y-m-d\TH:i", strtotime( $this->event->end ?? $args['end'] ) );
+            // Y-m-d\TH:i:s
+            $this->start = date( "Y-m-d\TH:i:s", strtotime( $this->event->start ?? $args['start'] ) );
+            $this->end   = date( "Y-m-d\TH:i:s", strtotime( $this->event->end ?? $args['end'] ) );
 
         } else {
-            $this->start = date( "Y-m-d\TH:i", strtotime( $this->event->start ?? $args['start'] ) );
+            $this->start = date( "Y-m-d\TH:i:s", strtotime( $this->event->start ?? $args['start'] ) );
             // all day events do not need to have the end date set, so check it
             $this->end = isset( $this->event ) && $this->event->end ?
-                date( "Y-m-d\TH:i", strtotime( $this->event->end ?? $args['end'] ) )
+                date( "Y-m-d\TH:i:s", strtotime( $this->event->end ?? $args['end'] ) )
                 :
                 null;
 
@@ -167,25 +202,31 @@ class Calendar extends Component {
                 // if we have an id, update existing event
                 if ( $this->updateId !== '' ) {
                     $updateEvent = Event::where( 'id', $this->updateId )->first();
+
+
                     $updateEvent->update( [
-                        'title' => htmlspecialchars( $this->title ),
-                        'start' => htmlspecialchars( $this->start ),
-                        'end'   => htmlspecialchars( $this->end ),
-                        'address' => htmlspecialchars( $this->address ),
-                        'description' => htmlspecialchars( $this->description ),
-                        'status'   => htmlspecialchars( $this->status ),
-                    ] );
-                } else {
-                    $newEvent = Event::create( [
-                        'id'    => Str::uuid(),
-                        'title' => htmlspecialchars( $this->title ),
-                        'start' => htmlspecialchars( $this->start ),
-                        'end'   => htmlspecialchars( $this->end ),
-                        'address' => htmlspecialchars( $this->address ),
-                        'description' => htmlspecialchars( $this->description ),
-                        'status'   => htmlspecialchars( $this->status ),
+                        'title'       => $this->title,
+                        'start'       => $this->start,
+                        'end'         => $this->end,
+                        'address'     => $this->address,
+                        'description' => $this->description,
+                        'status'      => $this->status,
                     ] );
 
+                    $updateEvent->users()->sync( $this->workerIds );
+                    $updateEvent->save();
+                } else {
+                    $newEvent = Event::create( [
+                        'id'          => Str::uuid(),
+                        'title'       => $this->title,
+                        'start'       => $this->start,
+                        'end'         => $this->end,
+                        'address'     => $this->address,
+                        'description' => $this->description,
+                        'status'      => $this->status,
+                    ] );
+
+                    $newEvent->users()->sync( $this->workerIds );
                     $newEvent->save();
                 }
 
@@ -202,7 +243,41 @@ class Calendar extends Component {
         // Need to clear previous event data
         $this->initializeProperties();
 
-        return redirect()->route( 'home' );
+        return redirect()->route( 'calendar' );
 
     }
+
+
+    public function deleteEvent(): ?Redirector {
+
+        // if we have an id, delete existing event
+        if ( $this->updateId !== '' ) {
+
+            $event = Event::where( 'id', $this->updateId )->first();
+            $title = $event->title;
+
+            // delete role, rollback transaction if fails
+            DB::transaction(
+                function () use ( $event ) {
+                    $event->delete();
+                },
+                2
+            );
+
+            $this->initializeProperties();
+
+            $this->banner( 'Successfully deleted the event "' . htmlspecialchars( $title ) . '"!' );
+        }
+
+        return redirect()->route( 'calendar' );
+    }
+
+    public function openDeleteEventModal() {
+        $this->isDeleteModalOpen = true;
+    }
+
+    public function closeEventModal() {
+        $this->initializeProperties();
+    }
+
 }
