@@ -14,7 +14,10 @@
                             <i class="fa fa-home" aria-hidden="true"></i>{{ __('Home') }}
                         </a>
 
-                        @role('administrator')
+                        @role('super-administrator|administrator')
+                        <a href="{{ route('calendar') }}">
+                            <i class="fa fa-calendar" aria-hidden="true"></i>{{ __('Calendar') }}
+                        </a>
                         <a href="{{ url('/admin/dashboard') }}">
                             <i class="fa fa-tachometer" aria-hidden="true"></i>{{ __('Dashboard') }}
                         </a>

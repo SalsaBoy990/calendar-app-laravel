@@ -46,21 +46,27 @@
                             <td>{{ isset($user->role) ? $user->role->name : '' }}</td>
                             <td>
                                 <div class="flex">
-                                    <!-- Delete user -->
-                                    <livewire:user.delete :title="'Delete user'"
-                                                          :user="$user"
-                                                          :hasSmallButton="false"
-                                                          :modalId="'m-delete-user-' . $user->id"
-                                    >
-                                    </livewire:user.delete>
 
-                                    <!-- Update user -->
-                                    <livewire:user.edit :title="'Edit user'"
-                                                          :user="$user"
-                                                          :hasSmallButton="false"
-                                                          :modalId="'m-edit-user-' . $user->id"
-                                    >
-                                    </livewire:user.edit>
+                                    @if(! $user->hasRoles('super-administrator') || auth()->user()->hasRoles('super-administrator') )
+
+                                        <!-- Delete user -->
+                                        <livewire:user.delete :title="'Delete user'"
+                                                              :user="$user"
+                                                              :hasSmallButton="false"
+                                                              :modalId="'m-delete-user-' . $user->id"
+                                        >
+                                        </livewire:user.delete>
+
+                                        <!-- Update user -->
+                                        <livewire:user.edit :title="'Edit user'"
+                                                            :user="$user"
+                                                            :hasSmallButton="false"
+                                                            :modalId="'m-edit-user-' . $user->id"
+                                        >
+                                        </livewire:user.edit>
+                                    @else
+                                        <p class="fs-14 italic">{{__('A szuperadminisztrátor nem törölhető és nem szerkeszthető.')}}</p>
+                                    @endif
                                 </div>
 
                             </td>
