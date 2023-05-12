@@ -301,6 +301,10 @@ fieldset
 
         button
             margin-top: 0
+            padding-left: 8px
+            padding-right: 6px
+            padding-top: 8px
+            padding-bottom: 8px
 
         .notification-inner
             display: flex
@@ -345,6 +349,24 @@ a.nav-link.active
     background-color: $gray-20
 
 
+html.dark
+    .clean-modal-content
+        .box.white
+            background-color: $bg-content
+
+    #calendar-container
+        #calendar
+            .fc-timegrid-axis-cushion.fc-scrollgrid-shrink-cushion.fc-scrollgrid-sync-inner,
+            .fc-timegrid-slot-label-frame.fc-scrollgrid-shrink-frame
+                color: $gray-20
+
+            a.fc-daygrid-day-number
+                color: $gray-20
+
+            a.fc-event.fc-daygrid-event.fc-daygrid-dot-event
+                color: white
+
+
 #calendar-container
     #calendar
         table
@@ -367,9 +389,6 @@ a.nav-link.active
             tr:nth-child(odd)
                 background-color: inherit
 
-
-            td
-                font-weight: 700
 
             th, td
                 border-color: $gray-20
@@ -412,6 +431,45 @@ a.nav-link.active
 #calendar-container
     position: relative
 
-#calendar
-    max-width: 100%
+    #calendar
+        max-width: 100%
 
+
+        .fc-header-toolbar.fc-toolbar
+            flex-wrap: wrap
+
+        .fc-timegrid-event-harness.fc-timegrid-event-harness-inset
+            overflow-y: visible
+
+        .fc-v-event .fc-event-title-container
+            flex-grow: 0
+            flex-shrink: 0
+
+        .fc-event-main-frame
+            padding: 4px
+
+            .fc-event-time
+                font-size: 12px
+                font-weight: 600
+
+            .fc-event-title-container
+                .fc-event-title.fc-sticky
+                    font-family: $sans
+                    font-weight: 700
+                    font-size: 16px
+
+            .address
+                margin-top: 0
+                b
+                    font-size: 13px
+                    font-weight: 600
+
+            .description
+                margin-top: 0
+                font-size: 12px
+
+            .workers-container
+                display: flex
+                gap: 4px
+                flex-direction: row
+                flex-wrap: wrap
