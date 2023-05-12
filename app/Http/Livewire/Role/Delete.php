@@ -50,8 +50,6 @@ class Delete extends Component
 
         $this->authorize('delete', [Role::class, $role]);
 
-        dd('Nem!');
-
         // validate user input
         $this->validate();
 

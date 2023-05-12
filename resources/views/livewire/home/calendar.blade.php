@@ -257,7 +257,6 @@
 
                     // inner flex container of the event
                     const container = el.firstChild.firstChild;
-                    console.log(event);
 
                     if (view.type === 'timeGridWeek' && container && event.extendedProps && event.allDay === false) {
 
@@ -300,7 +299,6 @@
                             bar.classList.add('workers-container');
 
                             for (let i = 0; i < users.length; i++) {
-                                console.log(users[i]);
                                 const badge = document.createElement('span');
                                 badge.classList.add('badge', 'accent');
                                 badge.innerText = users[i].name;
