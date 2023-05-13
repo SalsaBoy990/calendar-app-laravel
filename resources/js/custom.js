@@ -11,6 +11,7 @@ for (i = 0; i < toggler.length; i++) {
 
 // Offcanvas menu
 /* Set the width of the side navigation to 250px */
+/*
 function openOffcanvasMenu() {
     const defaultNavbar = document.getElementById("main-menu");
     const defaultNavbarClone = defaultNavbar.cloneNode(true);
@@ -22,7 +23,7 @@ function openOffcanvasMenu() {
     document.getElementById("main-menu-offcanvas").style.width = "300px";
 }
 
-/* Set the width of the side navigation to 0, delete cloned menu */
+/!* Set the width of the side navigation to 0, delete cloned menu *!/
 function closeOffcanvasMenu() {
     document.getElementById("main-menu-offcanvas").style.width = "0";
     document.getElementById("mobile-nav").innerText = '';
@@ -34,3 +35,4 @@ document.getElementById('main-menu-close-button').addEventListener('click', clos
 // Sidebar open menu
 document.getElementById("main-menu-offcanvas-toggle").addEventListener('click', openOffcanvasMenu);
 // Offcanvas menu END
+*/

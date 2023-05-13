@@ -497,6 +497,7 @@ html.dark
     overflow-x: hidden
     transition: 0.5s
     padding: 0
+    box-shadow: 4px 0 6px -4px #666
 
     @media screen and (max-height: 550px)
         padding-top: 1em
@@ -524,22 +525,25 @@ html.dark
                 i
                     margin-right: 4px
 
-
-
-
             .dropdown-content
                 display: flex
                 flex-direction: column
                 line-height: 2
-                padding-left: 1em
+                padding-left: 2em
                 border: none
                 position: initial
                 width: calc(300px - 1em)
 
 
+html.dark
+    #main-menu-offcanvas-toggle
+        color: white
+        background-color: transparent
+        border: 1px solid white
 
-
-
+        &:hover, &:focus
+            background-color: $primary-light
+            border: 1px solid white
 
 
 

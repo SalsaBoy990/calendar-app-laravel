@@ -12,6 +12,7 @@ import {filterData} from './clean/modules/filterData';
 import {dropdownData} from "./clean/modules/dropdownData";
 import {ajaxSearchData} from "./clean/modules/ajaxSearchData";
 import {tabbedImagesData} from "./clean/modules/tabbedImagesData";
+import {offCanvasMenuData} from "./clean/modules/offCanvasMenuData";
 
 import './custom';
 
@@ -31,6 +32,7 @@ Alpine.data('lightboxData', lightboxData);
 Alpine.data('accordionData', accordionData);
 Alpine.data('tabsData', tabsData);
 Alpine.data('tabbedImagesData', tabbedImagesData);
+Alpine.data('offCanvasMenuData', offCanvasMenuData);
 
 Alpine.start();
 

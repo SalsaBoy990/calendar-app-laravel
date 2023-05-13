@@ -31,7 +31,7 @@
                         >
                             <a @click="toggleDropdown">
                                 <i class="fa fa-user" aria-hidden="true"></i>
-                                {{ Auth::user()->name }}
+                                <span>{{ Auth::user()->name }}</span>
                                 <i class="fa fa-caret-down"></i>
                             </a>
 
@@ -91,21 +91,39 @@
                 >
                     </span>
 
-                <button id="main-menu-offcanvas-toggle" class="primary alt margin-left-0-5" data-collapse-toggle="navbar-default" type="button"
-                        aria-controls="navbar-default" aria-expanded="false">
-                    <span class="sr-only">Open main menu</span>
-                    <i class="fa fa-bars" aria-hidden="true"></i>
-                </button>
+                <div x-data="offCanvasMenuData">
+                    <button id="main-menu-offcanvas-toggle"
+                            @click="toggleOffcanvasMenu()"
+                            class="primary alt margin-left-0-5"
+                            data-collapse-toggle="navbar-default"
+                            type="button"
+                            aria-controls="navbar-default"
+                            aria-expanded="false"
+                    >
+                        <span class="sr-only">{{__('Open main menu')}}</span>
+                        <i :class="sidenav === true ? 'fa fa-times' : 'fa fa-bars'" aria-hidden="true"></i>
+                    </button>
+                    <div class="sidenav relative"
+                         tabindex="-1"
+                         id="main-menu-offcanvas"
+                         @click.outside="closeOnOutsideClick()"
+                    >
+                        <a href="javascript:void(0)"
+                           id="main-menu-close-button"
+                           @click="closeOffcanvasMenu()"
+                           class="close-btn fs-18 absolute topright padding-0-5"
+                        >
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </a>
+
+                        <div id="mobile-menu"></div>
+
+                    </div>
+
+                </div>
             </div>
         @endif
     </div>
 </header>
 
-<div class="sidenav relative" tabindex="-1" id="main-menu-offcanvas">
-    <a href="javascript:void(0)" id="main-menu-close-button" class="close-btn fs-18 absolute topright padding-1">
-        <i class="fa fa-times" aria-hidden="true"></i>
-    </a>
 
-    <div id="mobile-menu"></div>
-
-</div>

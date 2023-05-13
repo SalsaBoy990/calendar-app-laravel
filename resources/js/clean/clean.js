@@ -13,6 +13,7 @@ import {filterData} from './modules/filterData';
 import {dropdownData} from "./modules/dropdownData";
 import {ajaxSearchData} from "./modules/ajaxSearchData";
 import {tabbedImagesData} from "./modules/tabbedImagesData";
+import {offCanvasMenuData} from "./modules/offCanvasMenuData";
 
 window.Alpine = Alpine
 
@@ -29,5 +30,6 @@ Alpine.data('lightboxData', lightboxData);
 Alpine.data('accordionData', accordionData);
 Alpine.data('tabsData', tabsData);
 Alpine.data('tabbedImagesData', tabbedImagesData);
+Alpine.data('offCanvasMenuData', offCanvasMenuData);
 
 Alpine.start()
