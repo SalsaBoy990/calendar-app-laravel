@@ -37,6 +37,10 @@ header .fa
     nav
         display: inline-flex
 
+        @media screen and (max-width: 880px)
+            display: none
+
+
 
 html.dark
     .scroll-to-top-button
@@ -350,6 +354,10 @@ a.nav-link.active
 
 
 html.dark
+    a.nav-link.active
+        background-color: $accent-dark
+
+
     .clean-modal-content
         .box.white
             background-color: $bg-content
@@ -473,3 +481,70 @@ html.dark
                 gap: 4px
                 flex-direction: row
                 flex-wrap: wrap
+
+html.dark
+    .sidenav
+        background-color: $black
+
+.sidenav
+    height: 100%
+    width: 0
+    position: fixed
+    z-index: 4
+    top: 0
+    left: 0
+    background-color: $gray-20
+    overflow-x: hidden
+    transition: 0.5s
+    padding: 0
+
+    @media screen and (max-height: 550px)
+        padding-top: 1em
+
+
+    #close-sidenav-button
+        text-decoration: none
+        position: absolute
+        top: 0
+        right: 12px
+        font-size: 24px
+
+        &:hover, &:focus
+            color: lightblue
+
+    #mobile-menu
+        padding: 60px 0.5em 0.5em
+        #main-menu
+            display: flex
+            row-gap: 1em
+            flex-direction: column
+            align-items: flex-start
+
+            a
+                i
+                    margin-right: 4px
+
+
+
+
+            .dropdown-content
+                display: flex
+                flex-direction: column
+                line-height: 2
+                padding-left: 1em
+                border: none
+                position: initial
+                width: calc(300px - 1em)
+
+
+
+
+
+
+
+
+#main-menu-offcanvas-toggle
+    margin-top: 0
+
+    @media screen and (min-width: 881px)
+        display: none

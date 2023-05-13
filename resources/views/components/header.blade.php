@@ -8,7 +8,7 @@
         </div>
         @if (Route::has('login'))
             <div class="main-navigation">
-                <nav>
+                <nav id="main-menu">
                     @auth
                         <a href="{{ url('/home') }}">
                             <i class="fa fa-home" aria-hidden="true"></i>{{ __('Home') }}
@@ -75,21 +75,37 @@
                         @endif
                     @endauth
 
-                    @php
-                        $light = __('Light mode');
-                        $dark = __('Dark mode');
-                    @endphp
-
-                    <span
-                        class="pointer darkmode-toggle"
-                        rel="button"
-                        @click="toggleDarkMode"
-                        x-text="isDarkModeOn() ? '🔆' : '🌒'"
-                        :title="isDarkModeOn() ? '{{ $light }}' : '{{ $dark }}'"
-                    >
-                    </span>
                 </nav>
+
+                @php
+                    $light = __('Light mode');
+                    $dark = __('Dark mode');
+                @endphp
+
+                <span
+                    class="pointer darkmode-toggle"
+                    rel="button"
+                    @click="toggleDarkMode"
+                    x-text="isDarkModeOn() ? '🔆' : '🌒'"
+                    :title="isDarkModeOn() ? '{{ $light }}' : '{{ $dark }}'"
+                >
+                    </span>
+
+                <button id="main-menu-offcanvas-toggle" class="primary alt margin-left-0-5" data-collapse-toggle="navbar-default" type="button"
+                        aria-controls="navbar-default" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <i class="fa fa-bars" aria-hidden="true"></i>
+                </button>
             </div>
         @endif
     </div>
 </header>
+
+<div class="sidenav relative" tabindex="-1" id="main-menu-offcanvas">
+    <a href="javascript:void(0)" id="main-menu-close-button" class="close-btn fs-18 absolute topright padding-1">
+        <i class="fa fa-times" aria-hidden="true"></i>
+    </a>
+
+    <div id="mobile-menu"></div>
+
+</div>

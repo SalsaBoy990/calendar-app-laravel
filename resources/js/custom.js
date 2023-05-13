@@ -8,3 +8,29 @@ for (i = 0; i < toggler.length; i++) {
         this.parentElement.parentElement.classList.toggle("active-list-item");
     });
 }
+
+// Offcanvas menu
+/* Set the width of the side navigation to 250px */
+function openOffcanvasMenu() {
+    const defaultNavbar = document.getElementById("main-menu");
+    const defaultNavbarClone = defaultNavbar.cloneNode(true);
+
+    // delete previous cloned content
+    const mobileNav = document.getElementById("mobile-menu");
+    mobileNav.innerText = '';
+    mobileNav.appendChild(defaultNavbarClone);
+    document.getElementById("main-menu-offcanvas").style.width = "300px";
+}
+
+/* Set the width of the side navigation to 0, delete cloned menu */
+function closeOffcanvasMenu() {
+    document.getElementById("main-menu-offcanvas").style.width = "0";
+    document.getElementById("mobile-nav").innerText = '';
+}
+
+// Sidebar close button
+document.getElementById('main-menu-close-button').addEventListener('click', closeOffcanvasMenu);
+
+// Sidebar open menu
+document.getElementById("main-menu-offcanvas-toggle").addEventListener('click', openOffcanvasMenu);
+// Offcanvas menu END
