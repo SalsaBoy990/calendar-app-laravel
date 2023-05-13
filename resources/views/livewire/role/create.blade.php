@@ -78,7 +78,10 @@
             <div>
                 <button type="submit" class="primary">
                     <span wire:loading wire:target="createRole" class="animate-spin">&#9696;</span>
-                    <span wire:loading.remove wire:target="createRole">{{ __('Save') }}</span>
+                    <span wire:loading.remove wire:target="createRole">
+                        <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                        {{ __('Save') }}
+                    </span>
                 </button>
 
                 <button

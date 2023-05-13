@@ -8,7 +8,7 @@
 
         <x-admin.form-modal
             trigger="isModalOpen"
-            title="{{ $updateId ? $event->title : __('Add event') }}"
+            title="{{ $updateId ? $event->title . ' ('. $event->address . ')' : __('Add event') }}"
             id="{{ $modalId }}"
         >
             <form wire:submit.prevent="createOrUpdateEvent">
@@ -145,7 +145,10 @@
                 <div>
                     <button type="submit" class="primary">
                         <span wire:loading wire:target="createOrUpdateEvent" class="animate-spin">&#9696;</span>
-                        <span wire:loading.remove wire:target="createOrUpdateEvent">{{ __('Save') }}</span>
+                        <span wire:loading.remove wire:target="createOrUpdateEvent">
+                            <i class="fa fa-floppy-o" aria-hidden="true"></i>
+                            {{ __('Save') }}
+                        </span>
                     </button>
 
                     <button
@@ -161,6 +164,7 @@
                                 type="button"
                                 class="danger"
                         >
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
                             {{  __('Delete?') }}
                         </button>
                     @endif
