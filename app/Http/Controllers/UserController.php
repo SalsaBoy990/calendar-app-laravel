@@ -30,11 +30,13 @@ class UserController extends Controller
         $this->authorize('viewAny', User::class);
 
         $users = User::orderBy('created_at', 'DESC')->with('role')->get();
-
+        $permissions = Permission::all();
+        $roles = Role::all();
 
         return view('admin.user.manage')->with([
             'users' => $users,
-
+            'permissions' => $permissions,
+            'roles' => $roles,
         ]);
     }
 

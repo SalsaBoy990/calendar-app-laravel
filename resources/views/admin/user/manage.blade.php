@@ -60,6 +60,8 @@
                                         <!-- Update user -->
                                         <livewire:user.edit :title="'Edit user'"
                                                             :user="$user"
+                                                            :roles="$roles"
+                                                            :permissions="$permissions"
                                                             :hasSmallButton="false"
                                                             :modalId="'m-edit-user-' . $user->id"
                                         >

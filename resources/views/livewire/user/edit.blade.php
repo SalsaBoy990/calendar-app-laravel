@@ -77,7 +77,7 @@
                         <option selected>{{ __("Select the role") }}</option>
                     @endif
 
-                    @foreach ($roles as $key => $value)
+                    @foreach ($rolesArray as $key => $value)
                         <option {{ $role === $key ? "selected": "" }} value="{{ $key }}">{{ $value }}</option>
                     @endforeach
 
