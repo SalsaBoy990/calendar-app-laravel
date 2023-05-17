@@ -23,8 +23,8 @@ class RolePermissionController extends \Illuminate\Routing\Controller {
      */
     public function index()
     {
-        $permissions = Permission::all();
-        $roles = Role::all();
+        $permissions = Permission::with('roles')->get();
+        $roles = Role::with('permissions')->get();
 
         return view('admin.role_permission.manage')->with([
             'permissions' => $permissions,

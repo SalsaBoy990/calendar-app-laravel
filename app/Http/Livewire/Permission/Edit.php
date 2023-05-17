@@ -25,17 +25,17 @@ class Edit extends Component {
     // inputs
     public string $name;
     public string $slug;
-    public Permission $role;
+    public Permission $permission;
     public int $permissionId;
     public Collection $allRoles;
     public array $permissionRoles;
 
     protected array $rules = [
-        'name' => [ 'required', 'string', 'max:255' ],
+        'name'            => [ 'required', 'string', 'max:255' ],
         'permissionRoles' => [ 'array' ],
     ];
 
-    public function mount( string $modalId, Permission $permission, bool $hasSmallButton = false ) {
+    public function mount( string $modalId, Collection $roles, Permission $permission, bool $hasSmallButton = false ) {
         $this->modalId        = $modalId;
         $this->isModalOpen    = false;
         $this->hasSmallButton = $hasSmallButton || false;
@@ -45,8 +45,8 @@ class Edit extends Component {
         $this->name         = $this->permission->name;
         $this->slug         = $this->permission->slug;
 
-        $this->allRoles = Role::all();
-        $this->permissionRoles = $this->permission->roles()->get()->pluck(['id'])->toArray();
+        $this->allRoles        = $roles;
+        $this->permissionRoles = $this->permission->roles()->get()->pluck( [ 'id' ] )->toArray();
     }
 
 
@@ -67,22 +67,20 @@ class Edit extends Component {
         DB::transaction(
             function () {
 
-                $permission = Permission::findOrFail( $this->permissionId );
-
                 if ( $this->slug !== $this->permission->slug ) {
-                    $permission->update( [
+                    $this->permission->update( [
                         'name' => htmlspecialchars( $this->name ),
                         'slug' => htmlspecialchars( $this->slug ),
                     ] );
                 } else {
-                    $permission->update( [
+                    $this->permission->update( [
                         'name' => htmlspecialchars( $this->name ),
                     ] );
                 }
 
-                $permission->roles()->sync($this->permissionRoles);
+                $this->permission->roles()->sync( $this->permissionRoles );
 
-                $permission->save();
+                $this->permission->save();
 
             },
             2
@@ -90,7 +88,7 @@ class Edit extends Component {
 
 
         $this->banner( 'Successfully updated the permission "' . htmlspecialchars( $this->name ) . '"!' );
-        request()->session()->flash('flash.activeTab', 'Permissions');
+        request()->session()->flash( 'flash.activeTab', 'Permissions' );
 
         return redirect()->route( 'role-permission.manage' );
     }

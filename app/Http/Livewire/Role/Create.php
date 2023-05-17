@@ -34,7 +34,7 @@ class Create extends Component {
         'rolePermissions' => [ 'array' ]
     ];
 
-    public function mount( bool $hasSmallButton = false ) {
+    public function mount( Collection $permissions, bool $hasSmallButton = false,  ) {
         $this->modalId        = 'm-new-role';
         $this->isModalOpen    = false;
         $this->hasSmallButton = $hasSmallButton || false;
@@ -43,7 +43,7 @@ class Create extends Component {
         $this->slug = '';
 
         $this->rolePermissions = [];
-        $this->allPermissions = Permission::all();
+        $this->allPermissions = $permissions;
     }
 
 

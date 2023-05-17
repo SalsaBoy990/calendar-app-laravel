@@ -35,7 +35,7 @@ class Edit extends Component {
         'rolePermissions' => [ 'array']
     ];
 
-    public function mount( string $modalId, Role $role, bool $hasSmallButton = false ) {
+    public function mount( string $modalId, Role $role, Collection $permissions, bool $hasSmallButton = false ) {
         $this->modalId        = $modalId;
         $this->isModalOpen    = false;
         $this->hasSmallButton = $hasSmallButton || false;
@@ -46,7 +46,7 @@ class Edit extends Component {
         $this->slug   = $this->role->slug;
 
         $this->rolePermissions = $this->role->permissions()->get()->pluck(['id'])->toArray();
-        $this->allPermissions = Permission::all();
+        $this->allPermissions = $permissions;
     }
 
 

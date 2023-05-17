@@ -19,6 +19,7 @@ class Delete extends Component {
 
     // inputs
     public int $permissionId;
+    public Permission $permission;
     public string $name;
 
 
@@ -30,6 +31,7 @@ class Delete extends Component {
         $this->modalId        = $modalId;
         $this->isModalOpen    = false;
         $this->hasSmallButton = $hasSmallButton;
+        $this->permission     = $permission;
         $this->permissionId   = $permission->id;
         $this->name           = $permission->name;
     }
@@ -47,15 +49,14 @@ class Delete extends Component {
         // delete role, rollback transaction if fails
         DB::transaction(
             function () {
-                $permission = Permission::findOrFail( $this->permissionId );
-                $permission->delete();
+                $this->permission->delete();
             },
             2
         );
 
 
         $this->banner( 'The permission with the name "' . $this->name . '" was successfully deleted.' );
-        request()->session()->flash('flash.activeTab', 'Permissions');
+        request()->session()->flash( 'flash.activeTab', 'Permissions' );
 
         return redirect()->route( 'role-permission.manage' );
     }

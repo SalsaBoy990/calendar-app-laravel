@@ -43,7 +43,7 @@
                         <h1 class="h2">Manage roles</h1>
 
                         <!-- Create role -->
-                        <livewire:role.create :title="'New role'" :hasSmallButton="false" :modalId>
+                        <livewire:role.create :title="'New role'" :permissions="$permissions" :hasSmallButton="false" :modalId>
                         </livewire:role.create>
 
                         <table>
@@ -57,16 +57,12 @@
                             </thead>
                             <tbody>
                             @foreach($roles as $role)
-                                @php
-                                    $rolePermissions = $role->permissions()->get();
-									$rolePermissionsCount = $rolePermissions->count()
-                                @endphp
                                 <tr>
                                     <td><strong>{{ $role->name }}</strong></td>
                                     <td>{{ $role->slug }}</td>
                                     <td>
-                                        @if($rolePermissionsCount > 0)
-                                            @foreach($rolePermissions as $rolePermission)
+                                        @if($role->permissions->count() > 0)
+                                            @foreach($role->permissions as $rolePermission)
                                                 <span class="badge fs-14 gray-60">{{ $rolePermission->name }}</span>
                                             @endforeach
                                         @else
@@ -86,6 +82,7 @@
                                             <!-- Update role -->
                                             <livewire:role.edit :title="'Edit role'"
                                                                 :role="$role"
+                                                                :permissions="$permissions"
                                                                 :hasSmallButton="false"
                                                                 :modalId="'m-edit-role-' . $role->id"
                                             >
@@ -107,7 +104,7 @@
                         <h1 class="h2">Manage permissions</h1>
 
                         <!-- Create role -->
-                        <livewire:permission.create :title="'New permission'" :hasSmallButton="false" :modalId>
+                        <livewire:permission.create :title="'New permission'" :role="$roles" :hasSmallButton="false" :modalId>
                         </livewire:permission.create>
 
                         <table>
@@ -121,16 +118,12 @@
                             </thead>
                             <tbody>
                             @foreach($permissions as $permission)
-                                @php
-                                    $permissionRoles = $permission->roles()->get();
-									$permissionRolesCount = $permissionRoles->count()
-                                @endphp
                                 <tr>
                                     <td>{{ $permission->name }}</td>
                                     <td>{{ $permission->slug }}</td>
                                     <td>
-                                        @if($permissionRolesCount > 0)
-                                            @foreach($permissionRoles as $permissionRole)
+                                        @if($permission->roles->count() > 0)
+                                            @foreach($permission->roles as $permissionRole)
                                                 <span class="badge fs-14 gray-60">{{ $permissionRole->name }}</span>
                                             @endforeach
                                         @else
@@ -151,6 +144,7 @@
                                             <!-- Update role -->
                                             <livewire:permission.edit :title="'Edit permission'"
                                                                       :permission="$permission"
+                                                                      :roles="$roles"
                                                                       :hasSmallButton="false"
                                                                       :modalId="'m-edit-permission-' . $permission->id"
                                             >

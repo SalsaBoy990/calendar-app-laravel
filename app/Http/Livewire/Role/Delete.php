@@ -21,6 +21,7 @@ class Delete extends Component
 
     // inputs
     public int $roleId;
+    public Role $role;
     public string $name;
 
 
@@ -33,6 +34,7 @@ class Delete extends Component
         $this->modalId = $modalId;
         $this->isModalOpen = false;
         $this->hasSmallButton = $hasSmallButton;
+        $this->role = $role;
         $this->roleId = $role->id;
         $this->name = $role->name;
     }
@@ -46,17 +48,15 @@ class Delete extends Component
 
     public function deleteRole()
     {
-        $role = Role::findOrFail($this->roleId);
-
-        $this->authorize('delete', [Role::class, $role]);
+        $this->authorize('delete', [Role::class, $this->role]);
 
         // validate user input
         $this->validate();
 
         // delete role, rollback transaction if fails
         DB::transaction(
-            function () use ($role) {
-                $role->delete();
+            function () {
+                $this->role->delete();
             },
             2
         );
