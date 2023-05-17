@@ -21,13 +21,16 @@ html.dark
 
     input, textarea
         color: $black
-        background: $gray-20
+        background: $gray-0
         border-color: $gray-80
 
         &:disabled
             cursor: not-allowed
             background: $gray-40
             border-color: $gray-40
+            &:focus
+                background: $gray-40
+                border-color: $gray-40
 
         &:focus
             border-color: $primary-light

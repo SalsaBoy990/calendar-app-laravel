@@ -28,7 +28,7 @@
 
 
                     <!-- Title -->
-                    <label for="title">{{ __('Title') }}</label>
+                    <label for="title">{{ __('Title') }}<span class="text-red">*</span></label>
                     <input
                         wire:model.defer="title"
                         type="text"
@@ -42,7 +42,7 @@
 
 
                     <!-- Address -->
-                    <label for="address">{{ __('Address') }}</label>
+                    <label for="address">{{ __('Address') }}<span class="text-red">*</span></label>
                     <input
                         wire:model.defer="address"
                         type="text"
@@ -56,7 +56,7 @@
 
 
                     <!-- Start date -->
-                    <label for="start">{{ __('Start date') }}</label>
+                    <label for="start">{{ __('Start date') }}<span class="text-red">*</span></label>
                     <input
                         wire:model.defer="start"
                         type="datetime-local"
@@ -70,7 +70,7 @@
 
 
                     <!-- End date -->
-                    <label for="end">{{ __('End date') }}</label>
+                    <label for="end">{{ __('End date') }}<span class="text-red">*</span></label>
                     <input
                         wire:model.defer="end"
                         type="datetime-local"
@@ -84,7 +84,7 @@
 
 
                     <!-- description -->
-                    <label for="description">{{ __('Description') }}</label>
+                    <label for="description">{{ __('Description (optional)') }}</label>
                     <input
                         wire:model.defer="description"
                         type="text"
@@ -97,7 +97,7 @@
                     </div>
 
                     <!-- Status -->
-                    <label for="status">{{ __('Status') }}</label>
+                    <label for="status">{{ __('Status') }}<span class="text-red">*</span></label>
                     <select
                         wire:model.defer="status"
                         class="{{ $errors->has('status') ? 'border border-red' : '' }}"
@@ -116,27 +116,42 @@
                     </div>
 
 
-                        <label class="{{ $errors->has('workerIds') ? 'border border-red' : '' }}">
-                            {{ __('Assign workers') }}
-                        </label>
-                        <div class="checkbox-container">
-                            @foreach($workers as $worker)
-                                <label for="workerIds">
-                                    <input wire:model="workerIds"
-                                           type="checkbox"
-                                           name="workerIds[]"
-                                           value="{{ $worker->id }}"
-                                    >
-                                    {{ $worker->name }}
-                                </label>
-                            @endforeach
+                    <div>
+                        <label for="backgroundColor">{{ __('Background color (optional)') }}</label>
+                        <input type="color"
+                               wire:model="backgroundColor"
+                               id="backgroundColor"
+                               name="backgroundColor"
+                               value="#e66465"
+                        >
 
-                            <div class="{{ $errors->has('workerIds') ? 'red' : '' }}">
-                                {{ $errors->has('workerIds') ? $errors->first('workerIds') : '' }}
-                            </div>
-
-                            {{-- var_export($rolePermissions) --}}
+                        <div class="{{ $errors->has('backgroundColor') ? 'red' : '' }}">
+                            {{ $errors->has('backgroundColor') ? $errors->first('backgroundColor') : '' }}
                         </div>
+                    </div>
+
+
+                    <label class="{{ $errors->has('workerIds') ? 'border border-red' : '' }}">
+                        {{ __('Assign workers (optional)') }}
+                    </label>
+                    <div class="checkbox-container">
+                        @foreach($workers as $worker)
+                            <label for="workerIds">
+                                <input wire:model="workerIds"
+                                       type="checkbox"
+                                       name="workerIds[]"
+                                       value="{{ $worker->id }}"
+                                >
+                                {{ $worker->name }}
+                            </label>
+                        @endforeach
+
+                        <div class="{{ $errors->has('workerIds') ? 'red' : '' }}">
+                            {{ $errors->has('workerIds') ? $errors->first('workerIds') : '' }}
+                        </div>
+
+                        {{-- var_export($rolePermissions) --}}
+                    </div>
 
 
                 </fieldset>
@@ -232,6 +247,7 @@
                 showNonCurrentDates: false,
                 nowIndicator: true,
                 eventBackgroundColor: '#3F57B9',
+                eventBorderColor: '#777',
 
 
                 editable: true,
@@ -257,7 +273,7 @@
 
                 eventDidMount: function (info) {
                     // object destructuring
-                    const { el, event, view } = info;
+                    const {el, event, view} = info;
 
                     // inner flex container of the event
                     const container = el.firstChild.firstChild;
@@ -282,7 +298,7 @@
                             const endTimestamp = new Date(event.end).getTime();
 
                             // Calculate duration in hours
-                            const duration = (endTimestamp - startTimestamp) / (60*60*1000);
+                            const duration = (endTimestamp - startTimestamp) / (60 * 60 * 1000);
 
                             description.innerText += duration + 'ó | ';
                             // container.appendChild(durationParagraph);
@@ -322,7 +338,6 @@
 
             calendar.addEventSource( @json( $events ) )
             calendar.setOption('contentHeight', 600);
-
 
 
             calendar.render();

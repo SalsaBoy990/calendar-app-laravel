@@ -191,3 +191,7 @@ $dark-color-borders: ('orange-dark': $warning-dark, 'red-dark': $error-dark, 'gr
 .text-accent,
 .hover-text-accent:hover
     color: $accent-light !important
+
+@each $light, $i in $light-colors
+    .text-#{$light}
+        color: $i !important

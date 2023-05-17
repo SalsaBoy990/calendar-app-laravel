@@ -28,6 +28,7 @@ class Event extends Model {
         'address',
         'description',
         'status',
+        'backgroundColor',
     ];
 
 
@@ -37,12 +38,13 @@ class Event extends Model {
      * @var array<string, string>
      */
     protected $casts = [
-        'title'       => HtmlSpecialCharsCast::class,
-        'start'       => HtmlSpecialCharsCast::class,
-        'end'         => HtmlSpecialCharsCast::class,
-        'address'     => HtmlSpecialCharsCast::class,
-        'description' => HtmlSpecialCharsCast::class,
-        'status'      => HtmlSpecialCharsCast::class,
+        'title'           => HtmlSpecialCharsCast::class,
+        'start'           => HtmlSpecialCharsCast::class,
+        'end'             => HtmlSpecialCharsCast::class,
+        'address'         => HtmlSpecialCharsCast::class,
+        'description'     => HtmlSpecialCharsCast::class,
+        'status'          => HtmlSpecialCharsCast::class,
+        'backgroundColor' => HtmlSpecialCharsCast::class,
     ];
 
 
