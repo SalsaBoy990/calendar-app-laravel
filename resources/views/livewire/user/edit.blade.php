@@ -21,7 +21,7 @@
 
             <fieldset>
                 <!-- Name -->
-                <label for="name">{{ __('Name') }}</label>
+                <label for="name">{{ __('Name') }}<span class="text-red">*</span></label>
                 <input
                     wire:model.defer="name"
                     type="text"
@@ -65,7 +65,7 @@
 
 
                 <!-- Role -->
-                <label for="role">{{ __('Role') }}</label>
+                <label for="role">{{ __('Role') }}<span class="text-red">*</span></label>
                 <select
                     wire:model.defer="role"
                     class="{{ $errors->has('role') ? 'border border-red' : '' }}"

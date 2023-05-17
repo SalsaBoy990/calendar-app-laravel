@@ -1,11 +1,6 @@
 <x-admin-layout>
 
     <x-slot name="sidebar">
-
-        <div class="padding-1">
-            It is the unknown we fear when we look upon death and darkness, nothing more.
-        </div>
-
     </x-slot>
 
     @section('content')
@@ -26,7 +21,11 @@
             <div class="main-content">
 
                 <!-- Create new user -->
-                <livewire:user.create :title="'New user'" :hasSmallButton="false" :modalId>
+                <livewire:user.create :title="'New user'"
+                                      :roles="$roles"
+                                      :permissions="$permissions"
+                                      :hasSmallButton="false"
+                                      :modalId="m-create-user">
                 </livewire:user.create>
 
                 <table>

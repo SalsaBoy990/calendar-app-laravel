@@ -6,11 +6,13 @@ use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use App\Support\InteractsWithBanner;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Livewire\Component;
+
 
 class Create extends Component {
     use InteractsWithBanner;
@@ -26,7 +28,7 @@ class Create extends Component {
     public string $email;
     public string $password;
     public ?int $roleId;
-    public array $roles;
+    public array $rolesArray;
 
     protected array $rules = [
         'name'            => [ 'required', 'string', 'max:255' ],
@@ -36,7 +38,7 @@ class Create extends Component {
         'userPermissions' => [ 'array' ]
     ];
 
-    public function mount( bool $hasSmallButton = false ) {
+    public function mount(Collection $roles, Collection $permissions, bool $hasSmallButton = false ) {
         $this->modalId        = 'm-new-user';
         $this->isModalOpen    = false;
         $this->hasSmallButton = $hasSmallButton || false;
@@ -46,13 +48,13 @@ class Create extends Component {
         $this->password = '';
         $this->role     = null;
 
-        $allRoles = Role::all();
+        $allRoles = $roles;
         foreach ( $allRoles as $role ) {
-            $this->roles[ $role->id ] = $role->name;
+            $this->rolesArray[ $role->id ] = $role->name;
         }
 
         $this->userPermissions = [];
-        $this->allPermissions  = Permission::all();
+        $this->allPermissions  = $permissions;
     }
 
 

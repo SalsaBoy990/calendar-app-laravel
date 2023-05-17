@@ -21,7 +21,7 @@
 
             <fieldset>
                 <!-- Name -->
-                <label for="name">{{ __('Name') }}</label>
+                <label for="name">{{ __('Name') }}<span class="text-red">*</span></label>
                 <input
                     wire:model.defer="name"
                     type="text"
@@ -36,7 +36,7 @@
 
 
                 <!-- Email -->
-                <label for="slug">{{ __('Slug (should be unique)') }}</label>
+                <label for="slug">{{ __('Slug (should be unique)') }}<span class="text-red">*</span></label>
                 <input
                     wire:model.defer="slug"
                     type="text"

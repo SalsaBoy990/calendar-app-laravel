@@ -23,7 +23,7 @@
 
             <fieldset>
                 <!-- Name -->
-                <label for="name">{{ __('Name') }}</label>
+                <label for="name">{{ __('Name') }}<span class="text-red">*</span></label>
                 <input
                     wire:model.defer="name"
                     type="text"
@@ -38,7 +38,7 @@
 
 
                 <!-- Email -->
-                <label for="email">{{ __('Email') }}</label>
+                <label for="email">{{ __('Email') }}<span class="text-red">*</span></label>
                 <input
                     wire:model.defer="email"
                     type="email"
@@ -52,7 +52,7 @@
                 </div>
 
                 <!-- Password -->
-                <label for="password">{{ __('Password') }}</label>
+                <label for="password">{{ __('Password') }}<span class="text-red">*</span></label>
                 <input
                     wire:model.defer="password"
                     type="text"
@@ -66,7 +66,7 @@
                 </div>
 
                 <!-- Role -->
-                <label for="role">{{ __('Role') }}</label>
+                <label for="role">{{ __('Role') }}<span class="text-red">*</span></label>
                 <select
                     wire:model.defer="role"
                     class="{{ $errors->has('role') ? 'border border-red' : '' }}"
@@ -77,7 +77,7 @@
 
                     <option selected>{{ __("Select the role") }}</option>
 
-                    @foreach ($roles as $key => $value)
+                    @foreach ($rolesArray as $key => $value)
                         <option name="role" value="{{ $key }}">{{ $value }}</option>
                     @endforeach
 

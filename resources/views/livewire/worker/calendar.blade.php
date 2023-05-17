@@ -196,7 +196,8 @@
                     right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
                 },
                 locale: '{{ 'hu' ?? config('app.locale') }}',
-                allDaySlot: true,
+                allDaySlot: false,
+                defaultAllDay: false,
                 slotMinTime: '08:00:00',
                 slotMaxTime: '20:00:00',
                 firstDay: 1,

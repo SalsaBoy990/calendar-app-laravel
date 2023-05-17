@@ -43,7 +43,7 @@
                         <h1 class="h2">Manage roles</h1>
 
                         <!-- Create role -->
-                        <livewire:role.create :title="'New role'" :permissions="$permissions" :hasSmallButton="false" :modalId>
+                        <livewire:role.create :title="'New role'" :permissions="$permissions" :hasSmallButton="false" :modalId="m-create-role">
                         </livewire:role.create>
 
                         <table>
@@ -104,7 +104,7 @@
                         <h1 class="h2">Manage permissions</h1>
 
                         <!-- Create role -->
-                        <livewire:permission.create :title="'New permission'" :role="$roles" :hasSmallButton="false" :modalId>
+                        <livewire:permission.create :title="'New permission'" :roles="$roles" :hasSmallButton="false" :modalId="m-create-permission">
                         </livewire:permission.create>
 
                         <table>

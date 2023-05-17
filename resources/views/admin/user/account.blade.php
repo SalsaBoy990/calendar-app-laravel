@@ -40,7 +40,7 @@
 
                     <fieldset>
                         <!-- Name -->
-                        <label for="name">{{ __('Name') }}</label>
+                        <label for="name">{{ __('Name') }}<span class="text-red">*</span></label>
                         <input
                             type="text"
                             class="{{ $errors->has('name') ? 'border border-red' : '' }}"
