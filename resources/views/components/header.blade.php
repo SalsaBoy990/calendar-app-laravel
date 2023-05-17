@@ -10,15 +10,26 @@
             <div class="main-navigation">
                 <nav id="main-menu">
                     @auth
-                        <a href="{{ url('/home') }}">
+                        <a class="{{ request()->routeIs('home') ? 'active' : '' }}"
+                           href="{{ url('/home') }}">
                             <i class="fa fa-home" aria-hidden="true"></i>{{ __('Home') }}
                         </a>
 
                         @role('super-administrator|administrator')
-                        <a href="{{ route('calendar') }}">
+                        <a class="{{ request()->routeIs('calendar') ? 'active' : '' }}"
+                           href="{{ route('calendar') }}">
                             <i class="fa fa-calendar" aria-hidden="true"></i>{{ __('Calendar') }}
                         </a>
-                        <a href="{{ url('/admin/dashboard') }}">
+
+                        <!-- Worker availabilities link -->
+                        <a class="{{ request()->routeIs('workers') ? 'active' : '' }}"
+                           href="{{ route('workers') }}">
+                                <i class="fa fa-hourglass-start" aria-hidden="true"></i>
+                                {{ __('Workers') }}
+                        </a>
+
+                        <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"
+                           href="{{ url('/admin/dashboard') }}">
                             <i class="fa fa-tachometer" aria-hidden="true"></i>{{ __('Dashboard') }}
                         </a>
                         @endrole

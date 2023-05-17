@@ -28,49 +28,59 @@
                     @endif
                 @else
                     <!-- Custom links -->
-                    <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('user.account') ? 'active' : '' }}"
-                           href="{{ route('user.account', auth()->id()) }}"
-                        >
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                            {{ __('My Account') }}</a>
-                    </li>
-
 
                     @role('super-administrator|administrator')
+                    <!-- Event calendar link -->
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('calendar') ? 'active' : '' }}"
                            href="{{ route('calendar') }}"
                         >
                             <i class="fa fa-calendar" aria-hidden="true"></i>
-                            {{ __('Manage events') }}</a>
+                            <span>{{ __('Manage events') }}</span>
+                        </a>
                     </li>
+
+                    <!-- Worker availabilities link -->
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('workers') ? 'active' : '' }}"
                            href="{{ route('workers') }}"
                         >
-                            <i class="fa fa-calendar" aria-hidden="true"></i>
-                            {{ __('Manage worker availabilities') }}</a>
+                            <i class="fa fa-hourglass-start" aria-hidden="true"></i>
+                            <span>{{ __('Worker availabilities') }}</span></a>
                     </li>
 
+                    <!-- Manage users link -->
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('user.manage') ? 'active' : '' }}"
                            href="{{ route('user.manage') }}"
                         >
                             <i class="fa fa-users" aria-hidden="true"></i>
-                            {{ __('Manage users') }}</a>
+                            <span>{{ __('Manage users') }}</span>
+                        </a>
                     </li>
                     @endrole
 
                     @role('super-administrator')
+                    <!-- Role/Permissions link -->
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('role-permission.manage') ? 'active' : '' }}"
                            href="{{ route('role-permission.manage') }}"
                         >
                             <i class="fa fa-lock" aria-hidden="true"></i>
-                            {{ __('Roles and Permissions') }}</a>
+                            <span>{{ __('Roles and Permissions') }}</span>
+                        </a>
                     </li>
                     @endrole
+
+                    <!-- Account link -->
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('user.account') ? 'active' : '' }}"
+                           href="{{ route('user.account', auth()->id()) }}"
+                        >
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                            <span>{{ __('My Account') }}</span>
+                        </a>
+                    </li>
 
                     <!-- Custom links END -->
                     <?php ?>

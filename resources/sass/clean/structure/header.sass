@@ -49,6 +49,15 @@ header
     @media screen and (min-width: 881px)
         display: none
 
+#main-menu
+    a.active
+        color: $black
+        font-weight: 700
+html.dark
+    #main-menu
+        a.active
+            color: $white
+
 
 .sidenav
     height: 100%
@@ -87,6 +96,9 @@ header
             align-items: flex-start
 
             a
+                &.active
+                    font-weight: 700
+
                 i
                     margin-right: 4px
 
