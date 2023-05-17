@@ -7,7 +7,7 @@ body
 
 .container
     width: 100%
-    max-width: 1400px !important
+    max-width: 1400px
 
 
 header .fa
@@ -41,7 +41,6 @@ header .fa
             display: none
 
 
-
 html.dark
     .scroll-to-top-button
         &:hover, &:focus
@@ -58,7 +57,7 @@ html.dark
             main
                 background-color: rgba(255, 255, 255, 0.05)
 
-
+/* ADMIN LAYOUT */
 .admin
     .admin-content
         width: 100%
@@ -121,8 +120,10 @@ html.dark
                 .navbar-nav
                     li
                         margin-bottom: 0.5em
+/* ADMIN LAYOUT END */
 
 
+/* PUBLIC LAYOUT */
 .public
     .public-content
         margin: 2em auto
@@ -144,10 +145,11 @@ html.dark
                 color: white
 
                 h1
-                    //font-size: $fs-36
                     margin: 0
+/* PUBLIC PAGE END */
 
 
+/* HEADER */
 header.page-header
     width: 100%
     background-color: white
@@ -172,8 +174,10 @@ header.page-header
             .dropdown-item
                 display: block
                 margin-bottom: 0.5em
+/* HEADER END */
 
 
+/* FOOTER */
 footer.page-footer
     background: $text
     color: $gray-20
@@ -199,6 +203,7 @@ footer.page-footer
 
             small
                 font-size: $fs-12
+/* FOOTER END */
 
 
 .welcome-content
@@ -240,6 +245,7 @@ footer.page-footer
 /* show the nested list */
 .active
     display: block !important
+// reason: important not to overwrite
 
 .active-category
     background-color: gainsboro
@@ -261,8 +267,10 @@ html.dark
 
 /* DROPDOWN END */
 
+
 [x-cloak], .hidden
     display: none !important
+// reason: important not to overwrite
 
 fieldset
     padding: 0
@@ -305,10 +313,7 @@ fieldset
 
         button
             margin-top: 0
-            padding-left: 8px
-            padding-right: 6px
-            padding-top: 8px
-            padding-bottom: 8px
+            padding: 8px 6px 8px 8px
 
         .notification-inner
             display: flex
@@ -319,20 +324,6 @@ fieldset
             p.message
                 margin: 0
 
-button, .button
-    i.fa
-        margin-right: 2px
-
-input[readonly]
-    background-color: $gray-20
-    cursor: not-allowed
-
-.checkbox-container
-    label
-        margin-top: 0
-
-        input
-            margin-bottom: 0
 
 .dashboard-card-grid
     margin-bottom: 0
@@ -345,38 +336,58 @@ input[readonly]
     justify-content: space-between
     list-style-type: none
 
-select
-    background: white
 
-a.nav-link.active
-    font-weight: 700
-    background-color: $gray-20
-
-
-html.dark
-    a.nav-link.active
-        background-color: $accent-dark
-
-
-    .clean-modal-content
-        .box.white
-            background-color: $bg-content
-
-    #calendar-container
-        #calendar
-            .fc-timegrid-axis-cushion.fc-scrollgrid-shrink-cushion.fc-scrollgrid-sync-inner,
-            .fc-timegrid-slot-label-frame.fc-scrollgrid-shrink-frame
-                color: $gray-20
-
-            a.fc-daygrid-day-number
-                color: $gray-20
-
-            a.fc-event.fc-daygrid-event.fc-daygrid-dot-event
-                color: white
-
-
+/* CALENDAR */
 #calendar-container
+    position: relative
+
     #calendar
+        max-width: 100%
+
+        .fc-header-toolbar.fc-toolbar
+            flex-wrap: wrap
+
+        .fc-timegrid-event-harness.fc-timegrid-event-harness-inset
+            overflow-y: visible
+
+        .fc-v-event .fc-event-title-container
+            flex-grow: 0
+            flex-shrink: 0
+
+        .fc-event-main-frame
+            padding: 4px
+
+            .fc-event-time
+                font-size: 12px
+                font-weight: 600
+
+            .fc-event-title-container
+                .fc-event-title.fc-sticky
+                    font-family: $sans
+                    font-weight: 700
+                    font-size: 16px
+
+            .address
+                margin-top: 0
+
+                b
+                    font-size: 13px
+                    font-weight: 600
+
+            .description
+                margin-top: 0
+                font-size: 12px
+
+            .workers-container
+                display: flex
+                gap: 4px
+                flex-direction: row
+                flex-wrap: wrap
+
+            .fc.fc-scroller-liquid-absolute
+                right: -20px !important
+
+
         table
             border-radius: 0.25em
             margin-top: 0
@@ -433,122 +444,17 @@ html.dark
                 font-size: $fs-14
 
 
-.fc.fc-scroller-liquid-absolute
-    right: -20px !important
-
-#calendar-container
-    position: relative
-
-    #calendar
-        max-width: 100%
-
-
-        .fc-header-toolbar.fc-toolbar
-            flex-wrap: wrap
-
-        .fc-timegrid-event-harness.fc-timegrid-event-harness-inset
-            overflow-y: visible
-
-        .fc-v-event .fc-event-title-container
-            flex-grow: 0
-            flex-shrink: 0
-
-        .fc-event-main-frame
-            padding: 4px
-
-            .fc-event-time
-                font-size: 12px
-                font-weight: 600
-
-            .fc-event-title-container
-                .fc-event-title.fc-sticky
-                    font-family: $sans
-                    font-weight: 700
-                    font-size: 16px
-
-            .address
-                margin-top: 0
-                b
-                    font-size: 13px
-                    font-weight: 600
-
-            .description
-                margin-top: 0
-                font-size: 12px
-
-            .workers-container
-                display: flex
-                gap: 4px
-                flex-direction: row
-                flex-wrap: wrap
 
 html.dark
-    .sidenav
-        background-color: $black
+    #calendar-container
+        #calendar
+            .fc-timegrid-axis-cushion.fc-scrollgrid-shrink-cushion.fc-scrollgrid-sync-inner,
+            .fc-timegrid-slot-label-frame.fc-scrollgrid-shrink-frame
+                color: $gray-20
 
-.sidenav
-    height: 100%
-    width: 0
-    position: fixed
-    z-index: 4
-    top: 0
-    left: 0
-    background-color: $gray-20
-    overflow-x: hidden
-    transition: 0.5s
-    padding: 0
-    box-shadow: 4px 0 6px -4px #666
+            a.fc-daygrid-day-number
+                color: $gray-20
 
-    @media screen and (max-height: 550px)
-        padding-top: 1em
-
-
-    #close-sidenav-button
-        text-decoration: none
-        position: absolute
-        top: 0
-        right: 12px
-        font-size: 24px
-
-        &:hover, &:focus
-            color: lightblue
-
-    #mobile-menu
-        padding: 60px 0.5em 0.5em
-        #main-menu
-            display: flex
-            row-gap: 1em
-            flex-direction: column
-            align-items: flex-start
-
-            a
-                i
-                    margin-right: 4px
-
-            .dropdown-content
-                display: flex
-                flex-direction: column
-                line-height: 2
-                padding-left: 2em
-                border: none
-                position: initial
-                width: calc(300px - 1em)
-
-
-html.dark
-    #main-menu-offcanvas-toggle
-        color: white
-        background-color: transparent
-        border: 1px solid white
-
-        &:hover, &:focus
-            background-color: $primary-light
-            border: 1px solid white
-
-
-
-#main-menu-offcanvas-toggle
-    margin-top: 0
-
-    @media screen and (min-width: 881px)
-        display: none
+            a.fc-event.fc-daygrid-event.fc-daygrid-dot-event
+                color: white
+/* CALENDAR END */

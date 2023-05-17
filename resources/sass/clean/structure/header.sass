@@ -4,6 +4,7 @@ header
 
     a
         color: $link
+
         &:hover
             color: $gray-80
 
@@ -40,4 +41,61 @@ header
 
 #close-btn
     cursor: pointer
+
+
+#main-menu-offcanvas-toggle
+    margin-top: 0
+
+    @media screen and (min-width: 881px)
+        display: none
+
+
+.sidenav
+    height: 100%
+    width: 0
+    position: fixed
+    z-index: 4
+    top: 0
+    left: 0
+    background-color: $gray-20
+    overflow-x: hidden
+    transition: 0.5s
+    padding: 0
+    box-shadow: 4px 0 6px -4px #666
+
+    @media screen and (max-height: 550px)
+        padding-top: 1em
+
+
+    #close-sidenav-button
+        text-decoration: none
+        position: absolute
+        top: 0
+        right: 12px
+        font-size: 24px
+
+        &:hover, &:focus
+            color: lightblue
+
+    #mobile-menu
+        padding: 60px 0.5em 0.5em
+
+        #main-menu
+            display: flex
+            row-gap: 1em
+            flex-direction: column
+            align-items: flex-start
+
+            a
+                i
+                    margin-right: 4px
+
+            .dropdown-content
+                display: flex
+                flex-direction: column
+                line-height: 2
+                padding-left: 2em
+                border: none
+                position: initial
+                width: calc(300px - 1em)
 
