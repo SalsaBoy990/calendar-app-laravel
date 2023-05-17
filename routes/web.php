@@ -61,6 +61,7 @@ Route::group(
     function () {
         Route::get('user/manage', [UserController::class, 'index'])->name('user.manage');
         Route::get('calendar', [CalendarController::class, 'index'])->name('calendar');
+        Route::get('workers', [CalendarController::class, 'workers'])->name('workers');
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
     }
 );

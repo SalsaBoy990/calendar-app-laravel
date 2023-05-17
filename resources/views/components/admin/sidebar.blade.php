@@ -46,6 +46,14 @@
                             {{ __('Manage events') }}</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('workers') ? 'active' : '' }}"
+                           href="{{ route('workers') }}"
+                        >
+                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                            {{ __('Manage worker availabilities') }}</a>
+                    </li>
+
+                    <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('user.manage') ? 'active' : '' }}"
                            href="{{ route('user.manage') }}"
                         >
