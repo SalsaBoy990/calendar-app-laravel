@@ -1,14 +1,20 @@
 # Setup the project
 
 1. Install composer and npm packages
-2. Set up variables in **.env** file (db, make sure to have an smtp server that you can use to send emails for 2fa codes - I use mailcatcher locally)
+2. Set up variables in **.env** file (db, make sure to have an smtp server that you can use to send emails for 2fa codes - I use mailcatcher locally - or use the mailtrap.io cloud service)
 3. Run `npm run dev` and `php artisan serve`
 4. Run migrations and seed: `php artisan migrate --seed`
 5. You can register on the site, however you will not have the admin privileges!
 6. Change the `role_id` in the users table to refer to the super-administrator role (in roles table).
 7. Make sure to assign all the permissions to the super-administrator role! Login, go to the roles and permissions page and set these up.
 
-Or use the `gulacsi.sql.zip` file to import into the database, so you don't have to go through all the steps.
+Or use the `gulacsi.sql.zip` file to import into the database, so you don't have to go through steps 5-7.
+
+**Use these credentails to log in:**
+gulandras90@gmail.com
+$mOvjV&5G0Q0
+
+The generated 2fa codes are valid for 2 minutes.
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
