@@ -25,7 +25,7 @@
                                       :roles="$roles"
                                       :permissions="$permissions"
                                       :hasSmallButton="false"
-                                      :modalId="m-create-user">
+                                      :modalId="'m-create-user'">
                 </livewire:user.create>
 
                 <table>
