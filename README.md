@@ -8,7 +8,7 @@
 6. Change the `role_id` in the users table to refer to the super-administrator role (in roles table).
 7. Make sure to assign all the permissions to the super-administrator role! Login, go to the roles and permissions page and set these up.
 
-Or use the `gulacsi.sql.zip` file to import into the database, so you don't have to go through steps 5-7.
+Or use the `gulacsi.sql.zip` file to import into the database, so you don't have to go through steps 4-7.
 
 **Use these credentails to log in:**
 gulandras90@gmail.com
