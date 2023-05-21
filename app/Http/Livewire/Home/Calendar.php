@@ -33,20 +33,39 @@ class Calendar extends Component {
 
     // uui for existing event
     public string $updateId;
+
+    // Event model entity
     public ?Event $event;
 
-    // basic event properties
-    public string $title;
+    // start and end is for regular events
     public string $start;
     public ?string $end;
+
+
+    public int $isRecurring;
+    public string $duration;
+
+    // basic event properties
+    // all types of events can have these props
+    public string $title;
     public string $address;
     public string $description;
     public string $status;
-    public string $backgroundColor;
+    public ?string $backgroundColor;
 
     public array $statusArray;
     public Collection $workers;
     public array $workerIds;
+    public array $statusColors;
+
+    // for recurring events (by recurrence rules)
+    public string $frequency;
+    public array $frequencies;
+    public string $dtstart;
+    public string $until;
+    public string $byweekday;
+    public array $weekDays;
+    public array $rrule;
 
 
     // Is all-day event?
@@ -55,24 +74,52 @@ class Calendar extends Component {
     // Event list as collection
     public Collection $events;
 
-    protected array $rules = [
-        'updateId'        => [ 'nullable', 'uuid', 'max:255' ],
-        'workerIds'       => [ 'array' ],
-        'title'           => [ 'required', 'string', 'max:255' ],
-        'start'           => [ 'required', 'string', 'max:255' ],
-        'end'             => [ 'nullable', 'string' ],
-        'address'         => [ 'required', 'string', 'max:255' ],
-        'description'     => [ 'nullable', 'string', 'max:255' ],
-        'status'          => [ 'required', 'in:pending,opened,completed,closed' ],
-        'backgroundColor' => [ 'nullable', 'string', 'max:20' ],
-    ];
 
+    // dynamically set rules based on event type (recurring or regular)
+    protected function rules() {
+
+        // shared property validation rules
+        $rules = [
+            'updateId'        => [ 'nullable', 'uuid', 'max:255' ],
+            'workerIds'       => [ 'array' ],
+            'title'           => [ 'required', 'string', 'max:255' ],
+            'address'         => [ 'required', 'string', 'max:255' ],
+            'description'     => [ 'nullable', 'string', 'max:255' ],
+            'status'          => [ 'required', 'in:pending,opened,completed,closed' ],
+            'backgroundColor' => [ 'nullable', 'string', 'max:20' ],
+        ];
+
+        // non-recurring
+        if ( $this->isRecurring === 0 ) {
+            $rules['start'] = [ 'required', 'string', 'max:255' ];
+            $rules['end']   = [ 'nullable', 'string', 'max:255' ];
+
+            return $rules;
+
+        } else {
+            // recurring
+            $rules['frequency'] = [ 'nullable', 'string' ];
+            $rules['byweekday'] = [ 'nullable', 'string' ];
+            $rules['dtstart']   = [ 'nullable', 'string' ];
+            $rules['until']     = [ 'nullable', 'string' ];
+            $rules['duration']  = [ 'nullable', 'string' ];
+
+            return $rules;
+
+        }
+
+    }
+
+
+    // listen to frontend calendar events, bind them with backend methods with Livewire (ajax requests)
     protected $listeners = [
         'deleteEventListener'  => 'deleteEvent',
         'openDeleteEventModal' => 'openDeleteEventModal',
         'closeEventModal'      => 'closeEventModal',
     ];
 
+
+    // Mount life-cycle hook of the livewire component
     public function mount() {
         $this->initializeProperties();
 
@@ -98,15 +145,22 @@ class Calendar extends Component {
         $this->deleteModalId     = 'delete-event-modal';
         $this->isDeleteModalOpen = false;
         $this->isModalOpen       = false;
+        $this->isRecurring       = 0;
 
-        // Entity properties
+        // Entity properties init
         $this->title           = '';
         $this->start           = '';
         $this->end             = null;
         $this->address         = '';
         $this->description     = '';
         $this->status          = 'opened';
-        $this->backgroundColor = '';
+        $this->backgroundColor = null;
+        $this->byweekday       = '';
+        $this->frequency       = '';
+        $this->dtstart         = '';
+        $this->until           = '';
+        $this->rrule           = [];
+        $this->duration        = '';
 
         //
         $this->allDay   = false;
@@ -114,14 +168,41 @@ class Calendar extends Component {
         $this->updateId = '';
         $this->event    = null;
 
+        // statuses
         $this->statusArray = [
             'pending'   => 'Pending',
             'opened'    => 'Opened',
             'completed' => 'Completed',
-            'closed'    => 'Opened'
+            'closed'    => 'Closed'
+        ];
+
+        // weekdays
+        $this->weekDays = [
+            'Sunday'    => 'Su',
+            'Monday'    => 'Mo',
+            'Tuesday'   => 'Tu',
+            'Wednesday' => 'We',
+            'Thursday'  => 'Th',
+            'Friday'    => 'Fri',
+            'Saturday'  => 'Sat',
+        ];
+
+        // todo: maybe add more options here
+        $this->frequencies = [
+            'weekly',
+            'monthly'
         ];
 
         $this->workerIds = [];
+
+        // default background color palette by statuses
+        $this->statusColors = [
+            'pending'   => '#025370',
+            'opened'    => '#c90000',
+            'completed' => '#0f5d2a',
+            'closed'    => '#62626b'
+        ];
+
     }
 
 
@@ -155,12 +236,19 @@ class Calendar extends Component {
             return redirect()->route( 'calendar' );
         }
 
-
-        $changedEvent->start = $event['start'];
-
-        if ( Arr::exists( $event, 'end' ) ) {
-            $changedEvent->end = $event['end'];
+        if ( $changedEvent->isRecurring === 0 ) {
+            $changedEvent->start = $event['start'];
+            if ( Arr::exists( $event, 'end' ) ) {
+                $changedEvent->end = $event['end'];
+            }
+        } else {
+            // todo: change recurring events on drag and drop / resize events
+            // this is not supported currently, nothing will happen!
+            /* $rrule = $changedEvent->rrule;
+             $rrule['dtstart'] = $event['start'];
+             $changedEvent->rrule = $rrule;*/
         }
+
 
         $changedEvent->save();
     }
@@ -175,16 +263,11 @@ class Calendar extends Component {
      */
     public function eventModal( array $args ) {
 
-        // existing event update flattening
+        // existing event update
         if ( array_key_exists( 'event', $args ) ) {
             $args           = $args['event'];
             $this->updateId = $args['id'];
-
-            foreach ( $this->events as $event ) {
-                if ( $event->id === $this->updateId ) {
-                    $this->event = $event;
-                }
-            }
+            $this->setCurrentEvent();
 
             if ( $this->checkIfEventExists() === null ) {
                 $this->banner( __( 'Event does not exists!' ), 'danger' );
@@ -202,23 +285,34 @@ class Calendar extends Component {
             $this->address         = $this->event->address;
             $this->description     = $this->event->description;
             $this->status          = $this->event->status;
-            $this->backgroundColor = $this->event->backgroundColor ?? '';
+            $this->backgroundColor = $this->event->backgroundColor ?? null;
+
+            $this->byweekday   = $this->event->rrule['byweekday'] ?? '';
+            $this->dtstart     = $this->event->rrule['dtstart'] ?? '';
+            $this->until       = $this->event->rrule['until'] ?? '';
+            $this->duration    = $this->event->duration ?? '';
+            $this->frequency   = $this->event->rrule['freq'] ?? '';
+            $this->isRecurring = $this->event->is_recurring ?? 0;
         }
 
-        $this->allDay = $args['allDay'];
-        if ( $this->allDay === false ) {
-            // datetime-local
-            $this->start = date( "Y-m-d\TH:i:s", strtotime( $this->event->start ?? $args['start'] ) );
-            $this->end   = date( "Y-m-d\TH:i:s", strtotime( $this->event->end ?? $args['end'] ) );
+        // only for non-recurring events
+        if ( $this->isRecurring === 0 ) {
 
-        } else {
-            $this->start = date( "Y-m-d\TH:i:s", strtotime( $this->event->start ?? $args['start'] ) );
-            // all day events do not need to have the end date set, so check it
-            $this->end = isset( $this->event ) && $this->event->end ?
-                date( "Y-m-d\TH:i:s", strtotime( $this->event->end ?? $args['end'] ) )
-                :
-                null;
+            // todo: maybe disable the option to have full-day events altogether
+            $this->allDay = $args['allDay'];
+            if ( $this->allDay === false ) {
+                // datetime-local
+                $this->start = date( "Y-m-d\TH:i:s", strtotime( $this->event->start ?? $args['start'] ) );
+                $this->end   = date( "Y-m-d\TH:i:s", strtotime( $this->event->end ?? $args['end'] ) );
 
+            } else {
+                $this->start = date( "Y-m-d\TH:i:s", strtotime( $this->event->start ?? $args['start'] ) );
+                // all day events do not need to have the end date set, so check it
+                $this->end = isset( $this->event ) && $this->event->end ?
+                    date( "Y-m-d\TH:i:s", strtotime( $this->event->end ?? $args['end'] ) )
+                    :
+                    null;
+            }
 
         }
 
@@ -236,45 +330,63 @@ class Calendar extends Component {
 
         DB::transaction(
             function () {
+
+                // all event have these
+                $eventProps = [
+                    'title'       => $this->title,
+                    'address'     => $this->address,
+                    'description' => $this->description,
+                    'status'      => $this->status,
+                ];
+
                 // if we have an id, update existing event
                 if ( $this->updateId !== '' ) {
-                    $updateEvent = null;
 
-                    foreach ( $this->events as $event ) {
-                        if ( $event->id === $this->updateId ) {
-                            $updateEvent = $event;
-                        }
-                    }
-
+                    $updateEvent = $this->getCurrentEvent();
                     if ( $updateEvent === null ) {
                         $this->banner( __( 'Event does not exists!' ), 'danger' );
 
                         return redirect()->route( 'calendar' );
                     }
 
-                    $updateEvent->update( [
-                        'title'           => $this->title,
-                        'start'           => $this->start,
-                        'end'             => $this->end,
-                        'address'         => $this->address,
-                        'description'     => $this->description,
-                        'status'          => $this->status,
-                        'backgroundColor' => $this->backgroundColor,
-                    ] );
+                    $this->setEventProperties( $eventProps );
+
+                    // if color not set, set it from status
+                    if ( ! isset( $this->backgroundColor ) ) {
+                        $this->backgroundColor = $this->getBackgroundColorFromStatus();
+
+                    } elseif ( $this->status !== $this->event->status ) {
+                        // if there is a new color from input
+
+                        // set color from status, otherwise it will be custom from $this->backgroundColor
+                        if ( ! $this->isBackgroundColorCustom() ) {
+                            $this->backgroundColor = $this->getBackgroundColorFromStatus();
+                        }
+                    }
+
+                    // color is from status or it is custom
+                    $eventProps['backgroundColor'] = $this->backgroundColor;
+
+                    $updateEvent->update( $eventProps );
 
                     $updateEvent->users()->sync( $this->workerIds );
                     $updateEvent->save();
                 } else {
-                    $newEvent = Event::create( [
-                        'id'              => Str::uuid(),
-                        'title'           => $this->title,
-                        'start'           => $this->start,
-                        'end'             => $this->end,
-                        'address'         => $this->address,
-                        'description'     => $this->description,
-                        'status'          => $this->status,
-                        'backgroundColor' => $this->backgroundColor,
-                    ] );
+
+                    $eventProps['id'] = Str::uuid();
+
+                    // no color is supplied -> set it from event status (default behaviour)
+                    if ( ! isset( $this->backgroundColor ) ) {
+                        $eventProps['backgroundColor'] = $this->getBackgroundColorFromStatus();
+                    } else {
+                        // custom color (not sure if it will be allowed to have custom colors
+                        // todo: maybe remove the option to have unique colors
+                        $eventProps['backgroundColor'] = $this->backgroundColor;
+                    }
+
+                    $this->setEventProperties( $eventProps );
+
+                    $newEvent = Event::create( $eventProps );
 
                     $newEvent->users()->sync( $this->workerIds );
                     $newEvent->save();
@@ -294,11 +406,12 @@ class Calendar extends Component {
         $this->initializeProperties();
 
         return redirect()->route( 'calendar' );
-
     }
 
 
     /**
+     * Delete the selected event
+     *
      * @return Redirector|null
      */
     public function deleteEvent(): ?Redirector {
@@ -306,19 +419,12 @@ class Calendar extends Component {
         // if we have an id, delete existing event
         if ( $this->updateId !== '' ) {
 
-            $event = null;
-            foreach ( $this->events as $singleEvent ) {
-                if ( $singleEvent->id === $this->updateId ) {
-                    $event = $singleEvent;
-                }
-            }
-
+            $event = $this->getCurrentEvent();
             if ( $event === null ) {
                 $this->banner( __( 'Event does not exists!' ), 'danger' );
 
                 return redirect()->route( 'calendar' );
             }
-
 
             $title = $event->title;
 
@@ -330,6 +436,7 @@ class Calendar extends Component {
                 2
             );
 
+            // reset loaded event properties for the modal
             $this->initializeProperties();
 
             $this->banner( 'Successfully deleted the event "' . htmlspecialchars( $title ) . '"!' );
@@ -340,6 +447,8 @@ class Calendar extends Component {
 
 
     /**
+     * Show delete modal
+     *
      * @return void
      */
     public function openDeleteEventModal(): void {
@@ -348,6 +457,7 @@ class Calendar extends Component {
 
 
     /**
+     * Reset selected event properties when closing the modal
      * @return void
      */
     public function closeEventModal(): void {
@@ -356,10 +466,115 @@ class Calendar extends Component {
 
 
     /**
+     * Check if the event is properly loaded / exists
      * @return bool
      */
     private function checkIfEventExists(): bool {
         return $this->event === null;
     }
+
+
+    /**
+     * Set the recurring / normal event-specific properties
+     *
+     * @param $eventProps
+     *
+     * @return void
+     */
+    private function setEventProperties( &$eventProps ): void {
+        if ( $this->isRecurring === 1 ) {
+            if ( $this->byweekday !== '' ) {
+                $this->rrule['byweekday'] = $this->byweekday;
+            }
+            if ( $this->frequency !== '' ) {
+                $this->rrule['freq'] = $this->frequency;
+            }
+
+            if ( $this->dtstart !== '' ) {
+                $this->rrule['dtstart'] = $this->dtstart;
+            }
+
+            if ( $this->until !== '' ) {
+                $this->rrule['until'] = $this->until;
+            }
+
+            if ( $this->duration !== '' ) {
+                $eventProps['duration'] = $this->duration;
+            }
+
+            if ( ! empty ( $this->rrule ) ) {
+                $this->rrule['interval'] = 1;
+            }
+
+            if ( ! empty( $this->rrule ) ) {
+                $eventProps['rrule'] = $this->rrule;
+            }
+        } else {
+            $eventProps['start'] = $this->start;
+            $eventProps['end']   = $this->end;
+        }
+    }
+
+
+    /**
+     * Set current event for the modal
+     *
+     * @return void
+     */
+    private function setCurrentEvent(): void {
+        foreach ( $this->events as $event ) {
+            if ( $event->id === $this->updateId ) {
+                $this->event = $event;
+                break;
+            }
+        }
+    }
+
+
+    /**
+     * Get current event and return the entity
+     *
+     * @return Event|null
+     */
+    private function getCurrentEvent(): ?Event {
+        foreach ( $this->events as $event ) {
+            if ( $event->id === $this->updateId ) {
+                return $event;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Get the color from the default palette (based on the event status)
+     * @return string|null
+     */
+    private function getBackgroundColorFromStatus(): ?string {
+        foreach ( $this->statusColors as $key => $value ) {
+            if ( $this->status === $key ) {
+                return $value;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Check if the user-supplied color is different from the default status colors
+     * @return bool
+     */
+    private function isBackgroundColorCustom(): bool {
+        foreach ( $this->statusColors as $key => $value ) {
+            if ( $this->backgroundColor === $value ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 
 }

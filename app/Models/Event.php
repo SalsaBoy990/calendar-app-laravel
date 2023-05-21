@@ -25,6 +25,10 @@ class Event extends Model {
         'title',
         'start',
         'end',
+
+        'rrule',
+        'is_recurring',
+
         'address',
         'description',
         'status',
@@ -41,6 +45,7 @@ class Event extends Model {
         'title'           => HtmlSpecialCharsCast::class,
         'start'           => HtmlSpecialCharsCast::class,
         'end'             => HtmlSpecialCharsCast::class,
+        'rrule'           => 'array',
         'address'         => HtmlSpecialCharsCast::class,
         'description'     => HtmlSpecialCharsCast::class,
         'status'          => HtmlSpecialCharsCast::class,
