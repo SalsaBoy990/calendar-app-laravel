@@ -1,13 +1,5 @@
 <x-admin-layout>
 
-    <x-slot name="sidebar">
-
-        <div class="padding-1">
-            It is the unknown we fear when we look upon death and darkness, nothing more.
-        </div>
-
-    </x-slot>
-
     @section('content')
 
         <main class="padding-1">
@@ -32,11 +24,23 @@
                 <div x-data="tabsData( @js($activeTab) )" class="border round">
 
                     <div class="bar">
-                        <a id="RolesTrigger" href="javascript:void(0)" class="bar-item tab-switcher"
-                           @click="switchTab('Roles')" :class="{'red': tabId === 'Roles'}">{{ __('Roles') }}</a>
-                        <a id="PermissionsTrigger" href="javascript:void(0)" class="bar-item tab-switcher"
+                        <a id="RolesTrigger"
+                           href="javascript:void(0)"
+                           class="bar-item tab-switcher"
+                           @click="switchTab('Roles')"
+                           :class="{'red': tabId === 'Roles'}"
+                        >
+                            {{ __('Roles') }}
+                        </a>
+
+                        <a id="PermissionsTrigger"
+                           href="javascript:void(0)"
+                           class="bar-item tab-switcher"
                            @click="switchTab('Permissions')"
-                           :class="{'red': tabId === 'Permissions'}">{{ __('Permissions') }}</a>
+                           :class="{'red': tabId === 'Permissions'}"
+                        >
+                            {{ __('Permissions') }}
+                        </a>
                     </div>
 
                     <div id="Roles" class="box tabs animate-opacity">
@@ -44,8 +48,11 @@
                         <h1 class="h2">Manage roles</h1>
 
                         <!-- Create role -->
-                        <livewire:role.create :title="'New role'" :permissions="$permissions" :hasSmallButton="false"
-                                              :modalId="'m-create-role'">
+                        <livewire:role.create :title="'New role'"
+                                              :permissions="$permissions"
+                                              :hasSmallButton="false"
+                                              :modalId="'m-create-role'"
+                        >
                         </livewire:role.create>
 
                         <table>
@@ -122,7 +129,7 @@
                             <tbody>
                             @foreach($permissions as $permission)
                                 <tr>
-                                    <td>{{ $permission->name }}</td>
+                                    <td><b>{{ $permission->name }}</b></td>
                                     <td>{{ $permission->slug }}</td>
                                     <td>
                                         @if($permission->roles->count() > 0)
