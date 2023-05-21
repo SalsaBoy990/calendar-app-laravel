@@ -19,8 +19,6 @@
     >
         <form wire:submit.prevent="createUser">
 
-            <x-admin.validation-errors/>
-
             <fieldset>
                 <!-- Name -->
                 <label for="name">{{ __('Name') }}<span class="text-red">*</span></label>
@@ -32,7 +30,7 @@
                     value=""
                 >
 
-                <div class="{{ $errors->has('name') ? 'red' : '' }}">
+                <div class="{{ $errors->has('name') ? 'error-message' : '' }}">
                     {{ $errors->has('name') ? $errors->first('name') : '' }}
                 </div>
 
@@ -47,7 +45,7 @@
                     value=""
                 >
 
-                <div class="{{ $errors->has('email') ? 'red' : '' }}">
+                <div class="{{ $errors->has('email') ? 'error-message' : '' }}">
                     {{ $errors->has('email') ? $errors->first('email') : '' }}
                 </div>
 
@@ -61,7 +59,7 @@
                     value=""
                 >
 
-                <div class="{{ $errors->has('password') ? 'red' : '' }}">
+                <div class="{{ $errors->has('password') ? 'error-message' : '' }}">
                     {{ $errors->has('password') ? $errors->first('password') : '' }}
                 </div>
 
@@ -83,7 +81,7 @@
 
                 </select>
 
-                <div class="{{ $errors->has('role') ? 'red' : '' }}">
+                <div class="{{ $errors->has('role') ? 'error-message' : '' }}">
                     {{ $errors->has('role') ? $errors->first('role') : '' }}
                 </div>
 
@@ -103,7 +101,7 @@
                         </label>
                     @endforeach
 
-                    <div class="{{ $errors->has('userPermissions') ? 'red' : '' }}">
+                    <div class="{{ $errors->has('userPermissions') ? 'error-message' : '' }}">
                         {{ $errors->has('userPermissions') ? $errors->first('userPermissions') : '' }}
                     </div>
                 </div>

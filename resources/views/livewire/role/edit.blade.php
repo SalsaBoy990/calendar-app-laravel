@@ -30,7 +30,7 @@
                     value=""
                 >
 
-                <div class="{{ $errors->has('name') ? 'red' : '' }}">
+                <div class="{{ $errors->has('name') ? 'error-message' : '' }}">
                     {{ $errors->has('name') ? $errors->first('name') : '' }}
                 </div>
 
@@ -45,7 +45,7 @@
                     value=""
                 >
 
-                <div class="{{ $errors->has('slug') ? 'red' : '' }}">
+                <div class="{{ $errors->has('slug') ? 'error-message' : '' }}">
                     {{ $errors->has('slug') ? $errors->first('slug') : '' }}
                 </div>
 
@@ -66,7 +66,7 @@
                         </label>
                     @endforeach
 
-                    <div class="{{ $errors->has('rolePermissions') ? 'red' : '' }}">
+                    <div class="{{ $errors->has('rolePermissions') ? 'error-message' : '' }}">
                         {{ $errors->has('rolePermissions') ? $errors->first('rolePermissions') : '' }}
                     </div>
 

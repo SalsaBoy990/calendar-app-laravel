@@ -122,7 +122,8 @@ html.dark
                         margin-bottom: 0.5em
 
                         a.nav-link
-                            display: flex !important // .active class display block overwrite
+                            display: flex !important
+                            // .active class display block overwrite
                             align-items: center
                             column-gap: 0.5em
 
@@ -348,11 +349,38 @@ fieldset
 
 
 /* CALENDAR */
+.legend
+    display: flex
+    flex-direction: row
+    flex-wrap: nowrap
+    gap: 1em
+    justify-content: flex-start
+    margin: 0 0 1em
+
+    li
+        font-size: 0.875em
+        display: flex
+        align-items: center
+        column-gap: 0.25em
+
+        .color-box
+            border: 1px solid #777
+            border-radius: 4px
+            width: 1em
+            height: 1em
+
+
 #calendar-container
     position: relative
 
     #calendar
         max-width: 100%
+
+        .fc .fc-button-primary
+            background-color: $primary-light
+
+            &:disabled
+                background-color: $gray-60
 
         .fc-header-toolbar.fc-toolbar
             flex-wrap: wrap
@@ -454,7 +482,6 @@ fieldset
                 font-size: $fs-14
 
 
-
 html.dark
     #calendar-container
         #calendar
@@ -468,3 +495,13 @@ html.dark
             a.fc-event.fc-daygrid-event.fc-daygrid-dot-event
                 color: white
 /* CALENDAR END */
+
+.error-message
+    padding: 0.25em 0.5em
+    margin-top: 0.25em
+    font-size: 14px
+    font-weight: 700
+    border-radius: 6px
+    color: #fff
+    background-color: $red
+
