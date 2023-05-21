@@ -29,7 +29,8 @@
                     $activeTab = session('flash.activeTab') ?? 'Roles';
                 @endphp
 
-                <div x-data="tabsData( @js($activeTab) )" x-init="" class="border round">
+                <div x-data="tabsData( @js($activeTab) )" class="border round">
+
                     <div class="bar">
                         <a id="RolesTrigger" href="javascript:void(0)" class="bar-item tab-switcher"
                            @click="switchTab('Roles')" :class="{'red': tabId === 'Roles'}">{{ __('Roles') }}</a>
@@ -43,7 +44,8 @@
                         <h1 class="h2">Manage roles</h1>
 
                         <!-- Create role -->
-                        <livewire:role.create :title="'New role'" :permissions="$permissions" :hasSmallButton="false" :modalId="m-create-role">
+                        <livewire:role.create :title="'New role'" :permissions="$permissions" :hasSmallButton="false"
+                                              :modalId="'m-create-role'">
                         </livewire:role.create>
 
                         <table>
@@ -104,7 +106,8 @@
                         <h1 class="h2">Manage permissions</h1>
 
                         <!-- Create role -->
-                        <livewire:permission.create :title="'New permission'" :roles="$roles" :hasSmallButton="false" :modalId="m-create-permission">
+                        <livewire:permission.create :title="'New permission'" :roles="$roles" :hasSmallButton="false"
+                                                    :modalId="'m-create-permission'">
                         </livewire:permission.create>
 
                         <table>
