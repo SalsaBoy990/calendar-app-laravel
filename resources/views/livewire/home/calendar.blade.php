@@ -63,7 +63,7 @@
 
         <x-admin.form-modal
             trigger="isModalOpen"
-            title="{{ $updateId ? $event->title . ' ('. $event->address . ')' : __('Add event') }}"
+            title="{{ $updateId ? $event->client->name . ' ('. $event->client->address . ')' : __('Add event') }}"
             id="{{ $modalId }}"
         >
             <form wire:submit.prevent="createOrUpdateEvent">
@@ -82,7 +82,7 @@
                     @endif
 
                     <!-- Is event recurring? -->
-                    <label for="isRecurring">{{ __('Recurring event') }}</label>
+                    <label for="isRecurring">{{ __('Recurring event') }}<span class="text-red">*</span></label>
                     <input type="radio"
                            wire:model="isRecurring"
                            name="isRecurring"
@@ -99,34 +99,26 @@
                         {{ $errors->has('isRecurring') ? $errors->first('isRecurring') : '' }}
                     </div>
 
-
-                    <!-- Title -->
-                    <label for="title">{{ __('Title') }}<span class="text-red">*</span></label>
-                    <input
-                        wire:model.defer="title"
-                        type="text"
-                        class="{{ $errors->has('title') ? 'border border-red' : '' }}"
-                        name="title"
+                    <!-- Client id -->
+                    <label for="clientId">{{ __('Client') }}<span class="text-red">*</span></label>
+                    <select
+                        wire:model.defer="clientId"
+                        class="{{ $errors->has('clientId') ? 'border border-red' : '' }}"
+                        aria-label="{{ __("Select the client") }}"
+                        name="clientId"
                     >
+                        @if ($clientId === 0)
+                            <option selected>{{ __("Select the type") }}</option>
+                        @endif
+                        @foreach ($clients as $client)
+                            <option {{ $clientId === $client->id ? "selected": "" }} name="clientId"
+                                    value="{{ $client->id }}">{{ $client->name }}</option>
+                        @endforeach
+                    </select>
 
-                    <div class="{{ $errors->has('title') ? 'error-message' : '' }}">
-                        {{ $errors->has('title') ? $errors->first('title') : '' }}
+                    <div class="{{ $errors->has('clientId') ? 'error-message' : '' }}">
+                        {{ $errors->has('clientId') ? $errors->first('clientId') : '' }}
                     </div>
-
-
-                    <!-- Address -->
-                    <label for="address">{{ __('Address') }}<span class="text-red">*</span></label>
-                    <input
-                        wire:model.defer="address"
-                        type="text"
-                        class="{{ $errors->has('address') ? 'border border-red' : '' }}"
-                        name="address"
-                    >
-
-                    <div class="{{ $errors->has('address') ? 'error-message' : '' }}">
-                        {{ $errors->has('address') ? $errors->first('address') : '' }}
-                    </div>
-
 
                     @if ($isRecurring === 0)
                         <!-- REGULAR EVENTS -->
@@ -454,67 +446,7 @@
                 },
 
                 // when the events are loaded by FullCalendar, modify html output by adding extended props
-                eventDidMount: function (info) {
-                    // object destructuring
-                    const {el, event, view} = info;
-
-                    // inner flex container of the event
-                    const container = el.firstChild.firstChild;
-
-                    if (view.type === 'timeGridWeek' && container && event.extendedProps && event.allDay === false) {
-
-                        if (event.extendedProps.address) {
-                            const address = document.createElement('p');
-                            const bold = document.createElement('b');
-
-                            bold.innerText = event.extendedProps.address;
-                            address.classList.add('address');
-                            address.appendChild(bold);
-                            container.appendChild(address)
-                        }
-
-
-                        const description = document.createElement('p');
-
-                        if (event.end !== null) {
-                            const startTimestamp = new Date(event.start).getTime();
-                            const endTimestamp = new Date(event.end).getTime();
-
-                            // Calculate duration in hours
-                            const duration = (endTimestamp - startTimestamp) / (60 * 60 * 1000);
-
-                            description.innerText += duration + 'ó | ';
-                            // container.appendChild(durationParagraph);
-                        }
-
-
-                        if (event.extendedProps.description) {
-                            // const description = document.createElement('p');
-                            description.innerText += event.extendedProps.description;
-                            description.classList.add('description');
-                            container.appendChild(description)
-                        }
-
-                        if (event.extendedProps.users && event.extendedProps.users.length > 0) {
-                            const users = event.extendedProps.users;
-                            const bar = document.createElement('div');
-                            bar.classList.add('workers-container');
-
-                            for (let i = 0; i < users.length; i++) {
-                                const badge = document.createElement('span');
-                                badge.classList.add('badge', 'accent');
-                                badge.innerText = users[i].name;
-                                bar.appendChild(badge);
-                            }
-
-                            container.appendChild(bar)
-                        }
-
-                    }
-
-
-                }
-
+                eventDidMount: updateEventData,
 
             });
 
@@ -524,6 +456,67 @@
 
             calendar.render();
         });
+
+
+        function updateEventData(info) {
+            // object destructuring
+            const {el, event, view} = info;
+
+            // inner flex container of the event
+            const container = el.firstChild.firstChild;
+
+            if (view.type === 'timeGridWeek' && container && event.extendedProps && event.allDay === false) {
+
+                if (event.extendedProps.client !== null && event.extendedProps.client.name) {
+                    const eventTitle = container.childNodes[1].firstChild;
+                    eventTitle.innerText = event.extendedProps.client.name;
+                }
+
+                if (event.extendedProps.client !== null && event.extendedProps.client.address) {
+                    const address = document.createElement('p');
+                    const bold = document.createElement('b');
+
+                    bold.innerText = event.extendedProps.client.address;
+                    address.classList.add('address');
+                    address.appendChild(bold);
+                    container.appendChild(address)
+                }
+
+
+                if (event.end !== null) {
+/*                    const description = document.createElement('p');
+
+                    const startTimestamp = new Date(event.start).getTime();
+                    const endTimestamp = new Date(event.end).getTime();
+
+                    // Calculate duration in hours
+                    const duration = (endTimestamp - startTimestamp) / (60 * 60 * 1000);
+
+                    description.innerText = duration + 'ó';
+                    description.classList.add('description');
+                    container.appendChild(description)*/
+                }
+
+
+                if (event.extendedProps.users && event.extendedProps.users.length > 0) {
+                    const users = event.extendedProps.users;
+                    const bar = document.createElement('div');
+                    bar.classList.add('workers-container');
+
+                    for (let i = 0; i < users.length; i++) {
+                        const badge = document.createElement('span');
+                        badge.classList.add('badge', 'accent');
+                        badge.innerText = users[i].name;
+                        bar.appendChild(badge);
+                    }
+
+                    container.appendChild(bar)
+                }
+
+            }
+
+
+        }
 
     </script>
 

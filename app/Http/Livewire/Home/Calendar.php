@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Home;
 
+use App\Models\Client;
 use App\Models\Event;
 use App\Models\Role;
 use App\Models\User;
@@ -47,8 +48,6 @@ class Calendar extends Component {
 
     // basic event properties
     // all types of events can have these props
-    public string $title;
-    public string $address;
     public string $description;
     public string $status;
     public ?string $backgroundColor;
@@ -57,6 +56,8 @@ class Calendar extends Component {
     public Collection $workers;
     public array $workerIds;
     public array $statusColors;
+    public int $clientId;
+    public Collection $clients;
 
     // for recurring events (by recurrence rules)
     public string $frequency;
@@ -82,8 +83,7 @@ class Calendar extends Component {
         $rules = [
             'updateId'        => [ 'nullable', 'uuid', 'max:255' ],
             'workerIds'       => [ 'array' ],
-            'title'           => [ 'required', 'string', 'max:255' ],
-            'address'         => [ 'required', 'string', 'max:255' ],
+            'clientId'        => [ 'required', 'integer', 'min:0' ],
             'description'     => [ 'nullable', 'string', 'max:255' ],
             'status'          => [ 'required', 'in:pending,opened,completed,closed' ],
             'backgroundColor' => [ 'nullable', 'string', 'max:20' ],
@@ -148,10 +148,8 @@ class Calendar extends Component {
         $this->isRecurring       = 0;
 
         // Entity properties init
-        $this->title           = '';
         $this->start           = '';
         $this->end             = null;
-        $this->address         = '';
         $this->description     = '';
         $this->status          = 'opened';
         $this->backgroundColor = null;
@@ -167,6 +165,7 @@ class Calendar extends Component {
         $this->newId    = '';
         $this->updateId = '';
         $this->event    = null;
+        $this->clientId = 0;
 
         // statuses
         $this->statusArray = [
@@ -203,6 +202,7 @@ class Calendar extends Component {
             'closed'    => '#62626b'
         ];
 
+        $this->clients = Client::with( 'client_detail' )->get();
     }
 
 
@@ -210,7 +210,7 @@ class Calendar extends Component {
      * @return Application|Factory|View
      */
     public function render(): View|Factory|Application {
-        $this->events = Event::with( 'users' )->get();
+        $this->events = Event::with( [ 'users', 'client' ] )->get();
 
         return view( 'livewire.home.calendar' );
     }
@@ -236,7 +236,7 @@ class Calendar extends Component {
             return redirect()->route( 'calendar' );
         }
 
-        if ( $changedEvent->isRecurring === 0 ) {
+        if ( !$changedEvent->isRecurring ) {
             $changedEvent->start = $event['start'];
             if ( Arr::exists( $event, 'end' ) ) {
                 $changedEvent->end = $event['end'];
@@ -281,8 +281,6 @@ class Calendar extends Component {
                 ->pluck( [ 'id' ] )
                 ->toArray();
 
-            $this->title           = $this->event->title;
-            $this->address         = $this->event->address;
             $this->description     = $this->event->description;
             $this->status          = $this->event->status;
             $this->backgroundColor = $this->event->backgroundColor ?? null;
@@ -293,6 +291,11 @@ class Calendar extends Component {
             $this->duration    = $this->event->duration ?? '';
             $this->frequency   = $this->event->rrule['freq'] ?? '';
             $this->isRecurring = $this->event->is_recurring ?? 0;
+            $this->clientId    = 0;
+
+            if ( isset( $this->event->client ) ) {
+                $this->clientId = $this->event->client->id;
+            }
         }
 
         // only for non-recurring events
@@ -303,7 +306,12 @@ class Calendar extends Component {
             if ( $this->allDay === false ) {
                 // datetime-local
                 $this->start = date( "Y-m-d\TH:i:s", strtotime( $this->event->start ?? $args['start'] ) );
-                $this->end   = date( "Y-m-d\TH:i:s", strtotime( $this->event->end ?? $args['end'] ) );
+
+                if ( isset( $args['end'] ) ) {
+                    $this->end = date( "Y-m-d\TH:i:s", strtotime( $this->event->end ?? $args['end'] ) );
+                } else {
+                    $this->end = $this->event->end ?? null;
+                }
 
             } else {
                 $this->start = date( "Y-m-d\TH:i:s", strtotime( $this->event->start ?? $args['start'] ) );
@@ -327,14 +335,13 @@ class Calendar extends Component {
      */
     public function createOrUpdateEvent(): Redirector {
         $this->validate();
+        $eventEntity = null;
 
         DB::transaction(
-            function () {
+            function () use ( $eventEntity ) {
 
                 // all event have these
                 $eventProps = [
-                    'title'       => $this->title,
-                    'address'     => $this->address,
                     'description' => $this->description,
                     'status'      => $this->status,
                 ];
@@ -342,8 +349,8 @@ class Calendar extends Component {
                 // if we have an id, update existing event
                 if ( $this->updateId !== '' ) {
 
-                    $updateEvent = $this->getCurrentEvent();
-                    if ( $updateEvent === null ) {
+                    $eventEntity = $this->getCurrentEvent();
+                    if ( $eventEntity === null ) {
                         $this->banner( __( 'Event does not exists!' ), 'danger' );
 
                         return redirect()->route( 'calendar' );
@@ -367,10 +374,13 @@ class Calendar extends Component {
                     // color is from status or it is custom
                     $eventProps['backgroundColor'] = $this->backgroundColor;
 
-                    $updateEvent->update( $eventProps );
+                    $eventEntity->update( $eventProps );
 
-                    $updateEvent->users()->sync( $this->workerIds );
-                    $updateEvent->save();
+                    $eventEntity->users()->sync( $this->workerIds );
+                    $eventEntity->save();
+                    $eventEntity->refresh();
+
+                    $this->banner( 'Successfully updated the event "' . htmlspecialchars( $eventEntity->client->name ) . '"!');
                 } else {
 
                     $eventProps['id'] = Str::uuid();
@@ -386,21 +396,17 @@ class Calendar extends Component {
 
                     $this->setEventProperties( $eventProps );
 
-                    $newEvent = Event::create( $eventProps );
+                    $eventEntity = Event::create( $eventProps );
 
-                    $newEvent->users()->sync( $this->workerIds );
-                    $newEvent->save();
+                    $eventEntity->users()->sync( $this->workerIds );
+                    $eventEntity->save();
+                    $eventEntity->refresh();
+
+                    $this->banner( 'Successfully created the event "' . htmlspecialchars( $eventEntity->client->name ) . '"!' );
                 }
-
             },
             2
         );
-
-
-        $this->updateId !== '' ?
-            $this->banner( 'Successfully updated the event "' . htmlspecialchars( $this->title ) . '"!' )
-            :
-            $this->banner( 'Successfully created the event "' . htmlspecialchars( $this->title ) . '"!' );
 
         // Need to clear previous event data
         $this->initializeProperties();
@@ -426,7 +432,7 @@ class Calendar extends Component {
                 return redirect()->route( 'calendar' );
             }
 
-            $title = $event->title;
+            $title = $event->client->name;
 
             // delete role, rollback transaction if fails
             DB::transaction(
@@ -482,6 +488,8 @@ class Calendar extends Component {
      * @return void
      */
     private function setEventProperties( &$eventProps ): void {
+
+        // recurring event props
         if ( $this->isRecurring === 1 ) {
             if ( $this->byweekday !== '' ) {
                 $this->rrule['byweekday'] = $this->byweekday;
@@ -510,9 +518,17 @@ class Calendar extends Component {
                 $eventProps['rrule'] = $this->rrule;
             }
         } else {
+            // regular events
             $eventProps['start'] = $this->start;
             $eventProps['end']   = $this->end;
         }
+
+        // If a client need to be associated with the event
+        if ( $this->clientId !== 0 ) {
+            // color is from status or it is custom
+            $eventProps['client_id'] = $this->clientId;
+        }
+
     }
 
 

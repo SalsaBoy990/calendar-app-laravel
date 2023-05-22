@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Casts\HtmlSpecialCharsCast;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Event extends Model {
@@ -22,6 +23,7 @@ class Event extends Model {
 
     protected $fillable = [
         'id',
+        'client_id',
         'title',
         'start',
         'end',
@@ -58,6 +60,13 @@ class Event extends Model {
      */
     public function users(): BelongsToMany {
         return $this->belongsToMany( User::class, 'users_events', 'event_id', 'user_id' );
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function client(): BelongsTo {
+        return $this->belongsTo( Client::class, 'client_id' );
     }
 
 }
