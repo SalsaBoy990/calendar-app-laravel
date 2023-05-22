@@ -58,6 +58,16 @@
                             <span>{{ __('Manage users') }}</span>
                         </a>
                     </li>
+
+                    <!-- Manage clients link -->
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('client.manage') ? 'active' : '' }}"
+                           href="{{ route('client.manage') }}"
+                        >
+                            <i class="fa fa-address-card" aria-hidden="true"></i>
+                            <span>{{ __('Manage clients') }}</span>
+                        </a>
+                    </li>
                     @endrole
 
                     @role('super-administrator')
@@ -83,7 +93,6 @@
                     </li>
 
                     <!-- Custom links END -->
-                    <?php ?>
                     <li class="nav-item">
                         <a
                             class="nav-link"
@@ -102,6 +111,7 @@
                             class="hide"
                         >
                             @csrf
+                            @method('DELETE')
                         </form>
                     </li>
                 @endguest

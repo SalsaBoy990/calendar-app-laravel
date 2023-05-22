@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PermissionSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(EventSeeder::class);
+        $this->call(ClientSeeder::class);
         // Seeders for authorization END
     }
 }

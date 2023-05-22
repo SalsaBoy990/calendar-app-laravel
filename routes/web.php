@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\UserController;
@@ -60,6 +61,7 @@ Route::group(
     ['middleware' => ['auth', 'verified', '2fa', 'role:super-administrator|administrator'], 'prefix' => 'admin'],
     function () {
         Route::get('user/manage', [UserController::class, 'index'])->name('user.manage');
+        Route::get('client/manage', [ClientController::class, 'index'])->name('client.manage');
         Route::get('calendar', [CalendarController::class, 'index'])->name('calendar');
         Route::get('workers', [CalendarController::class, 'workers'])->name('workers');
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
