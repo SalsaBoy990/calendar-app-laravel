@@ -12,7 +12,7 @@
 
                 <p class="text-center">
                     We sent code to email
-                    : {{ substr(auth()->user()->email, 0, 5) . '******' . substr(auth()->user()->email,  -2) }}
+                    : {{ substr(auth()->user()->email, 0, 5) . '******' . substr(auth()->user()->email,  -3) }}
                 </p>
 
 
