@@ -465,6 +465,14 @@
             // inner flex container of the event
             const container = el.firstChild.firstChild;
 
+
+            if (view.type === 'dayGridMonth') {
+                if (event.extendedProps.client !== null && event.extendedProps.client.name) {
+                    const eventTitle = el.childNodes[2];
+                    eventTitle.innerText = event.extendedProps.client.name;
+                }
+            }
+
             if (view.type === 'timeGridWeek' && container && event.extendedProps && event.allDay === false) {
 
                 if (event.extendedProps.client !== null && event.extendedProps.client.name) {
