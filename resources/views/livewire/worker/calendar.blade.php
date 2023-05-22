@@ -1,4 +1,47 @@
 <div>
+
+    <div class="mini-calendar-menu">
+        <nav class="nav-links">
+            @auth
+                @role('super-administrator|administrator')
+                <a class="{{ request()->routeIs('calendar') ? 'active' : '' }}"
+                   href="{{ route('calendar') }}">
+                    <i class="fa fa-calendar" aria-hidden="true"></i>{{ __('Calendar') }}
+                </a>
+
+                <!-- Worker availabilities link -->
+                <a class="{{ request()->routeIs('workers') ? 'active' : '' }}"
+                   href="{{ route('workers') }}">
+                    <i class="fa fa-hourglass-start" aria-hidden="true"></i>
+                    {{ __('Workers') }}
+                </a>
+
+                <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"
+                   href="{{ url('/admin/dashboard') }}">
+                    <i class="fa fa-tachometer" aria-hidden="true"></i>{{ __('Dashboard') }}
+                </a>
+                @endrole
+            @endauth
+        </nav>
+
+        <div>
+
+            @php
+                $light = __('Light mode');
+                $dark = __('Dark mode');
+            @endphp
+
+            <span
+                class="pointer darkmode-toggle"
+                rel="button"
+                @click="toggleDarkMode"
+                x-text="isDarkModeOn() ? '🔆' : '🌒'"
+                :title="isDarkModeOn() ? '{{ $light }}' : '{{ $dark }}'"
+            >
+                    </span>
+        </div>
+    </div>
+
     <div id="calendar-container" wire:ignore>
         <div id="calendar"></div>
     </div>
@@ -80,7 +123,7 @@
                         id="selectedWorkerId"
                     >
                         @if( $selectedWorkerId === null )
-                        <option selected>{{ __("Select a worker") }}</option>
+                            <option selected>{{ __("Select a worker") }}</option>
                         @endif
                         @foreach ($workers as $worker)
                             <option {{ $selectedWorkerId === $worker->id ? "selected": "" }} value="{{ $worker->id }}">
