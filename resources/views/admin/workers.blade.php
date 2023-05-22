@@ -1,4 +1,4 @@
-@extends('layouts.admin-nosidebar')
+@extends('layouts.admin-calendar')
 
 @section('content')
 

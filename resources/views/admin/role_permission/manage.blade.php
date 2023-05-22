@@ -6,7 +6,7 @@
             <nav class="breadcrumb">
                 <ol>
                     <li>
-                        <a href="{{ url('/home') }}">{{ __('Home') }}</a>
+                        <a href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
                     </li>
                     <li>
                         <span>/</span>

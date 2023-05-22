@@ -24,8 +24,8 @@
                         <!-- Worker availabilities link -->
                         <a class="{{ request()->routeIs('workers') ? 'active' : '' }}"
                            href="{{ route('workers') }}">
-                                <i class="fa fa-hourglass-start" aria-hidden="true"></i>
-                                {{ __('Workers') }}
+                            <i class="fa fa-hourglass-start" aria-hidden="true"></i>
+                            {{ __('Workers') }}
                         </a>
 
                         <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"
@@ -74,6 +74,7 @@
                                     class="d-none"
                                 >
                                     @csrf
+                                    @method('DELETE')
                                 </form>
                             </div>
                         </div>

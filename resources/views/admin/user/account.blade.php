@@ -1,20 +1,12 @@
 <x-admin-layout>
 
-    <x-slot name="sidebar">
-
-        <div class="padding-1">
-            It is the unknown we fear when we look upon death and darkness, nothing more.
-        </div>
-
-    </x-slot>
-
     @section('content')
 
         <main class="padding-1">
             <nav class="breadcrumb">
                 <ol>
                     <li>
-                        <a href="{{ url('/home') }}">{{ __('Home') }}</a>
+                        <a href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
                     </li>
                     <li>
                         <span>/</span>

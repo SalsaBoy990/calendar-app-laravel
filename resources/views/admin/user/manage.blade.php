@@ -1,15 +1,12 @@
 <x-admin-layout>
 
-    <x-slot name="sidebar">
-    </x-slot>
-
     @section('content')
 
         <main class="padding-1">
             <nav class="breadcrumb">
                 <ol>
                     <li>
-                        <a href="{{ url('/home') }}">{{ __('Home') }}</a>
+                        <a href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
                     </li>
                     <li>
                         <span>/</span>
