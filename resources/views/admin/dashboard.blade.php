@@ -86,7 +86,6 @@
                                 class="hide"
                             >
                                 @csrf
-                                @method('DELETE')
                             </form>
                         </li>
 

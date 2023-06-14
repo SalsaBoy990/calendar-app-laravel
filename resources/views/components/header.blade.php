@@ -74,7 +74,6 @@
                                     class="d-none"
                                 >
                                     @csrf
-                                    @method('DELETE')
                                 </form>
                             </div>
                         </div>
