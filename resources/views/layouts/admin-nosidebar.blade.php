@@ -18,7 +18,6 @@
     @vite(['resources/sass/main.sass', 'resources/js/app.js'])
     @livewireStyles
 
-    <x-admin.head.tinymce-config/>
 
 </head>
 <body @scroll="setScrollToTop()">
