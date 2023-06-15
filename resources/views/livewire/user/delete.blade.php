@@ -22,7 +22,7 @@
                    disabled
                    type="number"
                    class="hidden"
-                   name="categoryId"
+                   name="userId"
                    value="{{ $userId }}"
             >
 
