@@ -6,6 +6,9 @@ use App\Models\Client;
 use App\Models\Event;
 use App\Models\Worker;
 use App\Support\InteractsWithBanner;
+use DateTime;
+use DateTimeInterface;
+use DateTimeZone;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -65,6 +68,7 @@ class Calendar extends Component {
     public string $until;
     public string $byweekday;
     public array $weekDays;
+    public int $interval;
     public array $rrule;
 
 
@@ -102,6 +106,7 @@ class Calendar extends Component {
             $rules['dtstart']   = [ 'nullable', 'string' ];
             $rules['until']     = [ 'nullable', 'string' ];
             $rules['duration']  = [ 'nullable', 'string' ];
+            $rules['interval']  = [ 'required', 'integer' ];
 
             return $rules;
 
@@ -123,6 +128,8 @@ class Calendar extends Component {
         $this->initializeProperties();
 
         $this->workers = Worker::all();
+
+        date_default_timezone_set( "Europe/Budapest" );
     }
 
     public function updatedIsModalOpen() {
@@ -149,6 +156,7 @@ class Calendar extends Component {
         $this->until           = '';
         $this->rrule           = [];
         $this->duration        = '';
+        $this->interval        = 1;
 
         //
         $this->allDay   = false;
@@ -176,7 +184,7 @@ class Calendar extends Component {
             'Saturday'  => 'Sat',
         ];
 
-        // todo: maybe add more options here
+        // bi-weekly or other recurrences can be created by setting the interval property (interval=2 -> every second week/month...)
         $this->frequencies = [
             'weekly',
             'monthly'
@@ -226,21 +234,48 @@ class Calendar extends Component {
             return redirect()->route( 'calendar' );
         }
 
-        if ( !$changedEvent->isRecurring ) {
+        if ( ! $changedEvent->is_recurring ) {
             $changedEvent->start = $event['start'];
             if ( Arr::exists( $event, 'end' ) ) {
                 $changedEvent->end = $event['end'];
             }
+            $changedEvent->save();
+
         } else {
-            // todo: change recurring events on drag and drop / resize events
-            // this is not supported currently, nothing will happen!
-            /* $rrule = $changedEvent->rrule;
-             $rrule['dtstart'] = $event['start'];
-             $changedEvent->rrule = $rrule;*/
+            // For recurring events, the event modal will appear!
+            // No other way to solve it.
+
+            // always use the uuid column here (which is the 'id')!
+            $eventId        = $changedEvent->id;
+            $this->updateId = $eventId;
+            $this->event    = Event::where( 'id', '=', $eventId )->first();
+
+            if ( $this->checkIfEventExists() === null ) {
+                $this->banner( __( 'Event does not exists!' ), 'danger' );
+
+                return redirect()->route( 'calendar' );
+            }
+
+            $newRules            = $this->event->rrule;
+            $newRules['dtstart'] = date( "Y-m-d\TH:i:s", strtotime( $event['start'] ) );
+
+            // On resize overwrite the duration field (the right way with DateTime class etc.)
+            if ( Arr::exists( $event, 'start' ) && Arr::exists( $event, 'end' ) ) {
+                $tz      = new DateTimeZone( 'Europe/Budapest' );
+                $tformat = DateTimeInterface::ATOM;
+
+                $start = DateTime::createFromFormat( $tformat, $event['start'], $tz );
+                $end   = DateTime::createFromFormat( $tformat, $event['end'], $tz );
+
+                $difference            = $end->diff( $start );
+                $newDuration           = $difference->format( "%H:%I:%S" );
+                $this->event->duration = $newDuration;
+            }
+
+            $this->event->rrule = $newRules;
+            $this->event->save();
         }
 
-
-        $changedEvent->save();
     }
 
 
@@ -265,56 +300,10 @@ class Calendar extends Component {
                 return redirect()->route( 'calendar' );
             }
 
-            $this->workerIds = $this->event
-                ->workers()
-                ->get()
-                ->pluck( [ 'id' ] )
-                ->toArray();
-
-            $this->description     = $this->event->description;
-            $this->status          = $this->event->status;
-            $this->backgroundColor = $this->event->backgroundColor ?? null;
-
-            $this->byweekday   = $this->event->rrule['byweekday'] ?? '';
-            $this->dtstart     = $this->event->rrule['dtstart'] ?? '';
-            $this->until       = $this->event->rrule['until'] ?? '';
-            $this->duration    = $this->event->duration ?? '';
-            $this->frequency   = $this->event->rrule['freq'] ?? '';
-            $this->isRecurring = $this->event->is_recurring ?? 0;
-            $this->clientId    = 0;
-
-            if ( isset( $this->event->client ) ) {
-                $this->clientId = $this->event->client->id;
-            }
+            $this->initializeExistingPropertiesForModal();
         }
 
-        // only for non-recurring events
-        if ( $this->isRecurring === 0 ) {
-
-            // todo: maybe disable the option to have full-day events altogether
-            $this->allDay = $args['allDay'];
-            if ( $this->allDay === false ) {
-                // datetime-local
-                $this->start = date( "Y-m-d\TH:i:s", strtotime( $this->event->start ?? $args['start'] ) );
-
-                if ( isset( $args['end'] ) ) {
-                    $this->end = date( "Y-m-d\TH:i:s", strtotime( $this->event->end ?? $args['end'] ) );
-                } else {
-                    $this->end = $this->event->end ?? null;
-                }
-
-            } else {
-                $this->start = date( "Y-m-d\TH:i:s", strtotime( $this->event->start ?? $args['start'] ) );
-                // all day events do not need to have the end date set, so check it
-                $this->end = isset( $this->event ) && $this->event->end ?
-                    date( "Y-m-d\TH:i:s", strtotime( $this->event->end ?? $args['end'] ) )
-                    :
-                    null;
-            }
-
-        }
-
-        $this->isModalOpen = true;
+        $this->initializePropertiesFromArgs( $args );
     }
 
 
@@ -325,10 +314,9 @@ class Calendar extends Component {
      */
     public function createOrUpdateEvent(): Redirector {
         $this->validate();
-        $eventEntity = null;
 
         DB::transaction(
-            function () use ( $eventEntity ) {
+            function () {
 
                 // all event have these
                 $eventProps = [
@@ -370,7 +358,7 @@ class Calendar extends Component {
                     $eventEntity->save();
                     $eventEntity->refresh();
 
-                    $this->banner( 'Successfully updated the event "' . htmlspecialchars( $eventEntity->client->name ) . '"!');
+                    $this->banner( 'Successfully updated the event "' . htmlspecialchars( $eventEntity->client->name ) . '"!' );
                 } else {
 
                     $eventProps['id'] = Str::uuid();
@@ -484,8 +472,13 @@ class Calendar extends Component {
             if ( $this->byweekday !== '' ) {
                 $this->rrule['byweekday'] = $this->byweekday;
             }
+
             if ( $this->frequency !== '' ) {
                 $this->rrule['freq'] = $this->frequency;
+            }
+
+            if ( $this->interval !== 0 ) {
+                $this->rrule['interval'] = $this->interval ?? 1;
             }
 
             if ( $this->dtstart !== '' ) {
@@ -498,10 +491,6 @@ class Calendar extends Component {
 
             if ( $this->duration !== '' ) {
                 $eventProps['duration'] = $this->duration;
-            }
-
-            if ( ! empty ( $this->rrule ) ) {
-                $this->rrule['interval'] = 1;
             }
 
             if ( ! empty( $this->rrule ) ) {
@@ -582,5 +571,60 @@ class Calendar extends Component {
         return true;
     }
 
+    private function initializeExistingPropertiesForModal(): void {
+        $this->workerIds = $this->event
+            ->workers()
+            ->get()
+            ->pluck( [ 'id' ] )
+            ->toArray();
 
+        $this->description     = $this->event->description;
+        $this->status          = $this->event->status;
+        $this->backgroundColor = $this->event->backgroundColor ?? null;
+
+        $this->frequency   = $this->event->rrule['freq'] ?? '';
+        $this->byweekday   = $this->event->rrule['byweekday'] ?? '';
+        $this->dtstart     = $this->event->rrule['dtstart'] ?? '';
+        $this->until       = $this->event->rrule['until'] ?? '';
+        $this->interval    = $this->event->rrule['interval'] ?? 1;
+        $this->duration    = $this->event->duration ?? '';
+        $this->isRecurring = $this->event->is_recurring ?? 0;
+        $this->clientId    = 0;
+
+        if ( isset( $this->event->client ) ) {
+            $this->clientId = $this->event->client->id;
+        }
+    }
+
+
+    private function initializePropertiesFromArgs( array $args ): void {
+        // only for non-recurring events
+        if ( $this->isRecurring === 0 ) {
+
+            // todo: maybe disable the option to have full-day events altogether
+            $this->allDay = $args['allDay'];
+            if ( $this->allDay === false ) {
+                // datetime-local
+                $this->start = date( "Y-m-d\TH:i:s", strtotime( $this->event->start ?? $args['start'] ) );
+
+                if ( isset( $args['end'] ) ) {
+                    $this->end = date( "Y-m-d\TH:i:s", strtotime( $this->event->end ?? $args['end'] ) );
+                } else {
+                    $this->end = $this->event->end ?? null;
+                }
+
+            } else {
+                $this->start = date( "Y-m-d\TH:i:s", strtotime( $this->event->start ?? $args['start'] ) );
+                // all day events do not need to have the end date set, so check it
+                $this->end = isset( $this->event ) && $this->event->end ?
+                    date( "Y-m-d\TH:i:s", strtotime( $this->event->end ?? $args['end'] ) )
+                    :
+                    null;
+            }
+
+        }
+
+        $this->isModalOpen = true;
+
+    }
 }

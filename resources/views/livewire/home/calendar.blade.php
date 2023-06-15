@@ -13,6 +13,13 @@
                 <a class="{{ request()->routeIs('workers') ? 'active' : '' }}"
                    href="{{ route('workers') }}">
                     <i class="fa fa-hourglass-start" aria-hidden="true"></i>
+                    {{ __('Availabilities') }}
+                </a>
+
+                <!-- Manage workers -->
+                <a class="{{ request()->routeIs('worker.manage') ? 'active' : '' }}"
+                   href="{{ route('worker.manage') }}">
+                    <i class="fa fa-users" aria-hidden="true"></i>
                     {{ __('Workers') }}
                 </a>
 
@@ -86,13 +93,13 @@
                            wire:model="isRecurring"
                            name="isRecurring"
                            value="1"
-                    > Yes<br>
+                    > <span class="padding-right-1">Yes</span>
                     <input type="radio"
                            wire:model="isRecurring"
                            name="isRecurring"
                            value="0"
                            checked
-                    > No
+                    > <span class="padding-right-1">No</span>
 
                     <div class="{{ $errors->has('isRecurring') ? 'red' : '' }}">
                         {{ $errors->has('isRecurring') ? $errors->first('isRecurring') : '' }}
@@ -155,45 +162,88 @@
                         <!-- RECURRING EVENT PROPERTIES -->
                         <div x-show="isRecurring">
 
-                            <!-- Freq -->
-                            <label for="frequency">{{ __('Frequency') }}</label>
-                            <select
-                                wire:model.defer="frequency"
-                                class="{{ $errors->has('frequency') ? 'border border-red' : '' }}"
-                                aria-label="{{ __("Select a repeat frequency") }}"
-                                name="frequency"
-                            >
-                                @foreach ($frequencies as $freq)
-                                    <option
-                                        {{ $frequency === $freq ? "selected": "" }} value="{{ $freq }}">{{ $freq }}</option>
-                                @endforeach
-                            </select>
+                            <div class="row-padding">
 
-                            <div class="{{ $errors->has('frequency') ? 'error-message' : '' }}">
-                                {{ $errors->has('frequency') ? $errors->first('frequency') : '' }}
+                                <div class="col s6">
+                                    <!-- Freq -->
+                                    <label for="frequency">{{ __('Frequency') }}<span class="text-red">*</span></label>
+                                    <select
+                                        wire:model.defer="frequency"
+                                        class="{{ $errors->has('frequency') ? 'border border-red' : '' }}"
+                                        aria-label="{{ __("Select a repeat frequency") }}"
+                                        name="frequency"
+                                    >
+                                        @foreach ($frequencies as $freq)
+                                            <option
+                                                {{ $frequency === $freq ? "selected": "" }} value="{{ $freq }}">{{ $freq }}</option>
+                                        @endforeach
+                                    </select>
+
+                                    <div class="{{ $errors->has('frequency') ? 'error-message' : '' }}">
+                                        {{ $errors->has('frequency') ? $errors->first('frequency') : '' }}
+                                    </div>
+                                </div>
+
+                                <div class="col s6">
+                                    <!-- Interval -->
+                                    <label
+                                        for="interval">{{ __('Interval') }}<span class="text-red">*</span></label>
+                                    <input
+                                        wire:model.defer="interval"
+                                        class="{{ $errors->has('interval') ? 'border border-red' : '' }}"
+                                        name="interval"
+                                        type="number"
+                                    />
+                                    <small>{{ __('For example, at every 2nd week/month') }}</small>
+
+                                    <div class="{{ $errors->has('interval') ? 'error-message' : '' }}">
+                                        {{ $errors->has('interval') ? $errors->first('interval') : '' }}
+                                    </div>
+                                </div>
+
                             </div>
 
 
-                            <label for="byweekday">{{ __('By Weekday') }}</label>
-                            <select
-                                wire:model.defer="byweekday"
-                                class="{{ $errors->has('byweekday') ? 'border border-red' : '' }}"
-                                aria-label="{{ __("Select a weekday") }}"
-                                name="byweekday"
-                            >
-                                @foreach ($weekDays as $key => $value)
-                                    <option
-                                        {{ $byweekday === $value ? "selected": "" }} value="{{ $value }}">{{ $key }}</option>
-                                @endforeach
-                            </select>
+                            <div class="row-padding">
 
-                            <div class="{{ $errors->has('byweekday') ? 'error-message' : '' }}">
-                                {{ $errors->has('byweekday') ? $errors->first('byweekday') : '' }}
+                                <div class="col s6">
+                                    <label for="byweekday">{{ __('By Weekday') }}<span class="text-red">*</span></label>
+                                    <select
+                                        wire:model.defer="byweekday"
+                                        class="{{ $errors->has('byweekday') ? 'border border-red' : '' }}"
+                                        aria-label="{{ __("Select a weekday") }}"
+                                        name="byweekday"
+                                    >
+                                        @foreach ($weekDays as $key => $value)
+                                            <option
+                                                {{ $byweekday === $value ? "selected": "" }} value="{{ $value }}">{{ $key }}</option>
+                                        @endforeach
+                                    </select>
+
+                                    <div class="{{ $errors->has('byweekday') ? 'error-message' : '' }}">
+                                        {{ $errors->has('byweekday') ? $errors->first('byweekday') : '' }}
+                                    </div>
+                                </div>
+
+                                <div class="col s6">
+                                    <!-- End recurring date -->
+                                    <label for="duration">{{ __('Duration') }}<span class="text-red">*</span></label>
+                                    <input
+                                        wire:model.defer="duration"
+                                        type="time"
+                                        class="{{ $errors->has('duration') ? 'border border-red' : '' }}"
+                                        name="duration"
+                                    >
+
+                                    <div class="{{ $errors->has('duration') ? 'error-message' : '' }}">
+                                        {{ $errors->has('duration') ? $errors->first('duration') : '' }}
+                                    </div>
+                                </div>
                             </div>
 
 
                             <!-- Start recurring date -->
-                            <label for="dtstart">{{ __('Start recurring date') }}</label>
+                            <label for="dtstart">{{ __('Start recurring date') }}<span class="text-red">*</span></label>
                             <input
                                 wire:model.defer="dtstart"
                                 type="datetime-local"
@@ -219,19 +269,6 @@
                                 {{ $errors->has('until') ? $errors->first('until') : '' }}
                             </div>
 
-
-                            <!-- End recurring date -->
-                            <label for="duration">{{ __('Duration') }}</label>
-                            <input
-                                wire:model.defer="duration"
-                                type="time"
-                                class="{{ $errors->has('duration') ? 'border border-red' : '' }}"
-                                name="duration"
-                            >
-
-                            <div class="{{ $errors->has('duration') ? 'error-message' : '' }}">
-                                {{ $errors->has('duration') ? $errors->first('duration') : '' }}
-                            </div>
                         </div>
                         <!-- RECURRING EVENT PROPERTIES END -->
 
@@ -476,7 +513,14 @@
 
                 if (event.extendedProps.client !== null && event.extendedProps.client.name) {
                     const eventTitle = container.childNodes[1].firstChild;
-                    eventTitle.innerText = event.extendedProps.client.name;
+
+                    if (event.extendedProps.is_recurring === 1) {
+                        const recurringIcon = '<i class="fa fa-refresh margin-left-0-5" aria-hidden="true"></i>';
+                        eventTitle.innerHTML = event.extendedProps.client.name + recurringIcon;
+                    } else {
+                        eventTitle.innerText = event.extendedProps.client.name;
+                    }
+
                 }
 
                 if (event.extendedProps.client !== null && event.extendedProps.client.address) {

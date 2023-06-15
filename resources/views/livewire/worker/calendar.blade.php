@@ -19,7 +19,7 @@
                 <!-- Manage workers -->
                 <a class="{{ request()->routeIs('worker.manage') ? 'active' : '' }}"
                    href="{{ route('worker.manage') }}">
-                    <i class="fa fa-hourglass-start" aria-hidden="true"></i>
+                    <i class="fa fa-users" aria-hidden="true"></i>
                     {{ __('Workers') }}
                 </a>
 
