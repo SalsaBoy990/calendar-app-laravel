@@ -101,11 +101,11 @@ class Calendar extends Component {
 
         } else {
             // recurring
-            $rules['frequency'] = [ 'nullable', 'string' ];
-            $rules['byweekday'] = [ 'nullable', 'string' ];
-            $rules['dtstart']   = [ 'nullable', 'string' ];
+            $rules['frequency'] = [ 'required', 'string' ];
+            $rules['byweekday'] = [ 'required', 'string' ];
+            $rules['dtstart']   = [ 'required', 'string' ];
             $rules['until']     = [ 'nullable', 'string' ];
-            $rules['duration']  = [ 'nullable', 'string' ];
+            $rules['duration']  = [ 'required', 'string' ];
             $rules['interval']  = [ 'required', 'integer' ];
 
             return $rules;
@@ -128,8 +128,6 @@ class Calendar extends Component {
         $this->initializeProperties();
 
         $this->workers = Worker::all();
-
-        date_default_timezone_set( "Europe/Budapest" );
     }
 
     public function updatedIsModalOpen() {
@@ -571,6 +569,11 @@ class Calendar extends Component {
         return true;
     }
 
+
+    /**
+     * Initialize properties from event object for the modal
+     * @return void
+     */
     private function initializeExistingPropertiesForModal(): void {
         $this->workerIds = $this->event
             ->workers()
@@ -597,6 +600,12 @@ class Calendar extends Component {
     }
 
 
+    /**
+     * Initialize properties for modal from arguments coming from client-side (from FullCalendar)
+     * @param  array  $args
+     *
+     * @return void
+     */
     private function initializePropertiesFromArgs( array $args ): void {
         // only for non-recurring events
         if ( $this->isRecurring === 0 ) {
