@@ -2,13 +2,8 @@
 
 1. Install composer and npm packages
 2. Set up variables in **.env** file (db, make sure to have an smtp server that you can use to send emails for 2fa codes - I use mailcatcher locally - or use the mailtrap.io cloud service)
-3. Run `npm run dev` and `php artisan serve`
-4. Run migrations and seed: `php artisan migrate --seed`
-5. You can register on the site, however you will not have the admin privileges!
-6. Change the `role_id` in the users table to refer to the super-administrator role (in roles table).
-7. Make sure to assign all the permissions to the super-administrator role! Login, go to the roles and permissions page and set these up.
-
-Or use the `gulacsi.sql.zip` file to import into the database, so you don't have to go through steps 4-7.
+3. Use the `gulacsi-new.sql.zip` file to import into the database.
+4. Run `npm run dev` and `php artisan serve`
 
 **Use these credentails to log in:**
 gulandras90@gmail.com
