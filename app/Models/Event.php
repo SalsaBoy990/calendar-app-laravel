@@ -58,8 +58,15 @@ class Event extends Model {
     /**
      * @return BelongsToMany
      */
-    public function users(): BelongsToMany {
+/*    public function users(): BelongsToMany {
         return $this->belongsToMany( User::class, 'users_events', 'event_id', 'user_id' );
+    }*/
+
+    /**
+     * @return BelongsToMany
+     */
+    public function workers(): BelongsToMany {
+        return $this->belongsToMany( Worker::class, 'workers_events', 'event_id', 'worker_id' );
     }
 
     /**

@@ -13,6 +13,13 @@
                 <a class="{{ request()->routeIs('workers') ? 'active' : '' }}"
                    href="{{ route('workers') }}">
                     <i class="fa fa-hourglass-start" aria-hidden="true"></i>
+                    {{ __('Availabilities') }}
+                </a>
+
+                <!-- Manage workers -->
+                <a class="{{ request()->routeIs('worker.manage') ? 'active' : '' }}"
+                   href="{{ route('worker.manage') }}">
+                    <i class="fa fa-hourglass-start" aria-hidden="true"></i>
                     {{ __('Workers') }}
                 </a>
 
@@ -51,7 +58,7 @@
 
         <x-admin.form-modal
             trigger="isModalOpen"
-            title="{{ $updateId ? $availability->user->name : __('Add availability') }}"
+            title="{{ $updateId ? $availability->worker->name : __('Add availability') }}"
             id="{{ $modalId }}"
         >
             <form wire:submit.prevent="createOrUpdateAvailability">
@@ -201,7 +208,7 @@
                 id="{{ $deleteModalId }}"
             >
                 <div>
-                    <h3 class="h5">{{ $availability->user->name }}</h3>
+                    <h3 class="h5">{{ $availability->worker->name }}</h3>
 
                     <button wire:click="$emit('deleteAvailabilityListener')"
                             type="button"
@@ -236,7 +243,7 @@
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
                 locale: '{{ 'hu' ?? config('app.locale') }}',
                 allDaySlot: false,
@@ -281,21 +288,14 @@
 
                     if (view.type === 'timeGridWeek' && container && event.extendedProps && event.allDay === false) {
 
-                        if (event.extendedProps.description) {
-                            const description = document.createElement('p');
-                            description.innerText += event.extendedProps.description;
-                            description.classList.add('description');
-                            container.appendChild(description)
-                        }
-
-                        if (event.extendedProps.user !== undefined) {
-                            const user = event.extendedProps.user;
+                        if (event.extendedProps.worker !== undefined) {
+                            const worker = event.extendedProps.worker;
                             const bar = document.createElement('div');
                             bar.classList.add('workers-container');
 
                             const badge = document.createElement('span');
                             badge.classList.add('badge', 'accent');
-                            badge.innerText = user.name;
+                            badge.innerText = worker.name;
                             bar.appendChild(badge);
 
                             container.appendChild(bar);

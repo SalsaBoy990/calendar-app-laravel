@@ -4,8 +4,7 @@ namespace App\Http\Livewire\Home;
 
 use App\Models\Client;
 use App\Models\Event;
-use App\Models\Role;
-use App\Models\User;
+use App\Models\Worker;
 use App\Support\InteractsWithBanner;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -123,16 +122,7 @@ class Calendar extends Component {
     public function mount() {
         $this->initializeProperties();
 
-        $workerRole = Role::where( 'slug', 'worker' )->get()->first();
-
-        // query users that have worker role
-        $this->workers = User::whereHas(
-            'role',
-            function ( $q ) use ( $workerRole ) {
-                $q->where( 'id', $workerRole->id );
-            } )->get();
-
-
+        $this->workers = Worker::all();
     }
 
     public function updatedIsModalOpen() {
@@ -210,7 +200,7 @@ class Calendar extends Component {
      * @return Application|Factory|View
      */
     public function render(): View|Factory|Application {
-        $this->events = Event::with( [ 'users', 'client' ] )->get();
+        $this->events = Event::with( [ 'workers', 'client' ] )->get();
 
         return view( 'livewire.home.calendar' );
     }
@@ -276,7 +266,7 @@ class Calendar extends Component {
             }
 
             $this->workerIds = $this->event
-                ->users()
+                ->workers()
                 ->get()
                 ->pluck( [ 'id' ] )
                 ->toArray();
@@ -376,7 +366,7 @@ class Calendar extends Component {
 
                     $eventEntity->update( $eventProps );
 
-                    $eventEntity->users()->sync( $this->workerIds );
+                    $eventEntity->workers()->sync( $this->workerIds );
                     $eventEntity->save();
                     $eventEntity->refresh();
 
@@ -398,7 +388,7 @@ class Calendar extends Component {
 
                     $eventEntity = Event::create( $eventProps );
 
-                    $eventEntity->users()->sync( $this->workerIds );
+                    $eventEntity->workers()->sync( $this->workerIds );
                     $eventEntity->save();
                     $eventEntity->refresh();
 

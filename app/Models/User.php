@@ -80,14 +80,14 @@ final class User extends Authenticatable {
     /**
      * @return BelongsToMany
      */
-    public function events(): BelongsToMany {
+/*    public function events(): BelongsToMany {
         return $this->belongsToMany( Event::class, 'users_events' );
-    }
+    }*/
 
     /**
      * @return HasMany
      */
-    public function worker_availabilities(): HasMany {
+/*    public function worker_availabilities(): HasMany {
         return $this->hasMany( WorkerAvailability::class, 'availability_id');
-    }
+    }*/
 }

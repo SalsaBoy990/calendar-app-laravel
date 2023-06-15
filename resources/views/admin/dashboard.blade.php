@@ -18,11 +18,11 @@
                         </li>
 
                         <!-- Custom links -->
-                        <!-- Manage users link -->
+                        <!-- Manage workers link -->
                         <li class="card padding-1 text-center">
-                            <a class="padding-top-bottom-1" href="{{ route('user.manage') }}">
-                                <i class="fa fa-user" aria-hidden="true"></i>
-                                {{ __('Manage users') }}
+                            <a class="padding-top-bottom-1" href="{{ route('worker.manage') }}">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                {{ __('Manage workers') }}
                             </a>
                         </li>
 
@@ -37,7 +37,7 @@
                         <!-- Worker availabilities link -->
                         <li class="card padding-1 text-center">
                             <a class="padding-top-bottom-1" href="{{ route('workers') }}">
-                                <i class="fa fa-hourglass-start" aria-hidden="true"></i>
+                                <i class="fa fa-clock-o" aria-hidden="true"></i>
                                 <span>{{ __('Worker availabilities') }}</span>
                             </a>
                         </li>
@@ -52,6 +52,15 @@
                         @endrole
 
                         @role('super-administrator')
+                        <!-- Manage users link -->
+                        <li class="card padding-1 text-center">
+                            <a class="padding-top-bottom-1" href="{{ route('user.manage') }}">
+                                <i class="fa fa-users" aria-hidden="true"></i>
+                                {{ __('Manage users') }}
+                            </a>
+                        </li>
+
+
                         <!-- Manage roles and permissions link -->
                         <li class="card padding-1 text-center">
                             <a class="padding-top-bottom-1" href="{{ route('role-permission.manage') }}">

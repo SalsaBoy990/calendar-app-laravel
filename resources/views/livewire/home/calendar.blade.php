@@ -44,9 +44,8 @@
                 rel="button"
                 @click="toggleDarkMode"
                 x-text="isDarkModeOn() ? '🔆' : '🌒'"
-                :title="isDarkModeOn() ? '{{ $light }}' : '{{ $dark }}'"
-            >
-                    </span>
+                :title="isDarkModeOn() ? '{{ $light }}' : '{{ $dark }}'">
+            </span>
         </div>
     </div>
 
@@ -414,8 +413,8 @@
                 locale: '{{ 'hu' ?? config('app.locale') }}',
                 allDaySlot: false,
                 defaultAllDay: false,
-                slotMinTime: '08:00:00',
-                slotMaxTime: '20:00:00',
+                slotMinTime: '06:00:00',
+                slotMaxTime: '24:00:00',
                 firstDay: 1,
                 fixedWeekCount: 5,
                 showNonCurrentDates: false,
@@ -492,29 +491,29 @@
 
 
                 if (event.end !== null) {
-/*                    const description = document.createElement('p');
+                    /*                    const description = document.createElement('p');
 
-                    const startTimestamp = new Date(event.start).getTime();
-                    const endTimestamp = new Date(event.end).getTime();
+                                        const startTimestamp = new Date(event.start).getTime();
+                                        const endTimestamp = new Date(event.end).getTime();
 
-                    // Calculate duration in hours
-                    const duration = (endTimestamp - startTimestamp) / (60 * 60 * 1000);
+                                        // Calculate duration in hours
+                                        const duration = (endTimestamp - startTimestamp) / (60 * 60 * 1000);
 
-                    description.innerText = duration + 'ó';
-                    description.classList.add('description');
-                    container.appendChild(description)*/
+                                        description.innerText = duration + 'ó';
+                                        description.classList.add('description');
+                                        container.appendChild(description)*/
                 }
 
 
-                if (event.extendedProps.users && event.extendedProps.users.length > 0) {
-                    const users = event.extendedProps.users;
+                if (event.extendedProps.workers && event.extendedProps.workers.length > 0) {
+                    const workers = event.extendedProps.workers;
                     const bar = document.createElement('div');
                     bar.classList.add('workers-container');
 
-                    for (let i = 0; i < users.length; i++) {
+                    for (let i = 0; i < workers.length; i++) {
                         const badge = document.createElement('span');
                         badge.classList.add('badge', 'accent');
-                        badge.innerText = users[i].name;
+                        badge.innerText = workers[i].name;
                         bar.appendChild(badge);
                     }
 

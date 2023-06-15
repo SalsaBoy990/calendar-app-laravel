@@ -46,8 +46,15 @@ class WorkerAvailability extends Model
     /**
      * @return BelongsTo
      */
-    public function user(): BelongsTo {
+/*    public function user(): BelongsTo {
         return $this->belongsTo( User::class, 'user_id');
+    }*/
+
+    /**
+     * @return BelongsTo
+     */
+    public function worker(): BelongsTo {
+        return $this->belongsTo( Worker::class, 'worker_id');
     }
 
 }

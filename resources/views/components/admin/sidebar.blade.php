@@ -45,17 +45,17 @@
                         <a class="nav-link {{ request()->routeIs('workers') ? 'active' : '' }}"
                            href="{{ route('workers') }}"
                         >
-                            <i class="fa fa-hourglass-start" aria-hidden="true"></i>
+                            <i class="fa fa-clock-o" aria-hidden="true"></i>
                             <span>{{ __('Worker availabilities') }}</span></a>
                     </li>
 
-                    <!-- Manage users link -->
+                    <!-- Manage workers link -->
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->routeIs('user.manage') ? 'active' : '' }}"
-                           href="{{ route('user.manage') }}"
+                        <a class="nav-link {{ request()->routeIs('worker.manage') ? 'active' : '' }}"
+                           href="{{ route('worker.manage') }}"
                         >
                             <i class="fa fa-users" aria-hidden="true"></i>
-                            <span>{{ __('Manage users') }}</span>
+                            <span>{{ __('Manage workers') }}</span>
                         </a>
                     </li>
 
@@ -71,6 +71,16 @@
                     @endrole
 
                     @role('super-administrator')
+                    <!-- Manage users link -->
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('user.manage') ? 'active' : '' }}"
+                           href="{{ route('user.manage') }}"
+                        >
+                            <i class="fa fa-users" aria-hidden="true"></i>
+                            <span>{{ __('Manage users') }}</span>
+                        </a>
+                    </li>
+
                     <!-- Role/Permissions link -->
                     <li class="nav-item">
                         <a class="nav-link {{ request()->routeIs('role-permission.manage') ? 'active' : '' }}"

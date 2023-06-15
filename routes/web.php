@@ -5,6 +5,7 @@ use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WorkerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,7 +34,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // 2FA endpoints
 Route::get('2fa', [App\Http\Controllers\UserCodeController::class, 'index'])->name('2fa.index');
 Route::post('2fa', [App\Http\Controllers\UserCodeController::class, 'store'])->name('2fa.post');
-Route::get('2fa/reset', [App\Http\Controllers\UserCodeController::class, 'resend'])->name('2fa.resend');
+Route::get('2fa/reset', [App\Http\Controllers\UserCodeController::class, 'resend'])
+    ->name('2fa.resend');
 // 2FA endpoints END
 
 
@@ -52,7 +54,8 @@ Route::group(['middleware' => 'role:administrator'], function () {
 Route::group(
     ['middleware' => ['auth', 'verified', '2fa', 'role:super-administrator'], 'prefix' => 'admin'],
     function () {
-        Route::get('role-permission/manage', [RolePermissionController::class, 'index'])->name('role-permission.manage');
+        Route::get('role-permission/manage', [RolePermissionController::class, 'index'])
+             ->name('role-permission.manage');
     }
 );
 
@@ -61,6 +64,7 @@ Route::group(
     ['middleware' => ['auth', 'verified', '2fa', 'role:super-administrator|administrator'], 'prefix' => 'admin'],
     function () {
         Route::get('user/manage', [UserController::class, 'index'])->name('user.manage');
+        Route::get('worker/manage', [WorkerController::class, 'index'])->name('worker.manage');
         Route::get('client/manage', [ClientController::class, 'index'])->name('client.manage');
         Route::get('calendar', [CalendarController::class, 'index'])->name('calendar');
         Route::get('workers', [CalendarController::class, 'workers'])->name('workers');

@@ -24,7 +24,14 @@
                         <!-- Worker availabilities link -->
                         <a class="{{ request()->routeIs('workers') ? 'active' : '' }}"
                            href="{{ route('workers') }}">
-                            <i class="fa fa-hourglass-start" aria-hidden="true"></i>
+                            <i class="fa fa-clock-o" aria-hidden="true"></i>
+                            {{ __('Availabilities') }}
+                        </a>
+
+                        <!-- Manage workers link -->
+                        <a class="{{ request()->routeIs('worker.manage') ? 'active' : '' }}"
+                           href="{{ route('worker.manage') }}">
+                            <i class="fa fa-users" aria-hidden="true"></i>
                             {{ __('Workers') }}
                         </a>
 

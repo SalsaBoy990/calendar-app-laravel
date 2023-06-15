@@ -2,8 +2,7 @@
 
 namespace App\Http\Livewire\Worker;
 
-use App\Models\Role;
-use App\Models\User;
+use App\Models\Worker;
 use App\Models\WorkerAvailability;
 use App\Support\InteractsWithBanner;
 use Illuminate\Contracts\Foundation\Application;
@@ -66,14 +65,8 @@ class Calendar extends Component {
     public function mount() {
         $this->initializeProperties();
 
-        $workerRole = Role::where( 'slug', 'worker' )->get()->first();
-
-        // query users that have worker role
-        $this->workers = User::whereHas(
-            'role',
-            function ( $q ) use ( $workerRole ) {
-                $q->where( 'id', $workerRole->id );
-            } )->get();
+        // query workers
+        $this->workers = Worker::all();
 
         $this->selectedWorkerId = null;
 
@@ -110,7 +103,7 @@ class Calendar extends Component {
      * @return Application|Factory|View
      */
     public function render(): View|Factory|Application {
-        $this->availabilities = WorkerAvailability::with( 'user' )->get();
+        $this->availabilities = WorkerAvailability::with( 'worker' )->get();
 
         return view( 'livewire.worker.calendar' );
     }
@@ -155,7 +148,7 @@ class Calendar extends Component {
 
             $this->description      = $this->availability->description ?? '';
             $this->backgroundColor  = $this->availability->backgroundColor ?? '';
-            $this->selectedWorkerId = $this->availability->user->id ?? null;
+            $this->selectedWorkerId = $this->availability->worker->id ?? null;
         }
 
         $this->allDay = $args['allDay'];
@@ -189,17 +182,16 @@ class Calendar extends Component {
 
         $this->validate();
 
-        // $user = User::where( 'id', $this->selectedWorkerId )->first();
-        // get selected user entity (we have all the workers in the collection)
-        $user = null;
+        // get selected worker entity (we have all the workers in the collection)
+        $workerEntity = null;
         foreach ( $this->workers as $worker ) {
             if ( $worker->id === $this->selectedWorkerId ) {
-                $user = $worker;
+                $workerEntity = $worker;
             }
         }
 
         DB::transaction(
-            function () use ( $user ) {
+            function () use ( $workerEntity ) {
 
                 // if we have an id, update existing availability
                 if ( $this->updateId !== '' ) {
@@ -223,13 +215,13 @@ class Calendar extends Component {
                         'backgroundColor' => $this->backgroundColor,
                     ] );
 
-                    if ( $this->selectedWorkerId !== $updateAvailability->user->id ) {
+                    if ( $this->selectedWorkerId !== $updateAvailability->worker->id ) {
                         // null parent relation
-                        $updateAvailability->user()->dissociate();
+                        $updateAvailability->worker()->dissociate();
 
                         // associate with the selected user
-                        $user = User::where( 'id', $this->selectedWorkerId )->first();
-                        $updateAvailability->user()->associate( $user );
+                        $workerEntity = Worker::where( 'id', $this->selectedWorkerId )->first();
+                        $updateAvailability->worker()->associate( $workerEntity );
                     }
 
                     $updateAvailability->save();
@@ -244,7 +236,7 @@ class Calendar extends Component {
                         'backgroundColor' => $this->backgroundColor,
                     ] );
 
-                    $newAvailability->user()->associate( $user );
+                    $newAvailability->worker()->associate( $workerEntity );
                     $newAvailability->save();
                 }
 
@@ -254,9 +246,9 @@ class Calendar extends Component {
 
 
         $this->updateId !== '' ?
-            $this->banner( 'Successfully updated the worker availability "' . htmlspecialchars( $user->name ) . '"!' )
+            $this->banner( 'Successfully updated the worker availability "' . htmlspecialchars( $workerEntity->name ) . '"!' )
             :
-            $this->banner( 'Successfully created the worker availability "' . htmlspecialchars( $user->name ) . '"!' );
+            $this->banner( 'Successfully created the worker availability "' . htmlspecialchars( $workerEntity->name ) . '"!' );
 
         // Need to clear previous event data
         $this->initializeProperties();
@@ -274,8 +266,8 @@ class Calendar extends Component {
         // if we have an id, delete existing event
         if ( $this->updateId !== '' ) {
 
-            $availability = WorkerAvailability::where( 'id', $this->updateId )->with( 'user' )->first();
-            $title        = htmlspecialchars( $availability->user->name );
+            $availability = WorkerAvailability::where( 'id', $this->updateId )->with( 'worker' )->first();
+            $title        = htmlspecialchars( $availability->worker->name );
 
             // delete role, rollback transaction if fails
             DB::transaction(
