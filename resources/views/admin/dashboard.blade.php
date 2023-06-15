@@ -11,40 +11,40 @@
                     <ul class="dashboard-card-grid">
 
                         @role('super-administrator|administrator')
-                        <li class="card padding-1 text-center">
-                            <a href="{{ url('/home') }}" class="padding-top-bottom-1">
+                        <li class="card text-center">
+                            <a href="{{ url('/home') }}" class="card-link">
                                 <i class="fa fa-home" aria-hidden="true"></i>{{ __('Home') }}
                             </a>
                         </li>
 
                         <!-- Custom links -->
                         <!-- Manage workers link -->
-                        <li class="card padding-1 text-center">
-                            <a class="padding-top-bottom-1" href="{{ route('worker.manage') }}">
+                        <li class="card text-center">
+                            <a class="card-link" href="{{ route('worker.manage') }}">
                                 <i class="fa fa-users" aria-hidden="true"></i>
                                 {{ __('Manage workers') }}
                             </a>
                         </li>
 
                         <!-- Event calendar link -->
-                        <li class="card padding-1 text-center">
-                            <a class="padding-top-bottom-1" href="{{ route('calendar') }}">
+                        <li class="card text-center">
+                            <a class="card-link" href="{{ route('calendar') }}">
                                 <i class="fa fa-calendar" aria-hidden="true"></i>
                                 <span>{{ __('Manage events') }}</span>
                             </a>
                         </li>
 
                         <!-- Worker availabilities link -->
-                        <li class="card padding-1 text-center">
-                            <a class="padding-top-bottom-1" href="{{ route('workers') }}">
+                        <li class="card text-center">
+                            <a class="card-link" href="{{ route('workers') }}">
                                 <i class="fa fa-clock-o" aria-hidden="true"></i>
                                 <span>{{ __('Worker availabilities') }}</span>
                             </a>
                         </li>
 
                         <!-- Manage clients link -->
-                        <li class="card padding-1 text-center">
-                            <a class="padding-top-bottom-1" href="{{ route('client.manage') }}">
+                        <li class="card text-center">
+                            <a class="card-link" href="{{ route('client.manage') }}">
                                 <i class="fa fa-address-card" aria-hidden="true"></i>
                                 <span>{{ __('Manage clients') }}</span>
                             </a>
@@ -53,8 +53,8 @@
 
                         @role('super-administrator')
                         <!-- Manage users link -->
-                        <li class="card padding-1 text-center">
-                            <a class="padding-top-bottom-1" href="{{ route('user.manage') }}">
+                        <li class="card text-center">
+                            <a class="card-link" href="{{ route('user.manage') }}">
                                 <i class="fa fa-users" aria-hidden="true"></i>
                                 {{ __('Manage users') }}
                             </a>
@@ -62,8 +62,8 @@
 
 
                         <!-- Manage roles and permissions link -->
-                        <li class="card padding-1 text-center">
-                            <a class="padding-top-bottom-1" href="{{ route('role-permission.manage') }}">
+                        <li class="card text-center">
+                            <a class="card-link" href="{{ route('role-permission.manage') }}">
                                 <i class="fa fa-lock" aria-hidden="true"></i>
                                 {{ __('Roles and Permissions') }}
                             </a>
@@ -71,16 +71,16 @@
                         @endrole
 
                         <!-- Account link -->
-                        <li class="card padding-1 text-center">
-                            <a class="padding-top-bottom-1" href="{{ route('user.account', auth()->id()) }}">
+                        <li class="card text-center">
+                            <a class="card-link" href="{{ route('user.account', auth()->id()) }}">
                                 <i class="fa fa-user" aria-hidden="true"></i>
                                 <span>{{ __('My Account') }}</span>
                             </a>
                         </li>
 
                         <!-- Logout link -->
-                        <li class="card padding-1 text-center">
-                            <a class="padding-top-bottom-1"
+                        <li class="card text-center">
+                            <a class="card-link"
                                href="{{ route('logout') }}"
                                onclick="event.preventDefault();
                                     document.getElementById('logout-form-dashboard').submit();"

@@ -21,7 +21,7 @@
                     $activeTab = session('flash.activeTab') ?? 'Roles';
                 @endphp
 
-                <div x-data="tabsData( @js($activeTab) )" class="border round">
+                <div x-data="tabsData( @js($activeTab) )" class="border border-40 round">
 
                     <div class="bar">
                         <a id="RolesTrigger"
