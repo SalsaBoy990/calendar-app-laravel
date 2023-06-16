@@ -290,15 +290,8 @@
 
                         if (event.extendedProps.worker !== undefined) {
                             const worker = event.extendedProps.worker;
-                            const bar = document.createElement('div');
-                            bar.classList.add('workers-container');
-
-                            const badge = document.createElement('span');
-                            badge.classList.add('badge', 'accent');
-                            badge.innerText = worker.name;
-                            bar.appendChild(badge);
-
-                            container.appendChild(bar);
+                            const eventTitle = container.childNodes[1].firstChild;
+                            eventTitle.innerText = worker.name;
                         }
 
                     }
