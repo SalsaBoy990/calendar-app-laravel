@@ -15,7 +15,10 @@ class ClientController extends Controller {
     public function index() {
         $this->authorize( 'viewAny', User::class );
 
-        $clients = Client::orderBy( 'order', 'ASC' )->with( [ 'events', 'client_detail' ] )->get();
+        $clients = Client::orderBy( 'order', 'ASC' )
+                         ->with( [ 'events', 'client_detail' ] )
+                         ->paginate( 3 )->withQueryString();
+
 
         return view( 'admin.client.manage' )->with( [
             'clients' => $clients,

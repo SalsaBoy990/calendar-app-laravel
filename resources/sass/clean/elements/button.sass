@@ -312,3 +312,12 @@ a.button-square
 
 .pagination-group
     column-gap: 0.25em
+
+    .button.disabled
+        &:hover, &:focus
+            color: inherit
+            background-color: transparent
+
+    .button.active
+        &:hover, &:focus
+            background-color: $primary-light
