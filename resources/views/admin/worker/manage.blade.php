@@ -68,6 +68,8 @@
                     </tbody>
                 </table>
 
+                {{ $workers->links('components.pagination') }}
+
             </div>
         </main>
     @endsection

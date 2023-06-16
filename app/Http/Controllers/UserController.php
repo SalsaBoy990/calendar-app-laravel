@@ -29,7 +29,11 @@ class UserController extends Controller
     public function index(): Factory|View|Application {
         $this->authorize('viewAny', User::class);
 
-        $users = User::orderBy('created_at', 'DESC')->with('role')->get();
+        $users = User::orderBy('created_at', 'DESC')
+                     ->with('role')
+                     ->paginate( 3 )
+                     ->withQueryString();
+
         $permissions = Permission::all();
         $roles = Role::all();
 

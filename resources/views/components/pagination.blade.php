@@ -29,7 +29,7 @@
             @if (is_array($element))
                 @foreach ($element as $page => $url)
                     @if ($page == $paginator->currentPage())
-                        <a class="bar-item button primary active" aria-current="page" href="javascript:void(0)">
+                        <a class="bar-item button primary active gray-button" aria-current="page" href="javascript:void(0)">
                             <span>{{ $page }}</span>
                         </a>
                     @else
