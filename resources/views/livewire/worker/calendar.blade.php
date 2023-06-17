@@ -23,6 +23,13 @@
                     {{ __('Workers') }}
                 </a>
 
+                <!-- Statistics -->
+                <a class="{{ request()->routeIs('statistics') ? 'active' : '' }}"
+                   href="{{ route('statistics') }}">
+                    <i class="fa fa-line-chart" aria-hidden="true"></i>
+                    {{ __('Statistics') }}
+                </a>
+
                 <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"
                    href="{{ url('/admin/dashboard') }}">
                     <i class="fa fa-tachometer" aria-hidden="true"></i>{{ __('Dashboard') }}

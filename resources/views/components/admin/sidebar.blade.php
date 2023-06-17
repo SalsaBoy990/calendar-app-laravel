@@ -68,6 +68,16 @@
                             <span>{{ __('Manage clients') }}</span>
                         </a>
                     </li>
+
+                    <!-- Get worked hours statistics link -->
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('statistics') ? 'active' : '' }}"
+                           href="{{ route('statistics') }}"
+                        >
+                            <i class="fa fa-line-chart" aria-hidden="true"></i>
+                            <span>{{ __('Statistics') }}</span>
+                        </a>
+                    </li>
                     @endrole
 
                     @role('super-administrator')
