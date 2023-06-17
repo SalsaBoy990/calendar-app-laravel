@@ -21,10 +21,6 @@ class DashboardController extends Controller
      */
     public function index(): Application|Factory|View
     {
-        $permissions = auth()->user()->permissions()->get();
-
-        return view('admin.dashboard')->with([
-//            'permissions' => $permissions,
-        ]);
+        return view('admin.dashboard');
     }
 }
