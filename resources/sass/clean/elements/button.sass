@@ -186,6 +186,18 @@ button.warning
             background-color: $warning-dark
 
 
+.button.gray-button,
+button.gray-button
+    color: white
+    background-color: $gray-60
+    border-color: $gray-60
+
+    &:hover
+        background-color: $gray-80
+        border-color: $gray-80
+        color: white
+
+
 .button.black-button,
 button.black-button
     background-color: $black
@@ -311,7 +323,13 @@ a.button-square
 
 
 .pagination-group
+    justify-content: center
     column-gap: 0.25em
+
+    .button.transparent
+        &:hover, &:focus
+            color: white
+            background-color: $gray-60
 
     .button.disabled
         &:hover, &:focus
@@ -320,4 +338,4 @@ a.button-square
 
     .button.active
         &:hover, &:focus
-            background-color: $primary-light
+            background-color: $gray-80
