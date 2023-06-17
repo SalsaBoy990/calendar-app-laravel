@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Statistics;
 
+use Exception;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
@@ -67,8 +68,9 @@ class Widget extends Component
     ];
 
 
-
-
+    /**
+     * @throws Exception
+     */
     public function mount() {
         $this->chartData = null;
         $this->cleaningJobs = null;
@@ -77,10 +79,11 @@ class Widget extends Component
         $this->dataOption = 'all';
         $this->month = 6;
 
-        $currentDate = new \DateTime('now', new \DateTimeZone('Europe/Budapest'));
+        $firstDayOfTheMonth = new \DateTime('first day of this month', new \DateTimeZone('Europe/Budapest'));
+        $lastDayOfTheMonth = new \DateTime('last day of this month', new \DateTimeZone('Europe/Budapest'));
 
-        $this->startDate = $currentDate->format('Y-m-d');
-        $this->endDate = $currentDate->format('Y-m-d');
+        $this->startDate = $firstDayOfTheMonth->format('Y-m-d');
+        $this->endDate = $lastDayOfTheMonth->format('Y-m-d');
 
         $this->chartTitle = 'Hours of cleaning works by clients';
         $this->chartId = 'chart_div';
