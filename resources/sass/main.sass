@@ -62,6 +62,15 @@ html.dark
 
 /* ADMIN LAYOUT */
 .admin
+    &.wrapper
+        display: flex
+        flex-direction: column
+        justify-content: space-between
+
+        & > .container
+            flex-grow: 1
+
+
     .admin-content
         width: 100%
         margin: 0.5em auto 0
@@ -351,10 +360,10 @@ fieldset
     list-style-type: none
 
     .card
-        box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px
+        box-shadow: rgba(50, 50, 93, 0.25) 0 2px 5px -1px, rgba(0, 0, 0, 0.3) 0 1px 3px -1px
 
         &:hover, &:focus
-            box-shadow: rgba(50, 50, 93, 0.45) 0px 2px 6px -1px, rgba(0, 0, 0, 0.5) 0px 1px 4px -1px
+            box-shadow: rgba(50, 50, 93, 0.45) 0 2px 6px -1px, rgba(0, 0, 0, 0.5) 0 1px 4px -1px
 
         .card-link
             padding-top: 1em
