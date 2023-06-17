@@ -18,6 +18,7 @@
     @vite(['resources/sass/main.sass', 'resources/js/app.js'])
     @livewireStyles
 
+    @stack('google-charts')
 </head>
 <body @scroll="setScrollToTop()">
 

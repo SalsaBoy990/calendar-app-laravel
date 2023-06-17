@@ -4,6 +4,7 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\RolePermissionController;
+use App\Http\Controllers\StatsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkerController;
 use Illuminate\Support\Facades\Route;
@@ -69,6 +70,7 @@ Route::group(
         Route::get('calendar', [CalendarController::class, 'index'])->name('calendar');
         Route::get('workers', [CalendarController::class, 'workers'])->name('workers');
         Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        Route::get('statistics', [StatsController::class, 'index'])->name('statistics');
     }
 );
 
