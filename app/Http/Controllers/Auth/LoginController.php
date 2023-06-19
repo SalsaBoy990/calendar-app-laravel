@@ -66,7 +66,8 @@ class LoginController extends Controller {
         }
 
         $credentials = $request->only( 'email', 'password' );
-        if ( Auth::attempt( $credentials ) ) {
+        $rememberMe = (bool) $request->input('remember');
+        if ( Auth::attempt( $credentials, $rememberMe ) ) {
 
             // only generate 2fa code when user had 2FA enabled!
             if ( auth()->user()->enable_2fa === 1 ) {
