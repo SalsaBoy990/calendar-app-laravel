@@ -222,8 +222,9 @@
                                         name="byweekday"
                                     >
                                         @foreach ($weekDays as $key => $value)
-                                            <option
-                                                {{ $byweekday === $value ? "selected": "" }} value="{{ $value }}">{{ $key }}</option>
+                                            <option {{ $byweekday === $value ? "selected": "" }} value="{{ $value }}">
+                                                {{ $key }}
+                                            </option>
                                         @endforeach
                                     </select>
 
@@ -292,45 +293,6 @@
 
                     <div class="{{ $errors->has('description') ? 'error-message' : '' }}">
                         {{ $errors->has('description') ? $errors->first('description') : '' }}
-                    </div>
-
-
-                    <!-- Status -->
-                    <div class="row-padding">
-                        <div class="col s6">
-                            <label for="status">{{ __('Status') }}<span class="text-red">*</span></label>
-                            <select
-                                wire:model.defer="status"
-                                class="{{ $errors->has('status') ? 'border border-red' : '' }}"
-                                aria-label="{{ __("Select a status") }}"
-                                name="status"
-                                id="status"
-                            >
-
-                                @foreach ($statusArray as $key => $value)
-                                    <option
-                                        {{ $status === $key ? "selected": "" }} value="{{ $key }}">{{ $value }}</option>
-                                @endforeach
-
-                            </select>
-                            <div class="{{ $errors->has('status') ? 'error-message' : '' }}">
-                                {{ $errors->has('status') ? $errors->first('status') : '' }}
-                            </div>
-                        </div>
-
-                        <div class="col s6">
-                            <label for="backgroundColor">{{ __('Background color (optional)') }}</label>
-                            <input type="color"
-                                   wire:model="backgroundColor"
-                                   id="backgroundColor"
-                                   name="backgroundColor"
-                                   value="#e66465"
-                            >
-
-                            <div class="{{ $errors->has('backgroundColor') ? 'error-message' : '' }}">
-                                {{ $errors->has('backgroundColor') ? $errors->first('backgroundColor') : '' }}
-                            </div>
-                        </div>
                     </div>
 
                     <label class="{{ $errors->has('workerIds') ? 'border border-red' : '' }}">

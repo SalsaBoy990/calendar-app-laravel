@@ -88,8 +88,6 @@ class Calendar extends Component {
             'workerIds'       => [ 'array' ],
             'clientId'        => [ 'required', 'integer', 'min:0' ],
             'description'     => [ 'nullable', 'string', 'max:255' ],
-            'status'          => [ 'required', 'in:pending,opened,completed,closed' ],
-            'backgroundColor' => [ 'nullable', 'string', 'max:20' ],
         ];
 
         // non-recurring
@@ -173,13 +171,13 @@ class Calendar extends Component {
 
         // weekdays
         $this->weekDays = [
-            'Sunday'    => 'Su',
-            'Monday'    => 'Mo',
-            'Tuesday'   => 'Tu',
-            'Wednesday' => 'We',
-            'Thursday'  => 'Th',
-            'Friday'    => 'Fri',
-            'Saturday'  => 'Sat',
+            __('Sunday')    => 'Su',
+            __('Monday')    => 'Mo',
+            __('Tuesday')   => 'Tu',
+            __('Wednesday') => 'We',
+            __('Thursday')  => 'Th',
+            __('Friday')    => 'Fri',
+            __('Saturday')  => 'Sat',
         ];
 
         // bi-weekly or other recurrences can be created by setting the interval property (interval=2 -> every second week/month...)
@@ -319,7 +317,6 @@ class Calendar extends Component {
                 // all event have these
                 $eventProps = [
                     'description' => $this->description,
-                    'status'      => $this->status,
                 ];
 
                 // if we have an id, update existing event
@@ -334,22 +331,6 @@ class Calendar extends Component {
 
                     $this->setEventProperties( $eventProps );
 
-                    // if color not set, set it from status
-                    if ( ! isset( $this->backgroundColor ) ) {
-                        $this->backgroundColor = $this->getBackgroundColorFromStatus();
-
-                    } elseif ( $this->status !== $this->event->status ) {
-                        // if there is a new color from input
-
-                        // set color from status, otherwise it will be custom from $this->backgroundColor
-                        if ( ! $this->isBackgroundColorCustom() ) {
-                            $this->backgroundColor = $this->getBackgroundColorFromStatus();
-                        }
-                    }
-
-                    // color is from status or it is custom
-                    $eventProps['backgroundColor'] = $this->backgroundColor;
-
                     $eventEntity->update( $eventProps );
 
                     $eventEntity->workers()->sync( $this->workerIds );
@@ -360,15 +341,6 @@ class Calendar extends Component {
                 } else {
 
                     $eventProps['id'] = Str::uuid();
-
-                    // no color is supplied -> set it from event status (default behaviour)
-                    if ( ! isset( $this->backgroundColor ) ) {
-                        $eventProps['backgroundColor'] = $this->getBackgroundColorFromStatus();
-                    } else {
-                        // custom color (not sure if it will be allowed to have custom colors
-                        // todo: maybe remove the option to have unique colors
-                        $eventProps['backgroundColor'] = $this->backgroundColor;
-                    }
 
                     $this->setEventProperties( $eventProps );
 
@@ -582,8 +554,6 @@ class Calendar extends Component {
             ->toArray();
 
         $this->description     = $this->event->description;
-        $this->status          = $this->event->status;
-        $this->backgroundColor = $this->event->backgroundColor ?? null;
 
         $this->frequency   = $this->event->rrule['freq'] ?? '';
         $this->byweekday   = $this->event->rrule['byweekday'] ?? '';
