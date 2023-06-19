@@ -35,8 +35,9 @@ class Calendar extends Component {
     // basic availability properties
     public string $start;
     public string $end;
+
+    // not used currently
     public string $description;
-    public string $backgroundColor;
 
     public Collection $workers;
     public Collection $availabilities;
@@ -52,8 +53,6 @@ class Calendar extends Component {
         'selectedWorkerId' => [ 'required', 'int', 'min:1' ],
         'start'            => [ 'required', 'string', 'max:255' ],
         'end'              => [ 'nullable', 'string' ],
-        'description'      => [ 'nullable', 'string', 'max:255' ],
-        'backgroundColor'  => [ 'nullable', 'string', 'max:20' ],
     ];
 
     protected $listeners = [
@@ -86,8 +85,6 @@ class Calendar extends Component {
         // Entity properties
         $this->start           = '';
         $this->end             = '';
-        $this->description     = '';
-        $this->backgroundColor = '';
 
         //
         $this->allDay           = false;
@@ -146,8 +143,6 @@ class Calendar extends Component {
                 return redirect()->route( 'workers' );
             }
 
-            $this->description      = $this->availability->description ?? '';
-            $this->backgroundColor  = $this->availability->backgroundColor ?? '';
             $this->selectedWorkerId = $this->availability->worker->id ?? null;
         }
 
@@ -211,8 +206,6 @@ class Calendar extends Component {
                     $updateAvailability->update( [
                         'start'           => $this->start,
                         'end'             => $this->end,
-                        'description'     => $this->description,
-                        'backgroundColor' => $this->backgroundColor,
                     ] );
 
                     if ( $this->selectedWorkerId !== $updateAvailability->worker->id ) {
@@ -232,8 +225,6 @@ class Calendar extends Component {
                         'id'              => Str::uuid(),
                         'start'           => $this->start,
                         'end'             => $this->end,
-                        'description'     => $this->description,
-                        'backgroundColor' => $this->backgroundColor,
                     ] );
 
                     $newAvailability->worker()->associate( $workerEntity );

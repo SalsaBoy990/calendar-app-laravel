@@ -19,8 +19,7 @@ class Worker extends Model
     protected $fillable = [
         'name',
         'email',
-        'phone',
-        'availability_id'
+        'phone'
     ];
 
 
@@ -36,6 +35,6 @@ class Worker extends Model
      * @return HasMany
      */
     public function worker_availabilities(): HasMany {
-        return $this->hasMany( WorkerAvailability::class, 'availability_id');
+        return $this->hasMany( WorkerAvailability::class);
     }
 }

@@ -26,7 +26,6 @@ class WorkerAvailability extends Model
         'start',
         'end',
         'description',
-        'backgroundColor',
     ];
 
 
@@ -42,13 +41,6 @@ class WorkerAvailability extends Model
         'backgroundColor' => HtmlSpecialCharsCast::class,
     ];
 
-
-    /**
-     * @return BelongsTo
-     */
-/*    public function user(): BelongsTo {
-        return $this->belongsTo( User::class, 'user_id');
-    }*/
 
     /**
      * @return BelongsTo

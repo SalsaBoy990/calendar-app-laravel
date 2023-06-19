@@ -114,19 +114,6 @@
                     </div>
 
 
-                    <!-- description -->
-                    <label for="description">{{ __('Description (optional)') }}</label>
-                    <input
-                        wire:model.defer="description"
-                        type="text"
-                        class="{{ $errors->has('description') ? 'border border-red' : '' }}"
-                        name="description"
-                    >
-
-                    <div class="{{ $errors->has('description') ? 'red' : '' }}">
-                        {{ $errors->has('description') ? $errors->first('description') : '' }}
-                    </div>
-
                     <!-- Status -->
                     <label for="selectedWorkerId">{{ __('Attach to worker') }}<span class="text-red">*</span></label>
                     <select
@@ -149,24 +136,6 @@
                     <div class="{{ $errors->has('selectedWorkerId') ? 'red' : '' }}">
                         {{ $errors->has('selectedWorkerId') ? $errors->first('selectedWorkerId') : '' }}
                     </div>
-
-
-                    <div>
-                        <label for="backgroundColor">{{ __('Background color (optional)') }}</label>
-                        <input type="color"
-                               wire:model="backgroundColor"
-                               id="backgroundColor"
-                               name="backgroundColor"
-                               value="#e66465"
-                        >
-
-                        <div class="{{ $errors->has('backgroundColor') ? 'red' : '' }}">
-                            {{ $errors->has('backgroundColor') ? $errors->first('backgroundColor') : '' }}
-                        </div>
-                    </div>
-
-                    {{-- var_export($rolePermissions) --}}
-
 
                 </fieldset>
 
