@@ -42,19 +42,6 @@
                     {{ $errors->has('address') ? $errors->first('address') : '' }}
                 </div>
 
-                <!-- Password -->
-                <label for="order">{{ __('Order') }}<span class="text-red">*</span></label>
-                <input
-                    wire:model.defer="order"
-                    type="number"
-                    class="{{ $errors->has('order') ? 'border border-red' : '' }}"
-                    name="order"
-                >
-
-                <div class="{{ $errors->has('order') ? 'error-message' : '' }}">
-                    {{ $errors->has('order') ? $errors->first('password') : '' }}
-                </div>
-
                 <!-- Role -->
                 <label for="type">{{ __('Type') }}<span class="text-red">*</span></label>
                 <select

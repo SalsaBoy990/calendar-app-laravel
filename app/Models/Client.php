@@ -16,8 +16,7 @@ class Client extends Model {
         'client_detail_id',
         'name',
         'address',
-        'type',
-        'order',
+        'type'
     ];
 
     /**

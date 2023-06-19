@@ -26,7 +26,6 @@
                         <th>{{ __('Client') }}</th>
                         <th>{{ __('Details') }}</th>
                         <th>{{ __('Tax number') }}</th>
-                        <th>{{ __('Order') }}</th>
                         <th>{{ __('Actions') }}</th>
                     </tr>
                     </thead>
@@ -52,7 +51,6 @@
                                     <div>{{ $client->client_detail->tax_number ?? '-' }}</div>
                                 @endif
                             </td>
-                            <td>{{ $client->order }}</td>
                             <td>
                                 <div class="flex">
                                     <!-- Delete user -->

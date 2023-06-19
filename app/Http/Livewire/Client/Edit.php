@@ -25,7 +25,6 @@ class Edit extends Component {
     public string $name;
     public string $address;
     public string $type;
-    public int $order;
     public array $typesArray;
 
     // client details
@@ -38,7 +37,6 @@ class Edit extends Component {
         'name'    => [ 'required', 'string', 'max:255' ],
         'address' => [ 'required', 'string', 'max:255' ],
         'type'    => [ 'required', 'in:company,private person' ],
-        'order'   => [ 'required', 'integer' ],
 
         'contactPerson' => [ 'nullable', 'string', 'max:255' ],
         'phoneNumber'   => [ 'nullable', 'string', 'max:255' ],
@@ -55,7 +53,6 @@ class Edit extends Component {
         $this->name    = $this->client->name ?? '';
         $this->address = $this->client->address ?? '';
         $this->type    = $this->client->type;
-        $this->order   = $this->client->order ?? 0;
 
         $this->typesArray = [
             'company'        => 'Company',
@@ -90,7 +87,6 @@ class Edit extends Component {
                     'name'    => strip_tags( trim( $this->name ) ),
                     'address' => strip_tags( trim( $this->address ) ),
                     'type'    => strip_tags( trim( $this->type ) ),
-                    'order'   => $this->order,
                 ];
 
                 $details = [];

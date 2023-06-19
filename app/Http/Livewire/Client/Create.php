@@ -22,7 +22,6 @@ class Create extends Component {
     public string $name;
     public string $address;
     public string $type;
-    public int $order;
     public array $typesArray;
 
     // client details
@@ -35,7 +34,6 @@ class Create extends Component {
         'name'    => [ 'required', 'string', 'max:255', 'unique:clients' ],
         'address' => [ 'required', 'string', 'max:255' ],
         'type'    => [ 'required', 'string', 'in:company,private person' ],
-        'order'   => [ 'required', 'integer' ],
 
         'contactPerson' => [ 'nullable', 'string', 'max:255' ],
         'phoneNumber'   => [ 'nullable', 'string', 'max:255' ],
@@ -50,7 +48,6 @@ class Create extends Component {
         $this->name    = '';
         $this->address = '';
         $this->type    = '';
-        $this->order   = 0;
 
         $this->contactPerson = null;
         $this->phoneNumber   = null;
@@ -109,7 +106,6 @@ class Create extends Component {
                     'name'             => strip_tags( $this->name ),
                     'address'          => strip_tags( $this->address ),
                     'type'             => strip_tags( $this->type ),
-                    'order'            => $this->order,
                     'client_detail_id' => $newClientDetails->id ?? null // store the client detail id
                 ] );
 
