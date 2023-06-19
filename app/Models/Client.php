@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Client extends Model {
     use HasFactory;
 
+    public const RECORDS_PER_PAGE = 10;
+
     protected $fillable = [
         'event_id',
         'client_detail_id',

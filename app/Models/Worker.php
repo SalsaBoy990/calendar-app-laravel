@@ -11,6 +11,8 @@ class Worker extends Model
 {
     use HasFactory;
 
+    public const RECORDS_PER_PAGE = 10;
+
     /**
      * The attributes that are mass assignable.
      *

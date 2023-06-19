@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Statistics;
 
+use App\Models\Event;
 use DateTime;
 use DateTimeZone;
 use Exception;
@@ -148,7 +149,7 @@ class Widget extends Component {
                         'events.start',
                         'events.end'
                     )
-                    ->paginate( 4 );
+                    ->paginate( Event::RECORDS_PER_PAGE );
 
         $this->cleaningJobs = $result;
     }

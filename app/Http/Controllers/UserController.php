@@ -31,7 +31,7 @@ class UserController extends Controller
 
         $users = User::orderBy('created_at', 'DESC')
                      ->with('role')
-                     ->paginate( 3 )
+                     ->paginate( User::RECORDS_PER_PAGE )
                      ->withQueryString();
 
         $permissions = Permission::all();
@@ -85,7 +85,7 @@ class UserController extends Controller
 
         $newUser->save();
 
-        $this->banner('Successfully created the with the name of "' . htmlspecialchars($request->name) . '"!');
+        $this->banner( __('Successfully created the with the name of ":name"!', [htmlspecialchars($request->name)]) );
         return redirect()->route('user.index');
     }
 
@@ -103,7 +103,7 @@ class UserController extends Controller
         $oldName = htmlentities($user->name);
         $user->delete();
 
-        $this->banner('Successfully deleted the user with the name of "' . $oldName . '"!');
+        $this->banner( __('Successfully deleted the user with the name of ":name"!', [ $oldName ]) );
         return redirect()->route('user.manage');
     }
 
@@ -153,7 +153,7 @@ class UserController extends Controller
             ]);
         }
 
-        $this->banner('Successfully updated your account!');
+        $this->banner(__('Successfully updated your account!'));
         return redirect()->route('user.account', $user->id);
     }
 }

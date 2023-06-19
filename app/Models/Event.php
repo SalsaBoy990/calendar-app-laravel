@@ -16,6 +16,8 @@ class Event extends Model {
 
     protected $primaryKey = "event_id";
 
+    public const RECORDS_PER_PAGE = 10;
+
     // the primary key is non-incrementing and a uuid string
     // if we want to use uuid as primary key
 //    public $incrementing = false;
@@ -53,14 +55,6 @@ class Event extends Model {
         'status'          => HtmlSpecialCharsCast::class,
         'backgroundColor' => HtmlSpecialCharsCast::class,
     ];
-
-
-    /**
-     * @return BelongsToMany
-     */
-/*    public function users(): BelongsToMany {
-        return $this->belongsToMany( User::class, 'users_events', 'event_id', 'user_id' );
-    }*/
 
     /**
      * @return BelongsToMany

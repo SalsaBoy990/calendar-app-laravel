@@ -17,7 +17,7 @@ class ClientController extends Controller {
 
         $clients = Client::orderBy( 'name', 'ASC' )
                          ->with( [ 'events', 'client_detail' ] )
-                         ->paginate( 3 )->withQueryString();
+                         ->paginate( Client::RECORDS_PER_PAGE )->withQueryString();
 
 
         return view( 'admin.client.manage' )->with( [

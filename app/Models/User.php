@@ -16,6 +16,8 @@ use Laravel\Sanctum\HasApiTokens;
 final class User extends Authenticatable {
     use HasApiTokens, HasFactory, Notifiable, HasRolesAndPermissions;
 
+    public const RECORDS_PER_PAGE = 10;
+
     /**
      * The attributes that are mass assignable.
      *

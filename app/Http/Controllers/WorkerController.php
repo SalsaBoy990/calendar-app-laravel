@@ -19,7 +19,7 @@ class WorkerController extends Controller
 
         $workers = Worker::orderBy('created_at', 'DESC')
                          //->with('worker_availabilities')
-                         ->paginate( 3 )
+                         ->paginate( Worker::RECORDS_PER_PAGE )
                          ->withQueryString();
 
         return view('admin.worker.manage')->with([
