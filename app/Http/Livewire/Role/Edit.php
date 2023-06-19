@@ -91,7 +91,7 @@ class Edit extends Component {
         );
 
 
-        $this->banner( 'Successfully updated the role "' . htmlspecialchars( $this->name ) . '"!' );
+        $this->banner( __('Successfully updated the role ":name"!', ['name' => htmlspecialchars( $this->name )] ) );
 
         return redirect()->route( 'role-permission.manage' );
     }

@@ -356,7 +356,7 @@ class Calendar extends Component {
                     $eventEntity->save();
                     $eventEntity->refresh();
 
-                    $this->banner( 'Successfully updated the event "' . htmlspecialchars( $eventEntity->client->name ) . '"!' );
+                    $this->banner( __('Successfully updated the event ":name"!', ['name' => htmlspecialchars( $eventEntity->client->name )] ) );
                 } else {
 
                     $eventProps['id'] = Str::uuid();
@@ -378,7 +378,7 @@ class Calendar extends Component {
                     $eventEntity->save();
                     $eventEntity->refresh();
 
-                    $this->banner( 'Successfully created the event "' . htmlspecialchars( $eventEntity->client->name ) . '"!' );
+                    $this->banner( __('Successfully created the event ":name"!', ['name' => htmlspecialchars( $eventEntity->client->name )] ) );
                 }
             },
             2
@@ -421,7 +421,7 @@ class Calendar extends Component {
             // reset loaded event properties for the modal
             $this->initializeProperties();
 
-            $this->banner( 'Successfully deleted the event "' . htmlspecialchars( $title ) . '"!' );
+            $this->banner( __('Successfully deleted the event ":name"!', [ 'name' => htmlspecialchars( $title ) ] ) );
         }
 
         return redirect()->route( 'calendar' );

@@ -135,7 +135,7 @@ class Edit extends Component {
         );
 
 
-        $this->banner( 'Successfully updated the client "' . strip_tags( $this->name ) . '"!' );
+        $this->banner( __('Successfully updated the client ":name"!', ['name' => strip_tags($this->name)] ) );
 
         return redirect()->route( 'client.manage' );
     }

@@ -73,7 +73,7 @@ class Create extends Component {
         );
 
 
-        $this->banner( 'Successfully created the role "' . htmlspecialchars( $this->name ) . '"!' );
+        $this->banner( __('Successfully created the role ":name"!', ['name' => htmlspecialchars( $this->name )] ) );
 
         return redirect()->route( 'role-permission.manage' );
     }

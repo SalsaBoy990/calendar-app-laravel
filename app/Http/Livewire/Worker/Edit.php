@@ -70,7 +70,7 @@ class Edit extends Component {
         );
 
 
-        $this->banner( 'Successfully updated the worker "' . htmlspecialchars( $this->name ) . '"!' );
+        $this->banner( __('Successfully updated the worker ":name"!', ['name' => htmlspecialchars( $this->name )] ) );
 
         return redirect()->route( 'worker.manage' );
     }

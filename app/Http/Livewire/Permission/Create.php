@@ -71,7 +71,7 @@ class Create extends Component {
         );
 
 
-        $this->banner( 'Successfully created the permission "' . htmlspecialchars( $this->name ) . '"!' );
+        $this->banner( __('Successfully created the permission ":name"!', ['name' => htmlspecialchars( $this->name )] ) );
         request()->session()->flash('flash.activeTab', 'Permissions');
 
         return redirect()->route( 'role-permission.manage' );

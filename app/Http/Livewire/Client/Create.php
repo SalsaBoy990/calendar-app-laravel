@@ -120,7 +120,7 @@ class Create extends Component {
         );
 
 
-        $this->banner( 'Successfully created the client "' . strip_tags( $this->name ) . '"!' );
+        $this->banner( __('Successfully created the client ":name"!', ['name' => strip_tags($this->name)] ) );
 
         return redirect()->route( 'client.manage' );
     }

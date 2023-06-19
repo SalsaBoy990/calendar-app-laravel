@@ -56,7 +56,7 @@ class Delete extends Component {
         );
 
 
-        $this->banner( 'The client with the name "' . $this->name . '" was successfully deleted.' );
+        $this->banner( __('The client with the name ":name" was successfully deleted.', ['name' => strip_tags($this->name) ])  );
 
         return redirect()->route( 'client.manage' );
     }

@@ -87,7 +87,7 @@ class Edit extends Component {
         );
 
 
-        $this->banner( 'Successfully updated the permission "' . htmlspecialchars( $this->name ) . '"!' );
+        $this->banner( __('Successfully updated the permission ":name"!', ['name' => htmlspecialchars( $this->name )] ) );
         request()->session()->flash( 'flash.activeTab', 'Permissions' );
 
         return redirect()->route( 'role-permission.manage' );

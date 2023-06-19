@@ -81,12 +81,12 @@ class Widget extends Component {
         $this->startDate = $firstDayOfTheMonth->format( 'Y-m-d' );
         $this->endDate   = $lastDayOfTheMonth->format( 'Y-m-d' );
 
-        $this->chartTitle      = 'Hours of cleaning works by clients';
+        $this->chartTitle      = __('Hours of cleaning works by clients');
         $this->chartId         = 'chart_div';
         $this->chartAreaWidth  = '65%';
         $this->chartColor      = '#13B623';
-        $this->chartXAxisTitle = 'Hours of work';
-        $this->chartVAxisTitle = 'Client name';
+        $this->chartXAxisTitle = __('Hours of work');
+        $this->chartVAxisTitle = __('Client name');
     }
 
 

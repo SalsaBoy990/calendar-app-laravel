@@ -63,7 +63,7 @@ class Create extends Component {
         );
 
 
-        $this->banner( 'Successfully created the worker "' . htmlspecialchars( $this->name ) . '"!' );
+        $this->banner( __('Successfully created the worker ":name"!', ['name' => htmlspecialchars( $this->name )] ) );
 
         return redirect()->route( 'worker.manage' );
     }

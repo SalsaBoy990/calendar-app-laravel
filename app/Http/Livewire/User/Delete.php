@@ -63,7 +63,7 @@ class Delete extends Component
         );
 
 
-        $this->banner('The user with the name "' . $this->name .  '" was successfully deleted.');
+        $this->banner( __('The user with the name ":name" was successfully deleted.', ['name' => htmlspecialchars( $this->name )] ) );
         return redirect()->route('user.manage');
     }
 }

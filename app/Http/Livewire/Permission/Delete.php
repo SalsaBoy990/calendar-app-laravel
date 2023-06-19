@@ -55,7 +55,7 @@ class Delete extends Component {
         );
 
 
-        $this->banner( 'The permission with the name "' . $this->name . '" was successfully deleted.' );
+        $this->banner( __('The permission with the name ":name" was successfully deleted.', ['name' => htmlspecialchars( $this->name )] ) );
         request()->session()->flash( 'flash.activeTab', 'Permissions' );
 
         return redirect()->route( 'role-permission.manage' );

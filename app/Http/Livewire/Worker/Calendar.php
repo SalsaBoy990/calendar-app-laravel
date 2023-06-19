@@ -246,9 +246,9 @@ class Calendar extends Component {
 
 
         $this->updateId !== '' ?
-            $this->banner( 'Successfully updated the worker availability "' . htmlspecialchars( $workerEntity->name ) . '"!' )
+            $this->banner( __('Successfully updated the worker availability ":name"!', ['name' => htmlspecialchars( $workerEntity->name )]) )
             :
-            $this->banner( 'Successfully created the worker availability "' . htmlspecialchars( $workerEntity->name ) . '"!' );
+            $this->banner( __('Successfully created the worker availability ":name"!', ['name' => htmlspecialchars( $workerEntity->name )]));
 
         // Need to clear previous event data
         $this->initializeProperties();
@@ -278,7 +278,7 @@ class Calendar extends Component {
             );
 
             $this->initializeProperties();
-            $this->banner( 'Successfully deleted the worker availability "' . $title . '"!' );
+            $this->banner( __('Successfully deleted the worker availability ":name"!', ['name' => $title] ) );
         }
 
         return redirect()->route( 'workers' );

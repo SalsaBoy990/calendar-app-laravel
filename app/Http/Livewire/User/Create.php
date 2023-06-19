@@ -90,7 +90,7 @@ class Create extends Component {
         );
 
 
-        $this->banner( 'Successfully created the user "' . htmlspecialchars( $this->name ) . '"!' );
+        $this->banner( __('Successfully created the user ":name"!', ['name' => htmlspecialchars( $this->name )] ) );
 
         return redirect()->route( 'user.manage' );
     }
