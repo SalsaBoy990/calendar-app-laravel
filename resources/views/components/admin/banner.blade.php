@@ -30,7 +30,7 @@
                 type="button"
                 class=""
                 :class="{ 'success': style == 'success', 'danger': style == 'danger' }"
-                aria-label="Dismiss system notification"
+                aria-label="{{  __('Dismiss system notification') }}"
                 x-on:click="show = false"
             >
                 <i class="fa fa-times" aria-hidden="true"></i>

@@ -18,7 +18,7 @@
             <div class="main-content">
 
                 <!-- Create new worker -->
-                <livewire:worker.create :title="'New worker'"
+                <livewire:worker.create title="{{ __('New worker') }}"
                                         :hasSmallButton="false"
                                         :modalId="'m-create-worker'">
                 </livewire:worker.create>
@@ -26,10 +26,10 @@
                 <table>
                     <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Actions</th>
+                        <th>{{ __('Name') }}</th>
+                        <th>{{ __('Email') }}</th>
+                        <th>{{ __('Phone') }}</th>
+                        <th>{{ __('Actions') }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -44,7 +44,7 @@
                                     @if( auth()->user()->hasRoles('super-administrator|administrator') )
 
                                         <!-- Delete user -->
-                                        <livewire:worker.delete :title="'Delete worker'"
+                                        <livewire:worker.delete title="{{ __('Delete worker') }}"
                                                                 :worker="$worker"
                                                                 :hasSmallButton="false"
                                                                 :modalId="'m-delete-worker-' . $worker->id"
@@ -52,7 +52,7 @@
                                         </livewire:worker.delete>
 
                                         <!-- Update user -->
-                                        <livewire:worker.edit :title="'Edit worker'"
+                                        <livewire:worker.edit title="{{ __('Edit worker') }}"
                                                               :worker="$worker"
                                                               :hasSmallButton="false"
                                                               :modalId="'m-edit-worker-' . $worker->id"

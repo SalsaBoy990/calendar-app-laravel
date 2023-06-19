@@ -97,11 +97,11 @@
 
                 <hr>
 
-                <h2 class="h3">Delete account</h2>
+                <h2 class="h3">{{ __('Delete account') }}</h2>
 
                 <div class="panel danger text-red-dark border border-red-dark">
                     <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                    This action cannot be undone. It will permanently erase your account with all of your data.
+                    {{ __('This action cannot be undone. It will permanently erase your account with all of your data.') }}
                 </div>
 
                 @if (auth()->user()->can('manage-account'))
@@ -126,7 +126,7 @@
                                 @method('DELETE')
 
                                 <h2>{{ __('Delete account') }}</h2>
-                                <p>This action cannot be undone.</p>
+                                <p>{{ __('This action cannot be undone.') }}</p>
 
                                 <div>
                                     <button type="submit" class="danger">{{ __('Delete account') }}</button>

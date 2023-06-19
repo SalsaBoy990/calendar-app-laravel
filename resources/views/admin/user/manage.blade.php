@@ -18,7 +18,7 @@
             <div class="main-content">
 
                 <!-- Create new user -->
-                <livewire:user.create :title="'New user'"
+                <livewire:user.create title="{{ __('New user') }}"
                                       :roles="$roles"
                                       :permissions="$permissions"
                                       :hasSmallButton="false"
@@ -28,10 +28,10 @@
                 <table>
                     <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Role</th>
-                        <th>Actions</th>
+                        <th>{{ __('Name') }}</th>
+                        <th>{{ __('Email') }}</th>
+                        <th>{{ __('Role') }}</th>
+                        <th>{{ __('Actions') }}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -46,7 +46,7 @@
                                     @if(! $user->hasRoles('super-administrator') || auth()->user()->hasRoles('super-administrator') )
 
                                         <!-- Delete user -->
-                                        <livewire:user.delete :title="'Delete user'"
+                                        <livewire:user.delete title="{{ __('Delete user') }}"
                                                               :user="$user"
                                                               :hasSmallButton="false"
                                                               :modalId="'m-delete-user-' . $user->id"
@@ -54,7 +54,7 @@
                                         </livewire:user.delete>
 
                                         <!-- Update user -->
-                                        <livewire:user.edit :title="'Edit user'"
+                                        <livewire:user.edit title="{{ __('Edit user') }}"
                                                             :user="$user"
                                                             :roles="$roles"
                                                             :permissions="$permissions"
@@ -63,7 +63,7 @@
                                         >
                                         </livewire:user.edit>
                                     @else
-                                        <p class="fs-14 italic">{{__('A szuperadminisztrátor nem törölhető és nem szerkeszthető.')}}</p>
+                                        <p class="fs-14 italic">{{ __('Super-admin cannot be deleted or edited here.') }}</p>
                                     @endif
                                 </div>
 

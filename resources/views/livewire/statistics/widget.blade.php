@@ -72,35 +72,37 @@
         <form wire:submit.prevent="getResults">
             <div class="row-padding">
                 <div class="col s6">
-                    <label for="startDate">Start date</label>
+                    <label for="startDate">{{ __('Start date') }}</label>
                     <input type="date" wire:model.defer="startDate"/>
                 </div>
                 <div class="col s6">
-                    <label for="startDate">End date</label>
+                    <label for="startDate">{{ __('End date') }}</label>
                     <input type="date" wire:model.defer="endDate"/>
                 </div>
             </div>
 
-            <button type="submit">Generate</button>
+            <button type="submit">{{ __('Generate') }}</button>
         </form>
     </div>
 
     <div id="chart_div"></div>
 
-    <h4 class="fs-18">Total number works: <span
-            class="badge gray-60 text-white round">{{ $cleaningJobs->total() }}</span></h4>
-    <h4 class="fs-18">Total working hours: <span class="badge orange-dark text-white round" x-text="sumOfHours"></span>
+    <h4 class="fs-18">{{ __('Total number works: ') }}
+        <span class="badge gray-60 text-white round">{{ $cleaningJobs->total() }}</span>
+    </h4>
+    <h4 class="fs-18">{{ __('Total working hours: ' ) }}
+        <span class="badge orange-dark text-white round" x-text="sumOfHours"></span>
     </h4>
 
     <table>
         <thead>
         <tr>
             <th>#</th>
-            <th>Name</th>
-            <th>Hours</th>
-            <th>Start</th>
-            <th>End</th>
-            <th>Recurrence</th>
+            <th>{{ __('Name') }}</th>
+            <th>{{ __('Hours') }}</th>
+            <th>{{ __('Start') }}</th>
+            <th>{{ __('End') }}</th>
+            <th>{{ __('Recurrence') }}</th>
         </tr>
         </thead>
         <tbody>

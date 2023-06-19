@@ -13,6 +13,6 @@
             @endauth
             <?php ?>
         </nav>
-        <small>&copy; 2023 Gulácsi András. All rights reserved!</small>
+        <small>&copy; {{ __('2023 Gulácsi András. All rights reserved!') }}</small>
     </div>
 </footer>

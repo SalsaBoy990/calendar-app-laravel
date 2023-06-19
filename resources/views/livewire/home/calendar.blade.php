@@ -100,13 +100,13 @@
                            wire:model="isRecurring"
                            name="isRecurring"
                            value="1"
-                    > <span class="padding-right-1">Yes</span>
+                    > <span class="padding-right-1">{{ __('Yes') }}</span>
                     <input type="radio"
                            wire:model="isRecurring"
                            name="isRecurring"
                            value="0"
                            checked
-                    > <span class="padding-right-1">No</span>
+                    > <span class="padding-right-1">{{ __('No') }}</span>
 
                     <div class="{{ $errors->has('isRecurring') ? 'red' : '' }}">
                         {{ $errors->has('isRecurring') ? $errors->first('isRecurring') : '' }}

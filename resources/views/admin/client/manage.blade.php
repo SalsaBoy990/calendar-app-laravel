@@ -56,14 +56,14 @@
                             <td>
                                 <div class="flex">
                                     <!-- Delete user -->
-                                    <livewire:client.delete :title="'Delete client'"
+                                    <livewire:client.delete title="{{ __('Delete client') }}"
                                                             :client="$client"
                                                             :modalId="'m-delete-client-' . $client->id"
                                     >
                                     </livewire:client.delete>
 
                                     <!-- Update user -->
-                                    <livewire:client.edit :title="'Edit client'"
+                                    <livewire:client.edit title="{{ __('Edit client') }}"
                                                           :client="$client"
                                                           :modalId="'m-edit-client-' . $client->id"
                                     >

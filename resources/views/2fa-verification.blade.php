@@ -11,8 +11,7 @@
                 @csrf
 
                 <p class="text-center">
-                    We sent code to email
-                    : {{ substr(auth()->user()->email, 0, 5) . '******' . substr(auth()->user()->email,  -3) }}
+                    {{ __('We sent code to email: ') }} {{ substr(auth()->user()->email, 0, 5) . '******' . substr(auth()->user()->email,  -3) }}
                 </p>
 
 
@@ -28,7 +27,7 @@
                     </div>
                 @endif
 
-                <label for="code">Code</label>
+                <label for="code">{{ __('Code') }}</label>
                 <input id="code"
                        type="number"
                        class="@error('code') border border-red @enderror"
