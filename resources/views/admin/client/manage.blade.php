@@ -15,7 +15,10 @@
                 </ol>
             </nav>
 
+            <h1 class="h3 margin-top-bottom-0">{{ __('Manage clients') }}</h1>
+
             <div class="main-content">
+
 
                 <!-- Create new user -->
                 <livewire:client.create></livewire:client.create>
@@ -34,7 +37,7 @@
                         <tr>
                             <td>
                                 <b>{{ $client->name }}</b>
-                                <span class="fs-12 bold badge gray-60">{{ $client->type }}</span>
+                                <span class="fs-12 bold badge gray-60">{{ $clientTypes[$client->type] }}</span>
                                 <br>
                                 {{ $client->address }}
                             </td>

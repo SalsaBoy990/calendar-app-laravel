@@ -54,10 +54,7 @@ class Create extends Component {
         $this->email         = null;
         $this->taxNumber     = null;
 
-        $this->typesArray = [
-            'company'        => 'Company',
-            'private person' => 'Private Person',
-        ];
+        $this->typesArray = Client::$clientTypes;
 
     }
 

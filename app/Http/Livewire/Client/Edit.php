@@ -54,10 +54,7 @@ class Edit extends Component {
         $this->address = $this->client->address ?? '';
         $this->type    = $this->client->type;
 
-        $this->typesArray = [
-            'company'        => 'Company',
-            'private person' => 'Private Person',
-        ];
+        $this->typesArray = Client::$clientTypes;
 
         if ( $this->client->client_detail !== null ) {
             $this->contactPerson = $this->client->client_detail->contact_person ?? null;

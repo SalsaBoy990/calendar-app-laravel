@@ -13,6 +13,11 @@ class Client extends Model {
 
     public const RECORDS_PER_PAGE = 10;
 
+    public static array $clientTypes = [
+        'company'        => 'Cég',
+        'private person' => 'Magánszemély',
+    ];
+
     protected $fillable = [
         'event_id',
         'client_detail_id',

@@ -3,7 +3,7 @@
         <nav>
             <?php ?>
             @auth
-                <a href="{{ url('/home') }}" class="">{{ __('Home') }}</a>
+                <a href="{{ url('/admin/dashboard') }}" class="">{{ __('Dashboard') }}</a>
             @else
                 <a href="{{ route('login') }}" class="">{{ __('Log in') }}</a>
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Statistics;
 
+use App\Models\Client;
 use App\Models\Event;
 use DateTime;
 use DateTimeZone;
@@ -30,6 +31,10 @@ class Widget extends Component {
      */
     public int $clientId;
 
+    public Collection $clients;
+
+    public array $clientsData;
+
     /**
      * All ("all") or single Client ("client") statistics will be generated
      *
@@ -52,7 +57,7 @@ class Widget extends Component {
 
 
     protected array $rules = [
-        //'clientId' => [ 'nullable', 'int', 'max:255' ],
+        'clientId'  => [ 'required', 'int', 'max:255' ],
         //'dataOption' => [ 'required', 'string', 'in:all,client' ],
         'startDate' => [ 'nullable', 'date' ],
         'endDate'   => [ 'nullable', 'date' ],
@@ -82,12 +87,19 @@ class Widget extends Component {
         $this->startDate = $firstDayOfTheMonth->format( 'Y-m-d' );
         $this->endDate   = $lastDayOfTheMonth->format( 'Y-m-d' );
 
-        $this->chartTitle      = __('Hours of cleaning works by clients');
+        $this->chartTitle      = __( 'Hours of cleaning works by clients' );
         $this->chartId         = 'chart_div';
         $this->chartAreaWidth  = '65%';
         $this->chartColor      = '#13B623';
-        $this->chartXAxisTitle = __('Hours of work');
-        $this->chartVAxisTitle = __('Client name');
+        $this->chartXAxisTitle = __( 'Hours of work' );
+        $this->chartVAxisTitle = __( 'Client name' );
+
+        $this->clients = Client::all();
+
+        $this->clientsData[ __( 'All' ) ] = 0;
+        foreach ( $this->clients as $client ) {
+            $this->clientsData[ $client->name ] = $client->id;
+        }
     }
 
 
@@ -105,11 +117,14 @@ class Widget extends Component {
      * @throws Exception
      */
     public function getJobList() {
+        // validate user input
+        $this->validate();
+
         $tz        = new DateTimeZone( 'Europe/Budapest' );
         $startDate = new DateTime( $this->startDate, $tz );
         $endDate   = new DateTime( $this->endDate, $tz );
         $interval  = $startDate->diff( $endDate );
-        $weeks = (int) floor($interval->days/7);
+        $weeks     = (int) floor( $interval->days / 7 );
 
 
         $result = DB::table( 'events' )
@@ -134,22 +149,32 @@ class Widget extends Component {
                         events.end,
                         events.rrule"
                     )
-                    ->join( 'clients', 'events.client_id', '=', 'clients.id' )
+                    ->join( 'clients', 'events.client_id', '=', 'clients.id' );
 
-                    ->whereRaw("events.start > ? AND events.start < ?", [ $this->startDate, $this->endDate ] )
-                    ->orWhereRaw( "DATE(JSON_EXTRACT(events.rrule , '$.dtstart')) > ?", [ $this->startDate ] )
+        if ( $this->clientId === 0 ) {
+            $result = $result
+                ->whereRaw( "events.start > ? AND events.start < ?", [ $this->startDate, $this->endDate ] )
+                ->orWhereRaw( "DATE(JSON_EXTRACT(events.rrule , '$.dtstart')) > ?", [ $this->startDate ] );
+        } else {
+            $result = $result
+                ->whereRaw( "events.start > ? AND events.start < ? AND events.client_id = ?",
+                    [ $this->startDate, $this->endDate, $this->clientId ] )
+                ->orWhereRaw( "DATE(JSON_EXTRACT(events.rrule , '$.dtstart')) > ? AND events.client_id = ? ",
+                    [ $this->startDate, $this->clientId ] );
+        }
 
-                    ->orderByDesc( 'events.end' )
-                    ->groupBy( 'clients.name',
-                        'events.status',
-                        'events.is_recurring',
-                        'durationCalc',
-                        'hours',
-                        'events.rrule',
-                        'events.start',
-                        'events.end'
-                    )
-                    ->paginate( Event::RECORDS_PER_PAGE );
+        $result = $result
+            ->orderByDesc( 'events.end' )
+            ->groupBy( 'clients.name',
+                'events.status',
+                'events.is_recurring',
+                'durationCalc',
+                'hours',
+                'events.rrule',
+                'events.start',
+                'events.end'
+            )
+            ->paginate( Event::RECORDS_PER_PAGE );
 
         $this->cleaningJobs = $result;
     }
@@ -167,6 +192,9 @@ class Widget extends Component {
     }
 
 
+    /**
+     * @throws Exception
+     */
     public function queryDataForChart() {
         // validate user input
         $this->validate();
@@ -176,7 +204,7 @@ class Widget extends Component {
         $startDate = new DateTime( $this->startDate, $tz );
         $endDate   = new DateTime( $this->endDate, $tz );
         $interval  = $startDate->diff( $endDate );
-        $weeks = (int) floor($interval->days/7);
+        $weeks     = (int) floor( $interval->days / 7 );
 
         $statistics = DB::table( 'events' )
                         ->selectRaw(
@@ -188,11 +216,22 @@ class Widget extends Component {
                                     TIME_TO_SEC(events.duration) / 3600 * FLOOR( $weeks / JSON_EXTRACT(`rrule` , '$.interval') )
                             END) AS hours"
                         )
-                        ->join( 'clients', 'events.client_id', '=', 'clients.id' )
-                        ->whereRaw("events.start > ? AND events.start < ?", [ $this->startDate, $this->endDate ] )
-                        ->orWhereRaw( "DATE(JSON_EXTRACT(events.rrule , '$.dtstart')) > ?", [ $this->startDate ] )
-                        ->groupBy( 'clients.name', 'events.is_recurring' )
-                        ->get();
+                        ->join( 'clients', 'events.client_id', '=', 'clients.id' );
+
+        if ( $this->clientId === 0 ) {
+            $statistics = $statistics
+                ->whereRaw( "events.start > ? AND events.start < ?", [ $this->startDate, $this->endDate ] )
+                ->orWhereRaw( "DATE(JSON_EXTRACT(events.rrule , '$.dtstart')) > ?", [ $this->startDate ] );
+        } else {
+            $statistics = $statistics
+                ->whereRaw( "events.start > ? AND events.start < ? AND events.client_id = ?",
+                    [ $this->startDate, $this->endDate, $this->clientId ] )
+                ->orWhereRaw( "DATE(JSON_EXTRACT(events.rrule , '$.dtstart')) > ? AND events.client_id = ? ",
+                    [ $this->startDate, $this->clientId ] );
+        }
+        $statistics = $statistics
+            ->groupBy( 'clients.name', 'events.is_recurring' )
+            ->get();
 
         $this->chartData = $statistics;
     }

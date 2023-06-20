@@ -15,6 +15,8 @@
                 </ol>
             </nav>
 
+            <h1 class="h3 margin-top-bottom-0">{{ __('Manage users') }}</h1>
+
             <div class="main-content">
 
                 <!-- Create new user -->

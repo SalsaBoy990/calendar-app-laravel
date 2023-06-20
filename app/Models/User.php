@@ -64,7 +64,7 @@ final class User extends Authenticatable {
         try {
 
             $details = [
-                'title' => __( 'Mail from Calendar App' ),
+                'title' => __( 'Login code' ),
                 'code'  => $code
             ];
 

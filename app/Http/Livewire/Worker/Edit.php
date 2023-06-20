@@ -27,7 +27,7 @@ class Edit extends Component {
     protected array $rules = [
         'name'  => [ 'required', 'string', 'max:255' ],
         'email' => [ 'nullable', 'string' ],
-        'phone' => [ 'required', 'string' ],
+        'phone' => [ 'nullable', 'string' ],
     ];
 
     public function mount(

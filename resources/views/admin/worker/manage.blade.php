@@ -15,6 +15,8 @@
                 </ol>
             </nav>
 
+            <h1 class="h3 margin-top-bottom-0">{{ __('Manage Workers') }}</h1>
+
             <div class="main-content">
 
                 <!-- Create new worker -->

@@ -24,8 +24,8 @@ class Create extends Component {
 
     protected array $rules = [
         'name'            => [ 'required', 'string', 'max:255' ],
-        'email'           => [ 'required', 'email', 'max:255', 'unique:workers' ],
-        'phone'        => [ 'required', 'string' ],
+        'email'           => [ 'nullable', 'email', 'max:255', 'unique:workers' ],
+        'phone'        => [ 'nullable', 'string' ],
     ];
 
     public function mount(bool $hasSmallButton = false ) {

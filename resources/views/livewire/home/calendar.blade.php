@@ -6,21 +6,14 @@
                 @role('super-administrator|administrator')
                 <a class="{{ request()->routeIs('calendar') ? 'active' : '' }}"
                    href="{{ route('calendar') }}">
-                    <i class="fa fa-calendar" aria-hidden="true"></i>{{ __('Calendar') }}
+                    <i class="fa fa-calendar" aria-hidden="true"></i>{{ __('Works') }}
                 </a>
 
                 <!-- Worker availabilities link -->
                 <a class="{{ request()->routeIs('workers') ? 'active' : '' }}"
                    href="{{ route('workers') }}">
-                    <i class="fa fa-hourglass-start" aria-hidden="true"></i>
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>
                     {{ __('Availabilities') }}
-                </a>
-
-                <!-- Manage workers -->
-                <a class="{{ request()->routeIs('worker.manage') ? 'active' : '' }}"
-                   href="{{ route('worker.manage') }}">
-                    <i class="fa fa-users" aria-hidden="true"></i>
-                    {{ __('Workers') }}
                 </a>
 
                 <!-- Statistics -->
@@ -39,15 +32,6 @@
         </nav>
 
         <div class="legend-container">
-            <ul class="legend no-bullets padding-0">
-                @foreach($statusColors as $name => $value)
-                    <li>
-                        <div class="color-box" style="background-color: {{ $value }}"></div>
-                        <span>{{ $name }}</span>
-                    </li>
-                @endforeach
-
-            </ul>
             @php
                 $light = __('Light mode');
                 $dark = __('Dark mode');
@@ -168,46 +152,24 @@
 
                         <!-- RECURRING EVENT PROPERTIES -->
                         <div x-show="isRecurring">
+                            <div>
+                                <!-- Freq -->
+                                <label for="frequencyName">{{ __('Frequency') }}<span class="text-red">*</span></label>
+                                <select
+                                    wire:model.defer="frequencyName"
+                                    class="{{ $errors->has('frequencyName') ? 'border border-red' : '' }}"
+                                    aria-label="{{ __("Select a repeat frequency") }}"
+                                    name="frequencyName"
+                                >
+                                    @foreach ($frequencies as $key => $value)
+                                        <option
+                                            {{ $frequencyName === $key ? "selected": "" }} value="{{ $value }}">{{ $key }}</option>
+                                    @endforeach
+                                </select>
 
-                            <div class="row-padding">
-
-                                <div class="col s6">
-                                    <!-- Freq -->
-                                    <label for="frequency">{{ __('Frequency') }}<span class="text-red">*</span></label>
-                                    <select
-                                        wire:model.defer="frequency"
-                                        class="{{ $errors->has('frequency') ? 'border border-red' : '' }}"
-                                        aria-label="{{ __("Select a repeat frequency") }}"
-                                        name="frequency"
-                                    >
-                                        @foreach ($frequencies as $freq)
-                                            <option
-                                                {{ $frequency === $freq ? "selected": "" }} value="{{ $freq }}">{{ $freq }}</option>
-                                        @endforeach
-                                    </select>
-
-                                    <div class="{{ $errors->has('frequency') ? 'error-message' : '' }}">
-                                        {{ $errors->has('frequency') ? $errors->first('frequency') : '' }}
-                                    </div>
+                                <div class="{{ $errors->has('frequencyName') ? 'error-message' : '' }}">
+                                    {{ $errors->has('frequencyName') ? $errors->first('frequencyName') : '' }}
                                 </div>
-
-                                <div class="col s6">
-                                    <!-- Interval -->
-                                    <label
-                                        for="interval">{{ __('Interval') }}<span class="text-red">*</span></label>
-                                    <input
-                                        wire:model.defer="interval"
-                                        class="{{ $errors->has('interval') ? 'border border-red' : '' }}"
-                                        name="interval"
-                                        type="number"
-                                    />
-                                    <small>{{ __('For example, at every 2nd week/month') }}</small>
-
-                                    <div class="{{ $errors->has('interval') ? 'error-message' : '' }}">
-                                        {{ $errors->has('interval') ? $errors->first('interval') : '' }}
-                                    </div>
-                                </div>
-
                             </div>
 
 
@@ -404,8 +366,29 @@
 
     <script>
         document.addEventListener('livewire:load', function () {
+            var hu = {
+                code: 'hu',
+                week: {
+                    dow: 1,
+                    doy: 4, // The week that contains Jan 4th is the first week of the year.
+                },
+                buttonText: {
+                    prev: 'vissza',
+                    next: 'előre',
+                    today: 'ma',
+                    year: 'Év',
+                    month: 'Hónap',
+                    week: 'Hét',
+                    day: 'Nap',
+                    list: 'Lista',
+                },
+                weekText: 'Hét',
+                allDayText: 'Egész nap',
+                moreLinkText: 'további',
+                noEventsText: 'Nincs megjeleníthető esemény',
+            };
 
-            console.log(@json( $events ));
+            {{--console.log(@json( $events ));--}}
 
             const calendarEl = document.getElementById('calendar');
             const calendar = new FullCalendar.Calendar(calendarEl, {
@@ -416,7 +399,7 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                locale: '{{ 'hu' ?? config('app.locale') }}',
+                locale: hu,
                 allDaySlot: false,
                 defaultAllDay: false,
                 slotMinTime: '06:00:00',
@@ -501,22 +484,6 @@
                     address.appendChild(bold);
                     container.appendChild(address)
                 }
-
-
-                if (event.end !== null) {
-                    /*                    const description = document.createElement('p');
-
-                                        const startTimestamp = new Date(event.start).getTime();
-                                        const endTimestamp = new Date(event.end).getTime();
-
-                                        // Calculate duration in hours
-                                        const duration = (endTimestamp - startTimestamp) / (60 * 60 * 1000);
-
-                                        description.innerText = duration + 'ó';
-                                        description.classList.add('description');
-                                        container.appendChild(description)*/
-                }
-
 
                 if (event.extendedProps.workers && event.extendedProps.workers.length > 0) {
                     const workers = event.extendedProps.workers;

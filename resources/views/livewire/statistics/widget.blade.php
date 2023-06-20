@@ -72,12 +72,37 @@
         <form wire:submit.prevent="getResults">
             <div class="row-padding">
                 <div class="col s6">
-                    <label for="startDate">{{ __('Start date') }}</label>
-                    <input type="date" wire:model.defer="startDate"/>
+                    <label for="startDate">{{ __('Start date') }}<span class="text-red">*</span></label>
+                    <input type="date" wire:model.defer="startDate" class="{{ $errors->has('startDate') ? 'border border-red' : '' }}"/>
+                    <div class="{{ $errors->has('startDate') ? 'error-message' : '' }}">
+                        {{ $errors->has('startDate') ? $errors->first('startDate') : '' }}
+                    </div>
                 </div>
                 <div class="col s6">
-                    <label for="startDate">{{ __('End date') }}</label>
-                    <input type="date" wire:model.defer="endDate"/>
+                    <label for="startDate">{{ __('End date') }}<span class="text-red">*</span></label>
+                    <input type="date" wire:model.defer="endDate" class="{{ $errors->has('endDate') ? 'border border-red' : '' }}"/>
+                    <div class="{{ $errors->has('endDate') ? 'error-message' : '' }}">
+                        {{ $errors->has('endDate') ? $errors->first('endDate') : '' }}
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <label for="clientId">{{ __('Client name') }}<span class="text-red">*</span></label>
+                <select
+                    wire:model.defer="clientId"
+                    class="{{ $errors->has('clientId') ? 'border border-red' : '' }}"
+                    aria-label="{{ __("Select a client") }}"
+                    name="clientId"
+                >
+                    @foreach ($clientsData as $key => $value)
+                        <option {{ $clientId === $value ? "selected": "" }} value="{{ $value }}">
+                            {{ $key }}
+                        </option>
+                    @endforeach
+                </select>
+                <div class="{{ $errors->has('clientId') ? 'error-message' : '' }}">
+                    {{ $errors->has('clientId') ? $errors->first('clientId') : '' }}
                 </div>
             </div>
 
@@ -126,7 +151,7 @@
 
 					// For recurring jobs
 					if ($rrule) {
-						$recurrence = $rrule->freq . ' ' . $rrule->interval; // example: '1 / week'
+						$recurrence = $rrule->interval . ' ' . ($rrule->freq === 'weekly' ? __('weekly') : __('monthly'));
 
 						// variables needed for date calculations between start and end dates of the user-defined-interval
 						$intervalToAdd = '+' . $rrule->interval . ' ' . substr($rrule->freq, 0, -1); // example: +1 week
@@ -209,7 +234,7 @@
                     </td>
                     <td>
                         @if ($jobEndDate !== '')
-                            {{ $jobStartDate }}
+                            {{ $jobEndDate }}
                         @else
                             @foreach($recurringEndDates as $dateItem)
                                 {{ str_replace('T', ' ', substr($dateItem, 0, -9)) }}<br>

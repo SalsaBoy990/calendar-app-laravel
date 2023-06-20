@@ -36,7 +36,7 @@
 
 
                 <!-- Email -->
-                <label for="email">{{ __('Email') }}<span class="text-red">*</span></label>
+                <label for="email">{{ __('Email') }}</label>
                 <input
                     wire:model.defer="email"
                     type="email"
@@ -51,7 +51,7 @@
 
 
                 <!-- Phone number -->
-                <label for="phone">{{ __('Phone number') }}<span class="text-red">*</span></label>
+                <label for="phone">{{ __('Phone number') }}</label>
                 <input
                     wire:model.defer="phone"
                     type="text"

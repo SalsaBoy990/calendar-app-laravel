@@ -2,23 +2,22 @@
     <div class="header-content">
         <div class="logo">
             <a href="/" class="brand">
-                <img src="{{ url('/images/logo.png') }}" alt="{{ config('app.name', 'Laravel') }}">
-                {{ config('app.name') }}
+                <img src="{{ url('/images/szlavi-cleaning-team.png') }}" alt="{{ config('app.name', 'Laravel') }}">
             </a>
         </div>
         @if (Route::has('login'))
             <div class="main-navigation">
                 <nav id="main-menu">
                     @auth
-                        <a class="{{ request()->routeIs('home') ? 'active' : '' }}"
-                           href="{{ url('/home') }}">
-                            <i class="fa fa-home" aria-hidden="true"></i>{{ __('Home') }}
+                        <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"
+                           href="{{ url('/admin/dashboard') }}">
+                            <i class="fa fa-tachometer" aria-hidden="true"></i>{{ __('Dashboard') }}
                         </a>
 
                         @role('super-administrator|administrator')
                         <a class="{{ request()->routeIs('calendar') ? 'active' : '' }}"
                            href="{{ route('calendar') }}">
-                            <i class="fa fa-calendar" aria-hidden="true"></i>{{ __('Calendar') }}
+                            <i class="fa fa-calendar" aria-hidden="true"></i>{{ __('Works') }}
                         </a>
 
                         <!-- Worker availabilities link -->
@@ -35,9 +34,11 @@
                             {{ __('Workers') }}
                         </a>
 
-                        <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"
-                           href="{{ url('/admin/dashboard') }}">
-                            <i class="fa fa-tachometer" aria-hidden="true"></i>{{ __('Dashboard') }}
+                        <!-- Get worked hours statistics link -->
+                        <a class="{{ request()->routeIs('statistics') ? 'active' : '' }}"
+                           href="{{ route('statistics') }}">
+                            <i class="fa fa-line-chart" aria-hidden="true"></i>
+                            {{ __('Statistics') }}
                         </a>
                         @endrole
 
@@ -94,20 +95,6 @@
                     @endauth
 
                 </nav>
-
-                @php
-                    $light = __('Light mode');
-                    $dark = __('Dark mode');
-                @endphp
-
-                <span
-                    class="pointer darkmode-toggle"
-                    rel="button"
-                    @click="toggleDarkMode"
-                    x-text="isDarkModeOn() ? '🔆' : '🌒'"
-                    :title="isDarkModeOn() ? '{{ $light }}' : '{{ $dark }}'"
-                >
-                    </span>
 
                 <div x-data="offCanvasMenuData">
                     <button id="main-menu-offcanvas-toggle"

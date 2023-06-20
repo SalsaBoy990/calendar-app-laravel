@@ -62,13 +62,15 @@ class Calendar extends Component {
     public Collection $clients;
 
     // for recurring events (by recurrence rules)
-    public string $frequency;
+    private string $frequency;
     public array $frequencies;
+    public string $frequencyName;
+
     public string $dtstart;
     public string $until;
     public string $byweekday;
     public array $weekDays;
-    public int $interval;
+    private int $interval;
     public array $rrule;
 
 
@@ -84,10 +86,10 @@ class Calendar extends Component {
 
         // shared property validation rules
         $rules = [
-            'updateId'        => [ 'nullable', 'uuid', 'max:255' ],
-            'workerIds'       => [ 'array' ],
-            'clientId'        => [ 'required', 'integer', 'min:0' ],
-            'description'     => [ 'nullable', 'string', 'max:255' ],
+            'updateId'    => [ 'nullable', 'uuid', 'max:255' ],
+            'workerIds'   => [ 'array' ],
+            'clientId'    => [ 'required', 'integer', 'min:0' ],
+            'description' => [ 'nullable', 'string', 'max:255' ],
         ];
 
         // non-recurring
@@ -99,12 +101,11 @@ class Calendar extends Component {
 
         } else {
             // recurring
-            $rules['frequency'] = [ 'required', 'string' ];
+            $rules['frequencyName'] = [ 'required', 'string' ];
             $rules['byweekday'] = [ 'required', 'string' ];
             $rules['dtstart']   = [ 'required', 'string' ];
             $rules['until']     = [ 'nullable', 'string' ];
             $rules['duration']  = [ 'required', 'string' ];
-            $rules['interval']  = [ 'required', 'integer' ];
 
             return $rules;
 
@@ -148,6 +149,7 @@ class Calendar extends Component {
         $this->backgroundColor = null;
         $this->byweekday       = '';
         $this->frequency       = '';
+        $this->frequencyName   = '';
         $this->dtstart         = '';
         $this->until           = '';
         $this->rrule           = [];
@@ -171,19 +173,21 @@ class Calendar extends Component {
 
         // weekdays
         $this->weekDays = [
-            __('Sunday')    => 'Su',
-            __('Monday')    => 'Mo',
-            __('Tuesday')   => 'Tu',
-            __('Wednesday') => 'We',
-            __('Thursday')  => 'Th',
-            __('Friday')    => 'Fri',
-            __('Saturday')  => 'Sat',
+            __( 'Sunday' )    => 'Su',
+            __( 'Monday' )    => 'Mo',
+            __( 'Tuesday' )   => 'Tu',
+            __( 'Wednesday' ) => 'We',
+            __( 'Thursday' )  => 'Th',
+            __( 'Friday' )    => 'Fri',
+            __( 'Saturday' )  => 'Sat',
         ];
 
         // bi-weekly or other recurrences can be created by setting the interval property (interval=2 -> every second week/month...)
         $this->frequencies = [
-            'weekly',
-            'monthly'
+            'Hetente'       => 'weekly',
+            'Kéthetente'    => '2-weekly',
+            'Háromhetente'  => '3-weekly',
+            'Havonta'       => 'monthly'
         ];
 
         $this->workerIds = [];
@@ -337,7 +341,8 @@ class Calendar extends Component {
                     $eventEntity->save();
                     $eventEntity->refresh();
 
-                    $this->banner( __('Successfully updated the event ":name"!', ['name' => htmlspecialchars( $eventEntity->client->name )] ) );
+                    $this->banner( __( 'Successfully updated the event ":name"!',
+                        [ 'name' => htmlspecialchars( $eventEntity->client->name ) ] ) );
                 } else {
 
                     $eventProps['id'] = Str::uuid();
@@ -350,7 +355,8 @@ class Calendar extends Component {
                     $eventEntity->save();
                     $eventEntity->refresh();
 
-                    $this->banner( __('Successfully created the event ":name"!', ['name' => htmlspecialchars( $eventEntity->client->name )] ) );
+                    $this->banner( __( 'Successfully created the event ":name"!',
+                        [ 'name' => htmlspecialchars( $eventEntity->client->name ) ] ) );
                 }
             },
             2
@@ -393,7 +399,7 @@ class Calendar extends Component {
             // reset loaded event properties for the modal
             $this->initializeProperties();
 
-            $this->banner( __('Successfully deleted the event ":name"!', [ 'name' => htmlspecialchars( $title ) ] ) );
+            $this->banner( __( 'Successfully deleted the event ":name"!', [ 'name' => htmlspecialchars( $title ) ] ) );
         }
 
         return redirect()->route( 'calendar' );
@@ -443,13 +449,10 @@ class Calendar extends Component {
                 $this->rrule['byweekday'] = $this->byweekday;
             }
 
-            if ( $this->frequency !== '' ) {
-                $this->rrule['freq'] = $this->frequency;
-            }
+            $this->setFrequencyAndInterval();
+            $this->rrule['freq'] = $this->frequency;
+            $this->rrule['interval'] = $this->interval;
 
-            if ( $this->interval !== 0 ) {
-                $this->rrule['interval'] = $this->interval ?? 1;
-            }
 
             if ( $this->dtstart !== '' ) {
                 $this->rrule['dtstart'] = $this->dtstart;
@@ -553,7 +556,7 @@ class Calendar extends Component {
             ->pluck( [ 'id' ] )
             ->toArray();
 
-        $this->description     = $this->event->description;
+        $this->description = $this->event->description;
 
         $this->frequency   = $this->event->rrule['freq'] ?? '';
         $this->byweekday   = $this->event->rrule['byweekday'] ?? '';
@@ -564,6 +567,8 @@ class Calendar extends Component {
         $this->isRecurring = $this->event->is_recurring ?? 0;
         $this->clientId    = 0;
 
+        $this->setFrequencyName();
+
         if ( isset( $this->event->client ) ) {
             $this->clientId = $this->event->client->id;
         }
@@ -572,6 +577,7 @@ class Calendar extends Component {
 
     /**
      * Initialize properties for modal from arguments coming from client-side (from FullCalendar)
+     *
      * @param  array  $args
      *
      * @return void
@@ -605,5 +611,46 @@ class Calendar extends Component {
 
         $this->isModalOpen = true;
 
+    }
+
+    private function setFrequencyAndInterval() {
+
+        switch ( $this->frequencyName ) {
+            case 'weekly':
+                $this->frequency = 'weekly';
+                $this->interval  = 1;
+                break;
+            case '2-weekly':
+                $this->frequency = 'weekly';
+                $this->interval  = 2;
+                break;
+            case '3-weekly':
+                $this->frequency = 'weekly';
+                $this->interval  = 3;
+                break;
+            case 'monthly':
+                $this->frequency = 'monthly';
+                $this->interval  = 1;
+                break;
+            default:
+                $this->interval = 1;
+        }
+    }
+
+
+    private function setFrequencyName() {
+        if ($this->frequency === 'weekly') {
+            if ($this->interval === 1) {
+                $this->frequencyName = 'weekly';
+            } else if ($this->interval === 2) {
+                $this->frequencyName = '2-weekly';
+            } else if ($this->interval === 3) {
+                $this->frequencyName = '3-weekly';
+            }
+        } else if ($this->frequency === 'monthly') {
+            $this->frequencyName = 'monthly';
+        } else {
+            $this->frequencyName = 'weekly';
+        }
     }
 }

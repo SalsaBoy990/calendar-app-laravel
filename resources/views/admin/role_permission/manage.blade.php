@@ -23,7 +23,7 @@
 
                 <div x-data="tabsData( @js($activeTab) )" class="border border-40 round">
 
-                    <div class="bar">
+                    <div class="bar gray-10">
                         <a id="RolesTrigger"
                            href="javascript:void(0)"
                            class="bar-item tab-switcher"
@@ -45,7 +45,7 @@
 
                     <div id="Roles" class="box tabs animate-opacity">
 
-                        <h1 class="h2">{{ __('Manage roles') }}</h1>
+                        <h1 class="h3">{{ __('Manage roles') }}</h1>
 
                         <!-- Create role -->
                         <livewire:role.create title="{{ __('New role') }}"
@@ -110,7 +110,7 @@
                     <div id="Permissions" class="box tabs animate-opacity">
 
 
-                        <h1 class="h2">{{ __('Manage permissions') }}</h1>
+                        <h1 class="h3">{{ __('Manage permissions') }}</h1>
 
                         <!-- Create role -->
                         <livewire:permission.create title="{{ __('New permission') }}" :roles="$roles" :hasSmallButton="false"

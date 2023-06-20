@@ -3,7 +3,7 @@
     @section('content')
 
         <main class="padding-1">
-            <h1 class="h3 margin-top-0 text-center">{{ __('Dashboard') }}</h1>
+            <h1 class="h2 margin-top-0 text-center">{{ __('Dashboard') }}</h1>
 
             <div class="main-content">
 
@@ -11,12 +11,6 @@
                     <ul class="dashboard-card-grid">
 
                         @role('super-administrator|administrator')
-                        <li class="card text-center">
-                            <a href="{{ url('/home') }}" class="card-link">
-                                <i class="fa fa-home" aria-hidden="true"></i>{{ __('Home') }}
-                            </a>
-                        </li>
-
                         <!-- Custom links -->
                         <!-- Manage workers link -->
                         <li class="card text-center">
@@ -47,6 +41,12 @@
                             <a class="card-link" href="{{ route('client.manage') }}">
                                 <i class="fa fa-address-card" aria-hidden="true"></i>
                                 <span>{{ __('Manage clients') }}</span>
+                            </a>
+                        </li>
+
+                        <li class="card text-center">
+                            <a href="{{ route('statistics') }}" class="card-link">
+                                <i class="fa fa-line-chart" aria-hidden="true"></i>{{ __('Statistics') }}
                             </a>
                         </li>
                         @endrole

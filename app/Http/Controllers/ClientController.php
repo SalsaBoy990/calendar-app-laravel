@@ -15,6 +15,7 @@ class ClientController extends Controller {
     public function index() {
         $this->authorize( 'viewAny', User::class );
 
+        $types = Client::$clientTypes;
         $clients = Client::orderBy( 'name', 'ASC' )
                          ->with( [ 'events', 'client_detail' ] )
                          ->paginate( Client::RECORDS_PER_PAGE )->withQueryString();
@@ -22,6 +23,7 @@ class ClientController extends Controller {
 
         return view( 'admin.client.manage' )->with( [
             'clients' => $clients,
+            'clientTypes' => $types
         ] );
     }
 

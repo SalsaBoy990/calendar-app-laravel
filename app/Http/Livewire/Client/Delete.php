@@ -51,6 +51,7 @@ class Delete extends Component {
         DB::transaction(
             function () {
                 $this->client->delete();
+                $this->client->client_detail()->delete();
             },
             2
         );

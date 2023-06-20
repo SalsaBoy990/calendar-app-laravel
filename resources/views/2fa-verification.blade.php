@@ -11,7 +11,7 @@
                 @csrf
 
                 <p class="text-center">
-                    {{ __('We sent code to email: ') }} {{ substr(auth()->user()->email, 0, 5) . '******' . substr(auth()->user()->email,  -3) }}
+                    {{ __('We sent code to email: ') }} {{ substr(auth()->user()->email, 0, 5) . '******' . substr(auth()->user()->email,  -4) }}
                 </p>
 
 

@@ -21,7 +21,7 @@ header .fa
 
 
     img
-        height: 36px
+        height: 50px
         width: auto
 
 
@@ -148,6 +148,13 @@ html.dark
 
 /* PUBLIC LAYOUT */
 .public
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+
+    & > .container
+        flex-grow: 1
+
     .public-content
         margin: 2em auto
 
@@ -230,7 +237,7 @@ footer.page-footer
 
 
 .welcome-content
-    height: 100px
+    display: contents
 
     h1
         width: 95%
@@ -355,7 +362,7 @@ fieldset
     justify-items: stretch
     align-items: center
     column-gap: 1em
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr))
     justify-content: space-between
     list-style-type: none
 
@@ -371,6 +378,9 @@ fieldset
             display: inline-block
             width: 100%
             height: 100%
+
+            i
+                margin-right: 4px
 
 
 
@@ -547,6 +557,11 @@ html.dark
     .nav-links
         display: flex
         gap: 1em
+
+        a
+            i
+                margin-right: 4px
+                font-size: 16px
 
         a.active
             font-weight: 700

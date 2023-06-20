@@ -6,21 +6,14 @@
                 @role('super-administrator|administrator')
                 <a class="{{ request()->routeIs('calendar') ? 'active' : '' }}"
                    href="{{ route('calendar') }}">
-                    <i class="fa fa-calendar" aria-hidden="true"></i>{{ __('Calendar') }}
+                    <i class="fa fa-calendar" aria-hidden="true"></i>{{ __('Works') }}
                 </a>
 
                 <!-- Worker availabilities link -->
                 <a class="{{ request()->routeIs('workers') ? 'active' : '' }}"
                    href="{{ route('workers') }}">
-                    <i class="fa fa-hourglass-start" aria-hidden="true"></i>
+                    <i class="fa fa-clock-o" aria-hidden="true"></i>
                     {{ __('Availabilities') }}
-                </a>
-
-                <!-- Manage workers -->
-                <a class="{{ request()->routeIs('worker.manage') ? 'active' : '' }}"
-                   href="{{ route('worker.manage') }}">
-                    <i class="fa fa-users" aria-hidden="true"></i>
-                    {{ __('Workers') }}
                 </a>
 
                 <!-- Statistics -->
@@ -212,6 +205,28 @@
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js'></script>
     <script>
         document.addEventListener('livewire:load', function () {
+            var hu = {
+                code: 'hu',
+                week: {
+                    dow: 1,
+                    doy: 4, // The week that contains Jan 4th is the first week of the year.
+                },
+                buttonText: {
+                    prev: 'vissza',
+                    next: 'előre',
+                    today: 'ma',
+                    year: 'Év',
+                    month: 'Hónap',
+                    week: 'Hét',
+                    day: 'Nap',
+                    list: 'Lista',
+                },
+                weekText: 'Hét',
+                allDayText: 'Egész nap',
+                moreLinkText: 'további',
+                noEventsText: 'Nincs megjeleníthető esemény',
+            };
+
             const calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 timeZone: 'local', // the default (unnecessary to specify)
@@ -221,7 +236,7 @@
                     center: 'title',
                     right: 'dayGridMonth,timeGridWeek,timeGridDay'
                 },
-                locale: '{{ 'hu' ?? config('app.locale') }}',
+                locale: hu,
                 allDaySlot: false,
                 defaultAllDay: false,
                 slotMinTime: '08:00:00',
