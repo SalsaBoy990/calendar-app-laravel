@@ -37,6 +37,7 @@ class Event extends Model {
         'description',
         'status',
         'backgroundColor',
+        'duration',
     ];
 
 
@@ -54,6 +55,7 @@ class Event extends Model {
         'description'     => HtmlSpecialCharsCast::class,
         'status'          => HtmlSpecialCharsCast::class,
         'backgroundColor' => HtmlSpecialCharsCast::class,
+        'duration' => HtmlSpecialCharsCast::class,
     ];
 
     /**

@@ -3,7 +3,6 @@
 namespace App\Http\Livewire\Permission;
 
 use App\Models\Permission;
-use App\Models\Role;
 use App\Support\InteractsWithBanner;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;

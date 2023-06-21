@@ -2,9 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Http\Request;
-
 class CalendarController extends Controller {
 
     /**
@@ -14,12 +11,7 @@ class CalendarController extends Controller {
      */
     public function index()
     {
-        $permissions = auth()->user()->permissions()->get();
-
-        return view('admin.calendar')->with([
-            'permissions' => $permissions,
-        ]);
-
+        return view('admin.calendar');
     }
 
 

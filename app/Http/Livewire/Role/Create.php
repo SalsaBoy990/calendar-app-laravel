@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\Role;
 
-use App\Models\Permission;
 use App\Models\Role;
 use App\Support\InteractsWithBanner;
 use Illuminate\Contracts\Foundation\Application;

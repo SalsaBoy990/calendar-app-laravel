@@ -3,7 +3,6 @@
 namespace App\Http\Livewire\Role;
 
 use App\Models\Role;
-use App\Models\User;
 use App\Support\InteractsWithBanner;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;

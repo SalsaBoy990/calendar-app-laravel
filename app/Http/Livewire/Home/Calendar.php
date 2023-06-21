@@ -178,8 +178,8 @@ class Calendar extends Component {
             __( 'Tuesday' )   => 'Tu',
             __( 'Wednesday' ) => 'We',
             __( 'Thursday' )  => 'Th',
-            __( 'Friday' )    => 'Fri',
-            __( 'Saturday' )  => 'Sat',
+            __( 'Friday' )    => 'Fr',
+            __( 'Saturday' )  => 'Sa',
         ];
 
         // bi-weekly or other recurrences can be created by setting the interval property (interval=2 -> every second week/month...)
@@ -242,9 +242,6 @@ class Calendar extends Component {
             $changedEvent->save();
 
         } else {
-            // For recurring events, the event modal will appear!
-            // No other way to solve it.
-
             // always use the uuid column here (which is the 'id')!
             $eventId        = $changedEvent->id;
             $this->updateId = $eventId;
@@ -252,14 +249,24 @@ class Calendar extends Component {
 
             if ( $this->checkIfEventExists() === null ) {
                 $this->banner( __( 'Event does not exists!' ), 'danger' );
-
                 return redirect()->route( 'calendar' );
             }
 
+            // Update the time part only
+            // otherwise it would change the start date of the recurring event
             $newRules            = $this->event->rrule;
-            $newRules['dtstart'] = date( "Y-m-d\TH:i:s", strtotime( $event['start'] ) );
+            $newStart = $newRules['dtstart'];
 
-            // On resize overwrite the duration field (the right way with DateTime class etc.)
+            // get the existing date part
+            $newStart = substr($newStart, 0, -5);
+            // get the new time part
+            $newTime = date( "H:i", strtotime( $event['start'] ));
+
+            $newStart .= $newTime;
+            $newRules['dtstart'] = $newStart;
+
+
+            // On resize, overwrite the duration field (the right way with DateTime class etc.)
             if ( Arr::exists( $event, 'start' ) && Arr::exists( $event, 'end' ) ) {
                 $tz      = new DateTimeZone( 'Europe/Budapest' );
                 $tformat = DateTimeInterface::ATOM;
@@ -270,6 +277,9 @@ class Calendar extends Component {
                 $difference            = $end->diff( $start );
                 $newDuration           = $difference->format( "%H:%I:%S" );
                 $this->event->duration = $newDuration;
+
+                // change weekday if we moved the event to another day of the week
+                $newRules['byweekday'] = substr($start->format('D'), 0, -1);
             }
 
             $this->event->rrule = $newRules;
@@ -586,27 +596,14 @@ class Calendar extends Component {
         // only for non-recurring events
         if ( $this->isRecurring === 0 ) {
 
-            // todo: maybe disable the option to have full-day events altogether
-            $this->allDay = $args['allDay'];
-            if ( $this->allDay === false ) {
-                // datetime-local
-                $this->start = date( "Y-m-d\TH:i:s", strtotime( $this->event->start ?? $args['start'] ) );
+            // datetime-local
+            $this->start = date( "Y-m-d\TH:i:s", strtotime( $this->event->start ?? $args['start'] ) );
 
-                if ( isset( $args['end'] ) ) {
-                    $this->end = date( "Y-m-d\TH:i:s", strtotime( $this->event->end ?? $args['end'] ) );
-                } else {
-                    $this->end = $this->event->end ?? null;
-                }
-
+            if ( isset( $args['end'] ) ) {
+                $this->end = date( "Y-m-d\TH:i:s", strtotime( $this->event->end ?? $args['end'] ) );
             } else {
-                $this->start = date( "Y-m-d\TH:i:s", strtotime( $this->event->start ?? $args['start'] ) );
-                // all day events do not need to have the end date set, so check it
-                $this->end = isset( $this->event ) && $this->event->end ?
-                    date( "Y-m-d\TH:i:s", strtotime( $this->event->end ?? $args['end'] ) )
-                    :
-                    null;
+                $this->end = $this->event->end ?? null;
             }
-
         }
 
         $this->isModalOpen = true;

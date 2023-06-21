@@ -2,7 +2,6 @@
 
 namespace App\Http\Livewire\User;
 
-use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
 use App\Support\InteractsWithBanner;
@@ -27,7 +26,7 @@ class Create extends Component {
     public string $name;
     public string $email;
     public string $password;
-    public ?int $roleId;
+    public ?int $role;
     public array $rolesArray;
 
     protected array $rules = [

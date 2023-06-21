@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Permission;
 use App\Models\Role;
-use App\Models\User;
 use App\Support\InteractsWithBanner;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Foundation\Application;

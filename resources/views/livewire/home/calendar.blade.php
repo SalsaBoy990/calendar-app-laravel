@@ -32,18 +32,6 @@
         </nav>
 
         <div class="legend-container">
-            @php
-                $light = __('Light mode');
-                $dark = __('Dark mode');
-            @endphp
-
-            <span
-                class="pointer darkmode-toggle"
-                rel="button"
-                @click="toggleDarkMode"
-                x-text="isDarkModeOn() ? '🔆' : '🌒'"
-                :title="isDarkModeOn() ? '{{ $light }}' : '{{ $dark }}'">
-            </span>
         </div>
     </div>
 
@@ -397,12 +385,12 @@
                 headerToolbar: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    right: 'dayGridMonth,timeGridWeek'
                 },
                 locale: hu,
                 allDaySlot: false,
                 defaultAllDay: false,
-                slotMinTime: '06:00:00',
+                slotMinTime: '00:00:00',
                 slotMaxTime: '24:00:00',
                 firstDay: 1,
                 fixedWeekCount: 5,

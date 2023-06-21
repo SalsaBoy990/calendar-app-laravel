@@ -7,7 +7,6 @@ use App\Models\Event;
 use DateTime;
 use DateTimeZone;
 use Exception;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -22,6 +21,11 @@ class Widget extends Component {
      */
     public ?Collection $chartData;
 
+
+    /**
+     * Paginated Collection of jobs (events)
+     * @var
+     */
     protected $cleaningJobs;
 
     /**
@@ -33,15 +37,10 @@ class Widget extends Component {
 
     public Collection $clients;
 
+    // client name and id for select field
     public array $clientsData;
 
-    /**
-     * All ("all") or single Client ("client") statistics will be generated
-     *
-     * @var string
-     */
-    public string $dataOption;
-
+    // for filtering by date interval
     public string $startDate;
     public string $endDate;
 
@@ -58,15 +57,8 @@ class Widget extends Component {
 
     protected array $rules = [
         'clientId'  => [ 'required', 'int', 'max:255' ],
-        //'dataOption' => [ 'required', 'string', 'in:all,client' ],
         'startDate' => [ 'nullable', 'date' ],
         'endDate'   => [ 'nullable', 'date' ],
-    ];
-
-
-    protected $listeners = [
-        'queryData'     => 'getStatisticsForChart',
-        'generateChart' => 'generateChart'
     ];
 
 
@@ -78,7 +70,6 @@ class Widget extends Component {
         $this->cleaningJobs = null;
 
         $this->clientId   = 0;
-        $this->dataOption = 'all';
         $this->totalWorks = null;
 
         $firstDayOfTheMonth = new DateTime( 'first day of this month', new DateTimeZone( 'Europe/Budapest' ) );
@@ -103,6 +94,9 @@ class Widget extends Component {
     }
 
 
+    /**
+     * @throws Exception
+     */
     public function render() {
         $this->queryDataForChart();
         $this->getJobList();
@@ -151,20 +145,9 @@ class Widget extends Component {
                     )
                     ->join( 'clients', 'events.client_id', '=', 'clients.id' );
 
-        if ( $this->clientId === 0 ) {
-            $result = $result
-                ->whereRaw( "events.start > ? AND events.start < ?", [ $this->startDate, $this->endDate ] )
-                ->orWhereRaw( "DATE(JSON_EXTRACT(events.rrule , '$.dtstart')) > ?", [ $this->startDate ] );
-        } else {
-            $result = $result
-                ->whereRaw( "events.start > ? AND events.start < ? AND events.client_id = ?",
-                    [ $this->startDate, $this->endDate, $this->clientId ] )
-                ->orWhereRaw( "DATE(JSON_EXTRACT(events.rrule , '$.dtstart')) > ? AND events.client_id = ? ",
-                    [ $this->startDate, $this->clientId ] );
-        }
-
+        $result = $this->addWhereConditionsToQueries($result);
         $result = $result
-            ->orderByDesc( 'events.end' )
+            ->orderByDesc( 'clients.name' )
             ->groupBy( 'clients.name',
                 'events.status',
                 'events.is_recurring',
@@ -182,13 +165,12 @@ class Widget extends Component {
 
     /**
      * @return void
+     * @throws Exception
      */
     public function getResults(): void {
-
         $this->queryDataForChart();
         $this->getJobList();
-        $this->resetPage( 'page' );
-
+        $this->resetPage();
     }
 
 
@@ -198,7 +180,6 @@ class Widget extends Component {
     public function queryDataForChart() {
         // validate user input
         $this->validate();
-
 
         $tz        = new DateTimeZone( 'Europe/Budapest' );
         $startDate = new DateTime( $this->startDate, $tz );
@@ -218,21 +199,34 @@ class Widget extends Component {
                         )
                         ->join( 'clients', 'events.client_id', '=', 'clients.id' );
 
-        if ( $this->clientId === 0 ) {
-            $statistics = $statistics
-                ->whereRaw( "events.start > ? AND events.start < ?", [ $this->startDate, $this->endDate ] )
-                ->orWhereRaw( "DATE(JSON_EXTRACT(events.rrule , '$.dtstart')) > ?", [ $this->startDate ] );
-        } else {
-            $statistics = $statistics
-                ->whereRaw( "events.start > ? AND events.start < ? AND events.client_id = ?",
-                    [ $this->startDate, $this->endDate, $this->clientId ] )
-                ->orWhereRaw( "DATE(JSON_EXTRACT(events.rrule , '$.dtstart')) > ? AND events.client_id = ? ",
-                    [ $this->startDate, $this->clientId ] );
-        }
+        $statistics = $this->addWhereConditionsToQueries($statistics);
         $statistics = $statistics
             ->groupBy( 'clients.name', 'events.is_recurring' )
             ->get();
 
         $this->chartData = $statistics;
+    }
+
+
+    /**
+     * @param $query
+     *
+     * @return mixed
+     */
+    private function addWhereConditionsToQueries($query): mixed {
+
+        if ( $this->clientId === 0 ) {
+            $query = $query
+                ->whereRaw( "events.start > ? AND events.start < ?", [ $this->startDate, $this->endDate ] )
+                ->orWhereRaw( "DATE(JSON_EXTRACT(events.rrule , '$.dtstart')) > ?", [ $this->startDate ] );
+        } else {
+            $query = $query
+                ->whereRaw( "events.start > ? AND events.start < ? AND events.client_id = ?",
+                    [ $this->startDate, $this->endDate, $this->clientId ] )
+                ->orWhereRaw( "DATE(JSON_EXTRACT(events.rrule , '$.dtstart')) > ? AND events.client_id = ? ",
+                    [ $this->startDate, $this->clientId ] );
+        }
+
+        return $query;
     }
 }

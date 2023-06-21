@@ -32,20 +32,6 @@
         </nav>
 
         <div>
-
-            @php
-                $light = __('Light mode');
-                $dark = __('Dark mode');
-            @endphp
-
-            <span
-                class="pointer darkmode-toggle"
-                rel="button"
-                @click="toggleDarkMode"
-                x-text="isDarkModeOn() ? '🔆' : '🌒'"
-                :title="isDarkModeOn() ? '{{ $light }}' : '{{ $dark }}'"
-            >
-                    </span>
         </div>
     </div>
 

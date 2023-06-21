@@ -6,8 +6,6 @@ use App\Support\InteractsWithBanner;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Session;
 
 
 class DashboardController extends Controller
