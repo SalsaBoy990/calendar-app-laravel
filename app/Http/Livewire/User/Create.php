@@ -34,10 +34,9 @@ class Create extends Component {
         'email'           => [ 'required', 'string', 'email', 'max:255', 'unique:users' ],
         'password'        => [ 'required', 'string' ],
         'role'            => [ 'required', 'integer' ],
-        'userPermissions' => [ 'array' ]
     ];
 
-    public function mount(Collection $roles, Collection $permissions, bool $hasSmallButton = false ) {
+    public function mount(Collection $roles, bool $hasSmallButton = false ) {
         $this->modalId        = 'm-new-user';
         $this->isModalOpen    = false;
         $this->hasSmallButton = $hasSmallButton || false;
@@ -52,8 +51,6 @@ class Create extends Component {
             $this->rolesArray[ $role->id ] = $role->name;
         }
 
-        $this->userPermissions = [];
-        $this->allPermissions  = $permissions;
     }
 
 
@@ -82,8 +79,6 @@ class Create extends Component {
 
                 $newUser->save();
 
-                // Sync the permissions - permission ids from the checkbox
-                $newUser->permissions()->sync($this->userPermissions);
             },
             2
         );

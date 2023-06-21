@@ -1,5 +1,5 @@
 @push('scripts')
-    <script src="https://www.gstatic.com/charts/loader.js"></script>
+    <script src="{{ url('/js/google-charts-loader.js') }}"></script>
 @endpush
 
 <section x-data="{

@@ -12,7 +12,7 @@
                 <!-- Worker availabilities link -->
                 <a class="{{ request()->routeIs('workers') ? 'active' : '' }}"
                    href="{{ route('workers') }}">
-                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                    <i class="fa-regular fa-clock" aria-hidden="true"></i>
                     {{ __('Availabilities') }}
                 </a>
 
@@ -141,7 +141,7 @@
                                 type="button"
                                 class="danger"
                         >
-                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
                             {{  __('Delete?') }}
                         </button>
                     @endif
@@ -188,7 +188,7 @@
 
 </div>
 @push('scripts')
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js'></script>
+    <script src="{{ url('/js/fullcalendar.6.1.7.min.js') }}"></script>
     <script>
         document.addEventListener('livewire:load', function () {
             var hu = {

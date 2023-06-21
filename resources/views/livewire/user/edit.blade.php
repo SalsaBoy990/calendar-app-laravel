@@ -87,27 +87,6 @@
                     {{ $errors->has('role') ? $errors->first('role') : '' }}
                 </div>
 
-
-                <!-- Permissions -->
-                <label class="{{ $errors->has('userPermissions') ? 'border border-red' : '' }}">
-                    {{ __('Assign permissions') }}
-                </label>
-                <div class="checkbox-container">
-                    @foreach($allPermissions as $permission)
-                        <label for="userPermissions">
-                            <input wire:model="userPermissions"
-                                   type="checkbox"
-                                   value="{{ $permission->id }}"
-                            >
-                            {{ $permission->name }}
-                        </label>
-                    @endforeach
-
-                    <div class="{{ $errors->has('userPermissions') ? 'error-message' : '' }}">
-                        {{ $errors->has('userPermissions') ? $errors->first('userPermissions') : '' }}
-                    </div>
-                </div>
-
             </fieldset>
 
 

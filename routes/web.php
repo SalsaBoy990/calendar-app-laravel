@@ -25,7 +25,9 @@ Route::get('/', function () {
 });
 
 // Auth endpoints from Laravel UI
-Auth::routes();
+Auth::routes([
+    'register' => false,
+]);
 // Auth endpoints from Laravel UI END
 
 

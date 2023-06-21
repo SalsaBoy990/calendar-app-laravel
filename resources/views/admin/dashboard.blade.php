@@ -15,7 +15,7 @@
                         <!-- Manage workers link -->
                         <li class="card text-center">
                             <a class="card-link" href="{{ route('worker.manage') }}">
-                                <i class="fa fa-users" aria-hidden="true"></i>
+                                <i class="fa-solid fa-person-digging" aria-hidden="true"></i>
                                 {{ __('Manage workers') }}
                             </a>
                         </li>
@@ -31,7 +31,7 @@
                         <!-- Worker availabilities link -->
                         <li class="card text-center">
                             <a class="card-link" href="{{ route('workers') }}">
-                                <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                <i class="fa-regular fa-clock" aria-hidden="true"></i>
                                 <span>{{ __('Worker availabilities') }}</span>
                             </a>
                         </li>

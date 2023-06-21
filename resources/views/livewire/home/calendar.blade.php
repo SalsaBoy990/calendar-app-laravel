@@ -12,7 +12,7 @@
                 <!-- Worker availabilities link -->
                 <a class="{{ request()->routeIs('workers') ? 'active' : '' }}"
                    href="{{ route('workers') }}">
-                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                    <i class="fa-regular fa-clock" aria-hidden="true"></i>
                     {{ __('Availabilities') }}
                 </a>
 
@@ -297,7 +297,7 @@
                                 type="button"
                                 class="danger"
                         >
-                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
                             {{  __('Delete?') }}
                         </button>
                     @endif
@@ -345,12 +345,11 @@
 </div>
 @push('scripts')
     <!-- rrule library -->
-    <script src='https://cdn.jsdelivr.net/npm/rrule@2.6.4/dist/es5/rrule.min.js'></script>
-
-    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js'></script>
+    <script src="{{ url('/js/rrule.2.6.4.min.js') }}"></script>
+    <script src="{{ url('/js/fullcalendar.6.1.7.min.js') }}"></script>
 
     <!-- the rrule-to-fullcalendar connector. must go AFTER the rrule lib -->
-    <script src='https://cdn.jsdelivr.net/npm/@fullcalendar/rrule@6.1.7/index.global.min.js'></script>
+    <script src="{{ url('/js/fullcalendar-rrule.6.1.7.min.js') }}"></script>
 
     <script>
         document.addEventListener('livewire:load', function () {

@@ -23,22 +23,15 @@
                         <!-- Worker availabilities link -->
                         <a class="{{ request()->routeIs('workers') ? 'active' : '' }}"
                            href="{{ route('workers') }}">
-                            <i class="fa fa-clock-o" aria-hidden="true"></i>
+                            <i class="fa-regular fa-clock" aria-hidden="true"></i>
                             {{ __('Availabilities') }}
                         </a>
 
                         <!-- Manage workers link -->
                         <a class="{{ request()->routeIs('worker.manage') ? 'active' : '' }}"
                            href="{{ route('worker.manage') }}">
-                            <i class="fa fa-users" aria-hidden="true"></i>
+                            <i class="fa-solid fa-person-digging" aria-hidden="true"></i>
                             {{ __('Workers') }}
-                        </a>
-
-                        <!-- Get worked hours statistics link -->
-                        <a class="{{ request()->routeIs('statistics') ? 'active' : '' }}"
-                           href="{{ route('statistics') }}">
-                            <i class="fa fa-line-chart" aria-hidden="true"></i>
-                            {{ __('Statistics') }}
                         </a>
                         @endrole
 

@@ -24,9 +24,9 @@ class UserCodeController extends Controller {
     public function index(): View|Factory|Application {
 
         // If session expires, resend code automatically when redirected to this page
-        if (! Session::has('user_2fa') ) {
+/*        if (! Session::has('user_2fa') ) {
             auth()->user()->generateCode();
-        }
+        }*/
 
         return view( '2fa-verification' );
     }

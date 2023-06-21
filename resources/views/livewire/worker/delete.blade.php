@@ -4,11 +4,11 @@
 
     @if ($hasSmallButton)
         <button @click="isModalOpen = true" class="fs-14 bold danger" title="{{ __('Delete worker') }}">
-            <i class="fa fa-trash-o" aria-hidden="true"></i>
+            <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
         </button>
     @else
         <button @click="isModalOpen = true" class="fs-14 bold danger">
-            <i class="fa fa-trash-o" aria-hidden="true"></i>
+            <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
             <span>{{ __('Delete') }}</span>
         </button>
     @endif

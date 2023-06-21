@@ -29,20 +29,16 @@ class Edit extends Component {
 
     public ?int $role;
     public array $rolesArray;
-    public array $userPermissions;
-    public Collection $allPermissions;
 
     protected array $rules = [
         'name'            => [ 'required', 'string', 'max:255' ],
         'password'        => [ 'string' ],
         'role'            => [ 'required', 'integer' ],
-        'userPermissions' => [ 'array' ]
     ];
 
     public function mount(
         string $modalId,
         User $user,
-        Collection $permissions,
         Collection $roles,
         bool $hasSmallButton = false
     ) {
@@ -55,9 +51,6 @@ class Edit extends Component {
         $this->name     = $this->user->name;
         $this->email    = $this->user->email;
         $this->password = '';
-
-        $this->userPermissions = $this->user->permissions()->get()->pluck( [ 'id' ] )->toArray();
-        $this->allPermissions  = $permissions;
 
         // initialize roleId property
         if ( isset( $this->user->role ) ) {
@@ -113,10 +106,6 @@ class Edit extends Component {
                 }
 
                 $this->user->save();
-
-
-                // Sync the permissions - permission ids from the checkbox
-                $this->user->permissions()->sync( $this->userPermissions );
 
             },
             2

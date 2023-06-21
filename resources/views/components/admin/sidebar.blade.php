@@ -45,7 +45,7 @@
                         <a class="nav-link {{ request()->routeIs('workers') ? 'active' : '' }}"
                            href="{{ route('workers') }}"
                         >
-                            <i class="fa fa-clock-o" aria-hidden="true"></i>
+                            <i class="fa-regular fa-clock" aria-hidden="true"></i>
                             <span>{{ __('Worker availabilities') }}</span></a>
                     </li>
 
@@ -54,7 +54,7 @@
                         <a class="nav-link {{ request()->routeIs('worker.manage') ? 'active' : '' }}"
                            href="{{ route('worker.manage') }}"
                         >
-                            <i class="fa fa-users" aria-hidden="true"></i>
+                            <i class="fa-solid fa-person-digging" aria-hidden="true"></i>
                             <span>{{ __('Manage workers') }}</span>
                         </a>
                     </li>
