@@ -15,7 +15,8 @@ use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\Redirector;
 
-class Calendar extends Component {
+class Calendar extends Component
+{
     use InteractsWithBanner;
 
     // used by blade / alpinejs
@@ -49,19 +50,20 @@ class Calendar extends Component {
 
 
     protected array $rules = [
-        'updateId'         => [ 'nullable', 'uuid', 'max:255' ],
-        'selectedWorkerId' => [ 'required', 'int', 'min:1' ],
-        'start'            => [ 'required', 'string', 'max:255' ],
-        'end'              => [ 'nullable', 'string' ],
+        'updateId' => ['nullable', 'uuid', 'max:255'],
+        'selectedWorkerId' => ['required', 'int', 'min:1'],
+        'start' => ['required', 'string', 'max:255'],
+        'end' => ['nullable', 'string'],
     ];
 
     protected $listeners = [
-        'deleteAvailabilityListener'  => 'deleteAvailability',
+        'deleteAvailabilityListener' => 'deleteAvailability',
         'openDeleteAvailabilityModal' => 'openDeleteAvailabilityModal',
-        'closeAvailabilityModal'      => 'closeAvailabilityModal',
+        'closeAvailabilityModal' => 'closeAvailabilityModal',
     ];
 
-    public function mount() {
+    public function mount()
+    {
         $this->initializeProperties();
 
         // query workers
@@ -71,26 +73,28 @@ class Calendar extends Component {
 
     }
 
-    public function updatedIsModalOpen() {
+    public function updatedIsModalOpen()
+    {
         $this->initializeProperties();
     }
 
-    public function initializeProperties() {
+    public function initializeProperties()
+    {
         // Alpine
-        $this->modalId           = 'worker-modal';
-        $this->deleteModalId     = 'delete-worker-modal';
+        $this->modalId = 'worker-modal';
+        $this->deleteModalId = 'delete-worker-modal';
         $this->isDeleteModalOpen = false;
-        $this->isModalOpen       = false;
+        $this->isModalOpen = false;
 
         // Entity properties
-        $this->start           = '';
-        $this->end             = '';
+        $this->start = '';
+        $this->end = '';
 
         //
-        $this->allDay           = false;
-        $this->newId            = '';
-        $this->updateId         = '';
-        $this->availability     = null;
+        $this->allDay = false;
+        $this->newId = '';
+        $this->updateId = '';
+        $this->availability = null;
         $this->selectedWorkerId = null;
 
     }
@@ -99,18 +103,20 @@ class Calendar extends Component {
     /**
      * @return Application|Factory|View
      */
-    public function render(): View|Factory|Application {
-        $this->availabilities = WorkerAvailability::with( 'worker' )->get();
+    public function render(): View|Factory|Application
+    {
+        $this->availabilities = WorkerAvailability::with('worker')->get();
 
-        return view( 'livewire.worker.calendar' );
+        return view('livewire.worker.calendar');
     }
 
 
-    public function availabilityChange( $availability ): void {
-        $changedAvailability        = WorkerAvailability::where( 'id', $availability['id'] )->first();
+    public function availabilityChange($availability): void
+    {
+        $changedAvailability = WorkerAvailability::where('id', $availability['id'])->first();
         $changedAvailability->start = $availability['start'];
 
-        if ( Arr::exists( $availability, 'end' ) ) {
+        if (Arr::exists($availability, 'end')) {
             $changedAvailability->end = $availability['end'];
         }
 
@@ -124,40 +130,41 @@ class Calendar extends Component {
      * @param  array  $args
      *
      */
-    public function availabilityModal( array $args ) {
+    public function availabilityModal(array $args)
+    {
 
         // existing event update flattening
-        if ( array_key_exists( 'event', $args ) ) {
-            $args           = $args['event'];
+        if (array_key_exists('event', $args)) {
+            $args = $args['event'];
             $this->updateId = $args['id'];
 
-            foreach ( $this->availabilities as $availability ) {
-                if ( $availability->id === $this->updateId ) {
+            foreach ($this->availabilities as $availability) {
+                if ($availability->id === $this->updateId) {
                     $this->availability = $availability;
                 }
             }
 
-            if ( $this->checkIfAvailabilityExists() ) {
-                $this->banner( __( 'Worker availability does not exists!' ), 'danger' );
+            if ($this->checkIfAvailabilityExists()) {
+                $this->banner(__('Worker availability does not exists!'), 'danger');
 
-                return redirect()->route( 'workers' );
+                return redirect()->route('workers');
             }
 
             $this->selectedWorkerId = $this->availability->worker->id ?? null;
         }
 
         $this->allDay = $args['allDay'];
-        if ( $this->allDay === false ) {
+        if ($this->allDay === false) {
             // datetime-local
             // Y-m-d\TH:i:s
-            $this->start = date( "Y-m-d\TH:i:s", strtotime( $this->availability->start ?? $args['start'] ) );
-            $this->end   = date( "Y-m-d\TH:i:s", strtotime( $this->availability->end ?? $args['end'] ) );
+            $this->start = date("Y-m-d\TH:i:s", strtotime($this->availability->start ?? $args['start']));
+            $this->end = date("Y-m-d\TH:i:s", strtotime($this->availability->end ?? $args['end']));
 
         } else {
-            $this->start = date( "Y-m-d\TH:i:s", strtotime( $this->availability->start ?? $args['start'] ) );
+            $this->start = date("Y-m-d\TH:i:s", strtotime($this->availability->start ?? $args['start']));
             // all day events do not need to have the end date set, so check it
-            $this->end = isset( $this->availability ) && $this->availability->end ?
-                date( "Y-m-d\TH:i:s", strtotime( $this->availability->end ?? $args['end'] ) )
+            $this->end = isset($this->availability) && $this->availability->end ?
+                date("Y-m-d\TH:i:s", strtotime($this->availability->end ?? $args['end']))
                 :
                 null;
 
@@ -173,61 +180,62 @@ class Calendar extends Component {
      *
      * @return Redirector
      */
-    public function createOrUpdateAvailability(): Redirector {
+    public function createOrUpdateAvailability(): Redirector
+    {
 
         $this->validate();
 
         // get selected worker entity (we have all the workers in the collection)
         $workerEntity = null;
-        foreach ( $this->workers as $worker ) {
-            if ( $worker->id === $this->selectedWorkerId ) {
+        foreach ($this->workers as $worker) {
+            if ($worker->id === $this->selectedWorkerId) {
                 $workerEntity = $worker;
             }
         }
 
         DB::transaction(
-            function () use ( $workerEntity ) {
+            function () use ($workerEntity) {
 
                 // if we have an id, update existing availability
-                if ( $this->updateId !== '' ) {
+                if ($this->updateId !== '') {
                     $updateAvailability = null;
-                    foreach ( $this->availabilities as $availability ) {
-                        if ( $availability->id === $this->updateId ) {
+                    foreach ($this->availabilities as $availability) {
+                        if ($availability->id === $this->updateId) {
                             $updateAvailability = $availability;
                         }
                     }
 
-                    if ( $this->checkIfAvailabilityExists() ) {
-                        $this->banner( __( 'Worker availability does not exists!' ), 'danger' );
+                    if ($this->checkIfAvailabilityExists()) {
+                        $this->banner(__('Worker availability does not exists!'), 'danger');
 
-                        return redirect()->route( 'workers' );
+                        return redirect()->route('workers');
                     }
 
-                    $updateAvailability->update( [
-                        'start'           => $this->start,
-                        'end'             => $this->end,
-                    ] );
+                    $updateAvailability->update([
+                        'start' => $this->start,
+                        'end' => $this->end,
+                    ]);
 
-                    if ( $this->selectedWorkerId !== $updateAvailability->worker->id ) {
+                    if ($this->selectedWorkerId !== $updateAvailability->worker->id) {
                         // null parent relation
                         $updateAvailability->worker()->dissociate();
 
                         // associate with the selected user
-                        $workerEntity = Worker::where( 'id', $this->selectedWorkerId )->first();
-                        $updateAvailability->worker()->associate( $workerEntity );
+                        $workerEntity = Worker::where('id', $this->selectedWorkerId)->first();
+                        $updateAvailability->worker()->associate($workerEntity);
                     }
 
                     $updateAvailability->save();
 
                 } else {
                     // create
-                    $newAvailability = WorkerAvailability::create( [
-                        'id'              => Str::uuid(),
-                        'start'           => $this->start,
-                        'end'             => $this->end,
-                    ] );
+                    $newAvailability = WorkerAvailability::create([
+                        'id' => Str::uuid(),
+                        'start' => $this->start,
+                        'end' => $this->end,
+                    ]);
 
-                    $newAvailability->worker()->associate( $workerEntity );
+                    $newAvailability->worker()->associate($workerEntity);
                     $newAvailability->save();
                 }
 
@@ -237,14 +245,16 @@ class Calendar extends Component {
 
 
         $this->updateId !== '' ?
-            $this->banner( __('Successfully updated the worker availability ":name"!', ['name' => htmlspecialchars( $workerEntity->name )]) )
+            $this->banner(__('Successfully updated the worker availability ":name"!',
+                ['name' => htmlspecialchars($workerEntity->name)]))
             :
-            $this->banner( __('Successfully created the worker availability ":name"!', ['name' => htmlspecialchars( $workerEntity->name )]));
+            $this->banner(__('Successfully created the worker availability ":name"!',
+                ['name' => htmlspecialchars($workerEntity->name)]));
 
         // Need to clear previous event data
         $this->initializeProperties();
 
-        return redirect()->route( 'workers' );
+        return redirect()->route('workers');
 
     }
 
@@ -252,34 +262,36 @@ class Calendar extends Component {
     /**
      * @return Redirector|null
      */
-    public function deleteAvailability(): ?Redirector {
+    public function deleteAvailability(): ?Redirector
+    {
 
         // if we have an id, delete existing event
-        if ( $this->updateId !== '' ) {
+        if ($this->updateId !== '') {
 
-            $availability = WorkerAvailability::where( 'id', $this->updateId )->with( 'worker' )->first();
-            $title        = htmlspecialchars( $availability->worker->name );
+            $availability = WorkerAvailability::where('id', $this->updateId)->with('worker')->first();
+            $title = htmlspecialchars($availability->worker->name);
 
             // delete role, rollback transaction if fails
             DB::transaction(
-                function () use ( $availability ) {
+                function () use ($availability) {
                     $availability->delete();
                 },
                 2
             );
 
             $this->initializeProperties();
-            $this->banner( __('Successfully deleted the worker availability ":name"!', ['name' => $title] ) );
+            $this->banner(__('Successfully deleted the worker availability ":name"!', ['name' => $title]));
         }
 
-        return redirect()->route( 'workers' );
+        return redirect()->route('workers');
     }
 
 
     /**
      * @return void
      */
-    public function openDeleteAvailabilityModal(): void {
+    public function openDeleteAvailabilityModal(): void
+    {
         $this->isDeleteModalOpen = true;
     }
 
@@ -287,7 +299,8 @@ class Calendar extends Component {
     /**
      * @return void
      */
-    public function closeAvailabilityModal(): void {
+    public function closeAvailabilityModal(): void
+    {
         $this->initializeProperties();
     }
 
@@ -295,7 +308,8 @@ class Calendar extends Component {
     /**
      * @return bool
      */
-    private function checkIfAvailabilityExists(): bool {
+    private function checkIfAvailabilityExists(): bool
+    {
         return $this->availability === null;
     }
 }

@@ -5,7 +5,7 @@
     <div class="sidebar-content">
 
         <!-- Custom content goes here -->
-        <?php if ( isset( $sidebar ) ) { ?>
+        <?php if (isset($sidebar)) { ?>
 
         {{ $sidebar }}
 

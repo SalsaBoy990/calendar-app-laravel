@@ -25,13 +25,14 @@ class UserController extends Controller
      * @return Application|Factory|View
      * @throws AuthorizationException
      */
-    public function index(): Factory|View|Application {
+    public function index(): Factory|View|Application
+    {
         $this->authorize('viewAny', User::class);
 
         $users = User::orderBy('created_at', 'DESC')
-                     ->with('role')
-                     ->paginate( User::RECORDS_PER_PAGE )
-                     ->withQueryString();
+            ->with('role')
+            ->paginate(User::RECORDS_PER_PAGE)
+            ->withQueryString();
 
         $permissions = Permission::all();
         $roles = Role::all();
@@ -63,7 +64,8 @@ class UserController extends Controller
      * @return RedirectResponse
      * @throws AuthorizationException
      */
-    public function store(Request $request): RedirectResponse {
+    public function store(Request $request): RedirectResponse
+    {
 
         $this->authorize('create', User::class);
 
@@ -84,7 +86,7 @@ class UserController extends Controller
 
         $newUser->save();
 
-        $this->banner( __('Successfully created the with the name of ":name"!', [htmlspecialchars($request->name)]) );
+        $this->banner(__('Successfully created the with the name of ":name"!', [htmlspecialchars($request->name)]));
         return redirect()->route('user.index');
     }
 
@@ -96,13 +98,14 @@ class UserController extends Controller
      * @return RedirectResponse
      * @throws AuthorizationException
      */
-    public function destroy(User $user): RedirectResponse {
+    public function destroy(User $user): RedirectResponse
+    {
         $this->authorize('delete', [User::class, $user]);
 
         $oldName = htmlentities($user->name);
         $user->delete();
 
-        $this->banner( __('Successfully deleted the user with the name of ":name"!', [ $oldName ]) );
+        $this->banner(__('Successfully deleted the user with the name of ":name"!', [$oldName]));
         return redirect()->route('user.manage');
     }
 
@@ -113,7 +116,8 @@ class UserController extends Controller
      *
      * @return Factory|View|Application
      */
-    public function account(User $user): Factory|View|Application {
+    public function account(User $user): Factory|View|Application
+    {
         $this->authorize('view', [User::class, $user]);
 
         return view('admin.user.account')->with([
@@ -129,7 +133,8 @@ class UserController extends Controller
      *
      * @return RedirectResponse
      */
-    public function update(Request $request, User $user): RedirectResponse {
+    public function update(Request $request, User $user): RedirectResponse
+    {
         $this->authorize('update', [User::class, $user]);
 
         $request->validate([

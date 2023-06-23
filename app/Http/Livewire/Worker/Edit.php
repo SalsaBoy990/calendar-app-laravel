@@ -8,7 +8,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-class Edit extends Component {
+class Edit extends Component
+{
     use InteractsWithBanner;
     use AuthorizesRequests;
 
@@ -25,9 +26,9 @@ class Edit extends Component {
     public int $workerId;
 
     protected array $rules = [
-        'name'  => [ 'required', 'string', 'max:255' ],
-        'email' => [ 'nullable', 'string' ],
-        'phone' => [ 'nullable', 'string' ],
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['nullable', 'string'],
+        'phone' => ['nullable', 'string'],
     ];
 
     public function mount(
@@ -35,44 +36,46 @@ class Edit extends Component {
         Worker $worker,
         bool $hasSmallButton = false
     ) {
-        $this->modalId        = $modalId;
-        $this->isModalOpen    = false;
+        $this->modalId = $modalId;
+        $this->isModalOpen = false;
         $this->hasSmallButton = $hasSmallButton || false;
 
-        $this->worker   = $worker;
+        $this->worker = $worker;
         $this->workerId = $this->worker->id;
-        $this->name     = $this->worker->name;
-        $this->email     = $this->worker->email;
-        $this->phone    = $this->worker->phone;
+        $this->name = $this->worker->name;
+        $this->email = $this->worker->email;
+        $this->phone = $this->worker->phone;
     }
 
 
-    public function render() {
-        return view( 'livewire.worker.edit' );
+    public function render()
+    {
+        return view('livewire.worker.edit');
     }
 
-    public function updateWorker() {
-        $this->authorize( 'update', [ Worker::class, $this->worker ] );
+    public function updateWorker()
+    {
+        $this->authorize('update', [Worker::class, $this->worker]);
 
         // validate user input
         $this->validate();
 
         DB::transaction(
             function () {
-                $this->worker->update( [
-                    'name'  => htmlspecialchars( $this->name ),
-                    'email' => htmlspecialchars( $this->email ),
-                    'phone' => htmlspecialchars( $this->phone ),
-                ] );
+                $this->worker->update([
+                    'name' => htmlspecialchars($this->name),
+                    'email' => htmlspecialchars($this->email),
+                    'phone' => htmlspecialchars($this->phone),
+                ]);
                 $this->worker->save();
             },
             2
         );
 
 
-        $this->banner( __('Successfully updated the worker ":name"!', ['name' => htmlspecialchars( $this->name )] ) );
+        $this->banner(__('Successfully updated the worker ":name"!', ['name' => htmlspecialchars($this->name)]));
 
-        return redirect()->route( 'worker.manage' );
+        return redirect()->route('worker.manage');
     }
 
 }

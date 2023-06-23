@@ -28,15 +28,17 @@ class Worker extends Model
     /**
      * @return BelongsToMany
      */
-    public function events(): BelongsToMany {
-        return $this->belongsToMany( Event::class, 'workers_events' );
+    public function events(): BelongsToMany
+    {
+        return $this->belongsToMany(Event::class, 'workers_events');
     }
 
 
     /**
      * @return HasMany
      */
-    public function worker_availabilities(): HasMany {
-        return $this->hasMany( WorkerAvailability::class);
+    public function worker_availabilities(): HasMany
+    {
+        return $this->hasMany(WorkerAvailability::class);
     }
 }

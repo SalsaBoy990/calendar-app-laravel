@@ -35,9 +35,9 @@ class WorkerAvailability extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'start'           => HtmlSpecialCharsCast::class,
-        'end'             => HtmlSpecialCharsCast::class,
-        'description'     => HtmlSpecialCharsCast::class,
+        'start' => HtmlSpecialCharsCast::class,
+        'end' => HtmlSpecialCharsCast::class,
+        'description' => HtmlSpecialCharsCast::class,
         'backgroundColor' => HtmlSpecialCharsCast::class,
     ];
 
@@ -45,8 +45,9 @@ class WorkerAvailability extends Model
     /**
      * @return BelongsTo
      */
-    public function worker(): BelongsTo {
-        return $this->belongsTo( Worker::class, 'worker_id');
+    public function worker(): BelongsTo
+    {
+        return $this->belongsTo(Worker::class, 'worker_id');
     }
 
 }

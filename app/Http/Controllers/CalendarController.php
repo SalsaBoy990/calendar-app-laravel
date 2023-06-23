@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-class CalendarController extends Controller {
+class CalendarController extends Controller
+{
 
     /**
      * Show the application dashboard.

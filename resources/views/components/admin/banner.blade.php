@@ -15,7 +15,8 @@
 
     <div class="notification-outer">
         <div class="notification-inner">
-                <span :class="{ 'success': style == 'success', 'danger': style == 'danger' }" aria-label="{{ __('System response notification') }}">
+                <span :class="{ 'success': style == 'success', 'danger': style == 'danger' }"
+                      aria-label="{{ __('System response notification') }}">
                     <i x-show="style == 'success'" class="fa fa-check" aria-hidden="true"></i>
                     <i x-show="style == 'danger'" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                     <i x-show="style != 'success' && style != 'danger'" class="fa fa-info-circle"

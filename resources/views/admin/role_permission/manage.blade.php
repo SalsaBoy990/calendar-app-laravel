@@ -113,7 +113,8 @@
                         <h1 class="h3">{{ __('Manage permissions') }}</h1>
 
                         <!-- Create role -->
-                        <livewire:permission.create title="{{ __('New permission') }}" :roles="$roles" :hasSmallButton="false"
+                        <livewire:permission.create title="{{ __('New permission') }}" :roles="$roles"
+                                                    :hasSmallButton="false"
                                                     :modalId="'m-create-permission'">
                         </livewire:permission.create>
 

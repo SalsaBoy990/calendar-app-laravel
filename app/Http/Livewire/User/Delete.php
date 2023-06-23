@@ -56,14 +56,15 @@ class Delete extends Component
 
         // save category, rollback transaction if fails
         DB::transaction(
-            function () use($user) {
+            function () use ($user) {
                 $user->delete();
             },
             2
         );
 
 
-        $this->banner( __('The user with the name ":name" was successfully deleted.', ['name' => htmlspecialchars( $this->name )] ) );
+        $this->banner(__('The user with the name ":name" was successfully deleted.',
+            ['name' => htmlspecialchars($this->name)]));
         return redirect()->route('user.manage');
     }
 }

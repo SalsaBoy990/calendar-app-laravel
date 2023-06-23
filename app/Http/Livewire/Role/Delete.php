@@ -61,7 +61,8 @@ class Delete extends Component
         );
 
 
-        $this->banner( __('The role with the name ":name" was successfully deleted.', ['name' => htmlspecialchars( $this->name )] ) );
+        $this->banner(__('The role with the name ":name" was successfully deleted.',
+            ['name' => htmlspecialchars($this->name)]));
         return redirect()->route('role-permission.manage');
     }
 }

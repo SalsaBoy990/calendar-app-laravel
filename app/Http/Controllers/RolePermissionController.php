@@ -10,7 +10,8 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 
-class RolePermissionController extends \Illuminate\Routing\Controller {
+class RolePermissionController extends \Illuminate\Routing\Controller
+{
     use InteractsWithBanner;
 
 

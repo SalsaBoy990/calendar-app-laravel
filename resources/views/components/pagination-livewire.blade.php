@@ -8,7 +8,8 @@
                 <span aria-hidden="true">&laquo;</span>
             </a>
         @else
-            <button wire:click="previousPage" wire:loading.attr="disabled" rel="prev" aria-label="@lang('pagination.previous')"
+            <button wire:click="previousPage" wire:loading.attr="disabled" rel="prev"
+                    aria-label="@lang('pagination.previous')"
                     class="bar-item button transparent">
                 &laquo;
             </button>
@@ -28,11 +29,13 @@
             @if (is_array($element))
                 @foreach ($element as $page => $url)
                     @if ($page == $paginator->currentPage())
-                        <a class="bar-item button primary active gray-button" aria-current="page" href="javascript:void(0)">
+                        <a class="bar-item button primary active gray-button" aria-current="page"
+                           href="javascript:void(0)">
                             <span>{{ $page }}</span>
                         </a>
                     @else
-                        <button wire:click="gotoPage({{ $page }})" class="bar-item button transparent">{{ $page }}</button>
+                        <button wire:click="gotoPage({{ $page }})"
+                                class="bar-item button transparent">{{ $page }}</button>
                     @endif
                 @endforeach
             @endif
@@ -41,7 +44,8 @@
         {{-- Next Page Link --}}
         @if ($paginator->hasMorePages())
             <button wire:click="nextPage" wire:loading.attr="disabled" rel="next" aria-label="@lang('pagination.next')"
-                    class="bar-item button transparent">&raquo;</button>
+                    class="bar-item button transparent">&raquo;
+            </button>
         @else
             <a class="bar-item disabled button transparent" aria-disabled="true" aria-label="@lang('pagination.next')"
                href="javascript:void(0)">

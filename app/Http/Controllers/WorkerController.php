@@ -18,9 +18,9 @@ class WorkerController extends Controller
         $this->authorize('viewAny', Worker::class);
 
         $workers = Worker::orderBy('created_at', 'DESC')
-                         //->with('worker_availabilities')
-                         ->paginate( Worker::RECORDS_PER_PAGE )
-                         ->withQueryString();
+            //->with('worker_availabilities')
+            ->paginate(Worker::RECORDS_PER_PAGE)
+            ->withQueryString();
 
         return view('admin.worker.manage')->with([
             'workers' => $workers,

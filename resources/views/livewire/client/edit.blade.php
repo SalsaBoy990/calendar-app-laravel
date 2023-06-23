@@ -51,7 +51,8 @@
                     id="role"
                 >
                     @foreach ($typesArray as $key => $value)
-                        <option {{ $type === $key ? "selected": "" }} name="type" value="{{ $key }}">{{ $value }}</option>
+                        <option {{ $type === $key ? "selected": "" }} name="type"
+                                value="{{ $key }}">{{ $value }}</option>
                     @endforeach
 
                 </select>

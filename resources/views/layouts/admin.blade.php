@@ -43,7 +43,7 @@
 
         <div class="admin-content relative">
 
-            <?php if ( ! isset( $sidebar ) ) {
+            <?php if (!isset($sidebar)) {
                 $sidebar = null;
             } ?>
             <x-admin.sidebar :sidebar="$sidebar"></x-admin.sidebar>

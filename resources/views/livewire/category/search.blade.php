@@ -12,7 +12,7 @@
                 <input type="search"
                        wire:model.defer="searchTerm"
                        type="text"
-{{--                       class="{{ $errors->has('searchTerm') ? 'red' : '' }}"--}}
+                       {{--                       class="{{ $errors->has('searchTerm') ? 'red' : '' }}"--}}
                        name="searchTerm"
                        value=""
                 >
@@ -25,7 +25,7 @@
     </section>
 
     @php
-    $resultsLabel = __('Results');
+        $resultsLabel = __('Results');
     @endphp
 
     <div x-cloak class="search-results relative">

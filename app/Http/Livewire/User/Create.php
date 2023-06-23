@@ -13,7 +13,8 @@ use Illuminate\Support\Str;
 use Livewire\Component;
 
 
-class Create extends Component {
+class Create extends Component
+{
     use InteractsWithBanner;
     use AuthorizesRequests;
 
@@ -30,35 +31,38 @@ class Create extends Component {
     public array $rolesArray;
 
     protected array $rules = [
-        'name'            => [ 'required', 'string', 'max:255' ],
-        'email'           => [ 'required', 'string', 'email', 'max:255', 'unique:users' ],
-        'password'        => [ 'required', 'string' ],
-        'role'            => [ 'required', 'integer' ],
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'password' => ['required', 'string'],
+        'role' => ['required', 'integer'],
     ];
 
-    public function mount(Collection $roles, bool $hasSmallButton = false ) {
-        $this->modalId        = 'm-new-user';
-        $this->isModalOpen    = false;
+    public function mount(Collection $roles, bool $hasSmallButton = false)
+    {
+        $this->modalId = 'm-new-user';
+        $this->isModalOpen = false;
         $this->hasSmallButton = $hasSmallButton || false;
 
-        $this->name     = '';
-        $this->email    = '';
+        $this->name = '';
+        $this->email = '';
         $this->password = '';
-        $this->role     = null;
+        $this->role = null;
 
         $allRoles = $roles;
-        foreach ( $allRoles as $role ) {
-            $this->rolesArray[ $role->id ] = $role->name;
+        foreach ($allRoles as $role) {
+            $this->rolesArray[$role->id] = $role->name;
         }
 
     }
 
 
-    public function render() {
-        return view( 'livewire.user.create' );
+    public function render()
+    {
+        return view('livewire.user.create');
     }
 
-    public function createUser() {
+    public function createUser()
+    {
         $this->authorize('create', User::class);
 
         // validate user input
@@ -66,16 +70,16 @@ class Create extends Component {
 
         DB::transaction(
             function () {
-                $newUser = User::create( [
-                    'name'           => htmlspecialchars( $this->name ),
-                    'email'          => htmlspecialchars( $this->email ),
-                    'password'       => Hash::make( $this->password ),
-                    'remember_token' => Str::random( 10 ),
-                ] );
+                $newUser = User::create([
+                    'name' => htmlspecialchars($this->name),
+                    'email' => htmlspecialchars($this->email),
+                    'password' => Hash::make($this->password),
+                    'remember_token' => Str::random(10),
+                ]);
 
                 // Save the user-role relation
-                $role = Role::where( 'id', $this->role )->first();
-                $newUser->role()->associate( $role );
+                $role = Role::where('id', $this->role)->first();
+                $newUser->role()->associate($role);
 
                 $newUser->save();
 
@@ -84,9 +88,9 @@ class Create extends Component {
         );
 
 
-        $this->banner( __('Successfully created the user ":name"!', ['name' => htmlspecialchars( $this->name )] ) );
+        $this->banner(__('Successfully created the user ":name"!', ['name' => htmlspecialchars($this->name)]));
 
-        return redirect()->route( 'user.manage' );
+        return redirect()->route('user.manage');
     }
 
 }

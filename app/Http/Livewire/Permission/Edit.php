@@ -12,7 +12,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-class Edit extends Component {
+class Edit extends Component
+{
     use InteractsWithBanner;
     use AuthorizesRequests;
 
@@ -30,34 +31,37 @@ class Edit extends Component {
     public array $permissionRoles;
 
     protected array $rules = [
-        'name'            => [ 'required', 'string', 'max:255' ],
-        'permissionRoles' => [ 'array' ],
+        'name' => ['required', 'string', 'max:255'],
+        'permissionRoles' => ['array'],
     ];
 
-    public function mount( string $modalId, Collection $roles, Permission $permission, bool $hasSmallButton = false ) {
-        $this->modalId        = $modalId;
-        $this->isModalOpen    = false;
+    public function mount(string $modalId, Collection $roles, Permission $permission, bool $hasSmallButton = false)
+    {
+        $this->modalId = $modalId;
+        $this->isModalOpen = false;
         $this->hasSmallButton = $hasSmallButton || false;
 
-        $this->permission   = $permission;
+        $this->permission = $permission;
         $this->permissionId = $this->permission->id;
-        $this->name         = $this->permission->name;
-        $this->slug         = $this->permission->slug;
+        $this->name = $this->permission->name;
+        $this->slug = $this->permission->slug;
 
-        $this->allRoles        = $roles;
-        $this->permissionRoles = $this->permission->roles()->get()->pluck( [ 'id' ] )->toArray();
+        $this->allRoles = $roles;
+        $this->permissionRoles = $this->permission->roles()->get()->pluck(['id'])->toArray();
     }
 
 
-    public function render(): Factory|View|Application {
-        return view( 'livewire.permission.edit' );
+    public function render(): Factory|View|Application
+    {
+        return view('livewire.permission.edit');
     }
 
-    public function updatePermission() {
+    public function updatePermission()
+    {
 
         // if slug is changed, enable this validation
-        if ( $this->slug !== $this->permission->slug ) {
-            $this->rules['slug'] = [ 'required', 'string', 'max:255', 'unique:permissions' ];
+        if ($this->slug !== $this->permission->slug) {
+            $this->rules['slug'] = ['required', 'string', 'max:255', 'unique:permissions'];
         }
 
         // validate user input
@@ -66,18 +70,18 @@ class Edit extends Component {
         DB::transaction(
             function () {
 
-                if ( $this->slug !== $this->permission->slug ) {
-                    $this->permission->update( [
-                        'name' => htmlspecialchars( $this->name ),
-                        'slug' => htmlspecialchars( $this->slug ),
-                    ] );
+                if ($this->slug !== $this->permission->slug) {
+                    $this->permission->update([
+                        'name' => htmlspecialchars($this->name),
+                        'slug' => htmlspecialchars($this->slug),
+                    ]);
                 } else {
-                    $this->permission->update( [
-                        'name' => htmlspecialchars( $this->name ),
-                    ] );
+                    $this->permission->update([
+                        'name' => htmlspecialchars($this->name),
+                    ]);
                 }
 
-                $this->permission->roles()->sync( $this->permissionRoles );
+                $this->permission->roles()->sync($this->permissionRoles);
 
                 $this->permission->save();
 
@@ -86,10 +90,10 @@ class Edit extends Component {
         );
 
 
-        $this->banner( __('Successfully updated the permission ":name"!', ['name' => htmlspecialchars( $this->name )] ) );
-        request()->session()->flash( 'flash.activeTab', 'Permissions' );
+        $this->banner(__('Successfully updated the permission ":name"!', ['name' => htmlspecialchars($this->name)]));
+        request()->session()->flash('flash.activeTab', 'Permissions');
 
-        return redirect()->route( 'role-permission.manage' );
+        return redirect()->route('role-permission.manage');
     }
 
 }

@@ -7,7 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Role extends Model {
+class Role extends Model
+{
     use HasFactory;
 
 
@@ -22,8 +23,9 @@ class Role extends Model {
     ];
 
 
-    public function permissions(): BelongsToMany {
-        return $this->belongsToMany( Permission::class, 'roles_permissions' );
+    public function permissions(): BelongsToMany
+    {
+        return $this->belongsToMany(Permission::class, 'roles_permissions');
     }
 
 
@@ -31,7 +33,7 @@ class Role extends Model {
      * If we want to get the user relations for the roles
      * @return HasMany
      */
-/*    public function users(): HasMany {
-        return $this->hasMany( User::class );
-    }*/
+    /*    public function users(): HasMany {
+            return $this->hasMany( User::class );
+        }*/
 }

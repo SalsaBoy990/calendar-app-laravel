@@ -73,14 +73,16 @@
             <div class="row-padding">
                 <div class="col s6">
                     <label for="startDate">{{ __('Start date') }}<span class="text-red">*</span></label>
-                    <input type="date" wire:model.defer="startDate" class="{{ $errors->has('startDate') ? 'border border-red' : '' }}"/>
+                    <input type="date" wire:model.defer="startDate"
+                           class="{{ $errors->has('startDate') ? 'border border-red' : '' }}"/>
                     <div class="{{ $errors->has('startDate') ? 'error-message' : '' }}">
                         {{ $errors->has('startDate') ? $errors->first('startDate') : '' }}
                     </div>
                 </div>
                 <div class="col s6">
                     <label for="startDate">{{ __('End date') }}<span class="text-red">*</span></label>
-                    <input type="date" wire:model.defer="endDate" class="{{ $errors->has('endDate') ? 'border border-red' : '' }}"/>
+                    <input type="date" wire:model.defer="endDate"
+                           class="{{ $errors->has('endDate') ? 'border border-red' : '' }}"/>
                     <div class="{{ $errors->has('endDate') ? 'error-message' : '' }}">
                         {{ $errors->has('endDate') ? $errors->first('endDate') : '' }}
                     </div>

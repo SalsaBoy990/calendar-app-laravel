@@ -27,11 +27,12 @@
                 <span role="alert"><strong class="text-red fs-14">{{ $message }}</strong></span>
                 @enderror
 
-                <div class="inline-block margin-top-1 margin-bottom-1" >
-                <input type="checkbox" name="remember" id="remember" class="margin-left-0" {{ old('remember') ? 'checked' : '' }}>
-                <label for="remember" style="display: inline">
-                    {{ __('Remember Me') }}
-                </label>
+                <div class="inline-block margin-top-1 margin-bottom-1">
+                    <input type="checkbox" name="remember" id="remember"
+                           class="margin-left-0" {{ old('remember') ? 'checked' : '' }}>
+                    <label for="remember" style="display: inline">
+                        {{ __('Remember Me') }}
+                    </label>
                 </div>
 
                 <div class="bar">

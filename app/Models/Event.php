@@ -8,7 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Event extends Model {
+class Event extends Model
+{
     use HasFactory;
 
     // no need for timestamps
@@ -29,10 +30,8 @@ class Event extends Model {
         'title',
         'start',
         'end',
-
         'rrule',
         'is_recurring',
-
         'address',
         'description',
         'status',
@@ -47,13 +46,13 @@ class Event extends Model {
      * @var array<string, string>
      */
     protected $casts = [
-        'title'           => HtmlSpecialCharsCast::class,
-        'start'           => HtmlSpecialCharsCast::class,
-        'end'             => HtmlSpecialCharsCast::class,
-        'rrule'           => 'array',
-        'address'         => HtmlSpecialCharsCast::class,
-        'description'     => HtmlSpecialCharsCast::class,
-        'status'          => HtmlSpecialCharsCast::class,
+        'title' => HtmlSpecialCharsCast::class,
+        'start' => HtmlSpecialCharsCast::class,
+        'end' => HtmlSpecialCharsCast::class,
+        'rrule' => 'array',
+        'address' => HtmlSpecialCharsCast::class,
+        'description' => HtmlSpecialCharsCast::class,
+        'status' => HtmlSpecialCharsCast::class,
         'backgroundColor' => HtmlSpecialCharsCast::class,
         'duration' => HtmlSpecialCharsCast::class,
     ];
@@ -61,15 +60,17 @@ class Event extends Model {
     /**
      * @return BelongsToMany
      */
-    public function workers(): BelongsToMany {
-        return $this->belongsToMany( Worker::class, 'workers_events', 'event_id', 'worker_id' );
+    public function workers(): BelongsToMany
+    {
+        return $this->belongsToMany(Worker::class, 'workers_events', 'event_id', 'worker_id');
     }
 
     /**
      * @return BelongsTo
      */
-    public function client(): BelongsTo {
-        return $this->belongsTo( Client::class, 'client_id' );
+    public function client(): BelongsTo
+    {
+        return $this->belongsTo(Client::class, 'client_id');
     }
 
 }

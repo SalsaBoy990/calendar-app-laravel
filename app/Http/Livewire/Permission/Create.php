@@ -12,7 +12,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-class Create extends Component {
+class Create extends Component
+{
     use InteractsWithBanner;
     use AuthorizesRequests;
 
@@ -28,14 +29,15 @@ class Create extends Component {
     public array $permissionRoles;
 
     protected array $rules = [
-        'name' => [ 'required', 'string', 'max:255' ],
-        'slug' => [ 'required', 'string', 'max:255', 'unique:permissions' ],
-        'permissionRoles' => [ 'array' ],
+        'name' => ['required', 'string', 'max:255'],
+        'slug' => ['required', 'string', 'max:255', 'unique:permissions'],
+        'permissionRoles' => ['array'],
     ];
 
-    public function mount(Collection $roles, bool $hasSmallButton = false ) {
-        $this->modalId        = 'm-new-permission';
-        $this->isModalOpen    = false;
+    public function mount(Collection $roles, bool $hasSmallButton = false)
+    {
+        $this->modalId = 'm-new-permission';
+        $this->isModalOpen = false;
         $this->hasSmallButton = $hasSmallButton || false;
 
         $this->name = '';
@@ -46,11 +48,13 @@ class Create extends Component {
     }
 
 
-    public function render(): Factory|View|Application {
-        return view( 'livewire.permission.create' );
+    public function render(): Factory|View|Application
+    {
+        return view('livewire.permission.create');
     }
 
-    public function createPermission() {
+    public function createPermission()
+    {
         $this->authorize('create', Permission::class);
 
         // validate user input
@@ -58,10 +62,10 @@ class Create extends Component {
 
         DB::transaction(
             function () {
-                $newPermission = Permission::create( [
-                    'name' => htmlspecialchars( $this->name ),
-                    'slug' => htmlspecialchars( $this->slug ),
-                ] );
+                $newPermission = Permission::create([
+                    'name' => htmlspecialchars($this->name),
+                    'slug' => htmlspecialchars($this->slug),
+                ]);
                 $newPermission->save();
 
                 $newPermission->roles()->sync($this->permissionRoles);
@@ -70,10 +74,10 @@ class Create extends Component {
         );
 
 
-        $this->banner( __('Successfully created the permission ":name"!', ['name' => htmlspecialchars( $this->name )] ) );
+        $this->banner(__('Successfully created the permission ":name"!', ['name' => htmlspecialchars($this->name)]));
         request()->session()->flash('flash.activeTab', 'Permissions');
 
-        return redirect()->route( 'role-permission.manage' );
+        return redirect()->route('role-permission.manage');
     }
 
 

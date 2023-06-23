@@ -8,7 +8,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-class Delete extends Component {
+class Delete extends Component
+{
     use InteractsWithBanner;
     use AuthorizesRequests;
 
@@ -26,23 +27,26 @@ class Delete extends Component {
         'clientId' => 'required|int|min:1',
     ];
 
-    public function mount( string $modalId, Client $client ) {
-        $this->modalId     = $modalId;
+    public function mount(string $modalId, Client $client)
+    {
+        $this->modalId = $modalId;
         $this->isModalOpen = false;
-        $this->client      = $client;
-        $this->clientId    = intval( $this->client->id );
-        $this->name        = strip_tags( $client->name );
+        $this->client = $client;
+        $this->clientId = intval($this->client->id);
+        $this->name = strip_tags($client->name);
     }
 
 
-    public function render() {
-        return view( 'livewire.client.delete' );
+    public function render()
+    {
+        return view('livewire.client.delete');
     }
 
-    public function deleteClient() {
-        $this->client = Client::findOrFail( $this->clientId );
+    public function deleteClient()
+    {
+        $this->client = Client::findOrFail($this->clientId);
 
-        $this->authorize( 'delete', [ Client::class, $this->client ] );
+        $this->authorize('delete', [Client::class, $this->client]);
 
         // validate user input
         $this->validate();
@@ -57,8 +61,9 @@ class Delete extends Component {
         );
 
 
-        $this->banner( __('The client with the name ":name" was successfully deleted.', ['name' => strip_tags($this->name) ])  );
+        $this->banner(__('The client with the name ":name" was successfully deleted.',
+            ['name' => strip_tags($this->name)]));
 
-        return redirect()->route( 'client.manage' );
+        return redirect()->route('client.manage');
     }
 }

@@ -8,7 +8,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-class Delete extends Component {
+class Delete extends Component
+{
     use InteractsWithBanner;
     use AuthorizesRequests;
 
@@ -27,22 +28,25 @@ class Delete extends Component {
         'permissionId' => 'required|int|min:1',
     ];
 
-    public function mount( string $modalId, Permission $permission, bool $hasSmallButton = false ) {
-        $this->modalId        = $modalId;
-        $this->isModalOpen    = false;
+    public function mount(string $modalId, Permission $permission, bool $hasSmallButton = false)
+    {
+        $this->modalId = $modalId;
+        $this->isModalOpen = false;
         $this->hasSmallButton = $hasSmallButton;
-        $this->permission     = $permission;
-        $this->permissionId   = $permission->id;
-        $this->name           = $permission->name;
+        $this->permission = $permission;
+        $this->permissionId = $permission->id;
+        $this->name = $permission->name;
     }
 
 
-    public function render() {
-        return view( 'livewire.permission.delete' );
+    public function render()
+    {
+        return view('livewire.permission.delete');
     }
 
 
-    public function deletePermission() {
+    public function deletePermission()
+    {
         // validate user input
         $this->validate();
 
@@ -55,9 +59,10 @@ class Delete extends Component {
         );
 
 
-        $this->banner( __('The permission with the name ":name" was successfully deleted.', ['name' => htmlspecialchars( $this->name )] ) );
-        request()->session()->flash( 'flash.activeTab', 'Permissions' );
+        $this->banner(__('The permission with the name ":name" was successfully deleted.',
+            ['name' => htmlspecialchars($this->name)]));
+        request()->session()->flash('flash.activeTab', 'Permissions');
 
-        return redirect()->route( 'role-permission.manage' );
+        return redirect()->route('role-permission.manage');
     }
 }

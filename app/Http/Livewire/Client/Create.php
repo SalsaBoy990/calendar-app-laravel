@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 
-class Create extends Component {
+class Create extends Component
+{
     use InteractsWithBanner;
     use AuthorizesRequests;
 
@@ -31,40 +32,43 @@ class Create extends Component {
     public ?string $taxNumber;
 
     protected array $rules = [
-        'name'    => [ 'required', 'string', 'max:255', 'unique:clients' ],
-        'address' => [ 'required', 'string', 'max:255' ],
-        'type'    => [ 'required', 'string', 'in:company,private person' ],
+        'name' => ['required', 'string', 'max:255', 'unique:clients'],
+        'address' => ['required', 'string', 'max:255'],
+        'type' => ['required', 'string', 'in:company,private person'],
 
-        'contactPerson' => [ 'nullable', 'string', 'max:255' ],
-        'phoneNumber'   => [ 'nullable', 'string', 'max:255' ],
-        'email'         => [ 'nullable', 'email', 'max:255' ],
-        'taxNumber'     => [ 'nullable', 'string', 'max:255' ],
+        'contactPerson' => ['nullable', 'string', 'max:255'],
+        'phoneNumber' => ['nullable', 'string', 'max:255'],
+        'email' => ['nullable', 'email', 'max:255'],
+        'taxNumber' => ['nullable', 'string', 'max:255'],
     ];
 
-    public function mount() {
-        $this->modalId     = 'm-new-client';
+    public function mount()
+    {
+        $this->modalId = 'm-new-client';
         $this->isModalOpen = false;
 
-        $this->name    = '';
+        $this->name = '';
         $this->address = '';
-        $this->type    = '';
+        $this->type = '';
 
         $this->contactPerson = null;
-        $this->phoneNumber   = null;
-        $this->email         = null;
-        $this->taxNumber     = null;
+        $this->phoneNumber = null;
+        $this->email = null;
+        $this->taxNumber = null;
 
         $this->typesArray = Client::$clientTypes;
 
     }
 
 
-    public function render() {
-        return view( 'livewire.client.create' );
+    public function render()
+    {
+        return view('livewire.client.create');
     }
 
-    public function createClient() {
-        $this->authorize( 'create', Client::class );
+    public function createClient()
+    {
+        $this->authorize('create', Client::class);
 
         // validate user input
         $this->validate();
@@ -74,24 +78,24 @@ class Create extends Component {
 
                 $details = [];
                 // populate details if the props are set
-                if ( isset( $this->contactPerson ) ) {
-                    $details['contact_person'] = strip_tags( $this->contactPerson );
+                if (isset($this->contactPerson)) {
+                    $details['contact_person'] = strip_tags($this->contactPerson);
                 }
 
-                if ( isset( $this->phoneNumber ) ) {
-                    $details['phone_number'] = strip_tags( $this->phoneNumber );
+                if (isset($this->phoneNumber)) {
+                    $details['phone_number'] = strip_tags($this->phoneNumber);
                 }
 
-                if ( isset( $this->email ) ) {
-                    $details['email'] = strip_tags( $this->email );
+                if (isset($this->email)) {
+                    $details['email'] = strip_tags($this->email);
                 }
 
-                if ( isset( $this->taxNumber ) ) {
-                    $details['tax_number'] = strip_tags( $this->taxNumber );
+                if (isset($this->taxNumber)) {
+                    $details['tax_number'] = strip_tags($this->taxNumber);
                 }
-                if ( ! empty( $details ) ) {
+                if (!empty($details)) {
                     // we need to create a new ClientDetail record
-                    $newClientDetails = new ClientDetail( $details );
+                    $newClientDetails = new ClientDetail($details);
                     $newClientDetails->save();
 
                     // refresh data
@@ -99,12 +103,12 @@ class Create extends Component {
                 }
 
 
-                $newClient = Client::create( [
-                    'name'             => strip_tags( $this->name ),
-                    'address'          => strip_tags( $this->address ),
-                    'type'             => strip_tags( $this->type ),
+                $newClient = Client::create([
+                    'name' => strip_tags($this->name),
+                    'address' => strip_tags($this->address),
+                    'type' => strip_tags($this->type),
                     'client_detail_id' => $newClientDetails->id ?? null // store the client detail id
-                ] );
+                ]);
 
                 $newClient->save();
 
@@ -113,9 +117,9 @@ class Create extends Component {
         );
 
 
-        $this->banner( __('Successfully created the client ":name"!', ['name' => strip_tags($this->name)] ) );
+        $this->banner(__('Successfully created the client ":name"!', ['name' => strip_tags($this->name)]));
 
-        return redirect()->route( 'client.manage' );
+        return redirect()->route('client.manage');
     }
 
 }

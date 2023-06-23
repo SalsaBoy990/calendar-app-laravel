@@ -13,7 +13,8 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\HasApiTokens;
 
-final class User extends Authenticatable {
+final class User extends Authenticatable
+{
     use HasApiTokens, HasFactory, Notifiable, HasRolesAndPermissions;
 
     public const RECORDS_PER_PAGE = 10;
@@ -53,28 +54,29 @@ final class User extends Authenticatable {
      * Creates a 2FA code for the user
      * @return void
      */
-    public function generateCode() {
-        $code = rand( 100000, 999999 );
+    public function generateCode()
+    {
+        $code = rand(100000, 999999);
 
         UserCode::updateOrCreate(
-            [ 'user_id' => auth()->id() ],
-            [ 'code' => $code ]
+            ['user_id' => auth()->id()],
+            ['code' => $code]
         );
 
         try {
 
             $details = [
-                'title' => __( 'Login code' ),
-                'code'  => $code
+                'title' => __('Login code'),
+                'code' => $code
             ];
 
             // Send the code in email
-            Mail::to( auth()->user()->email )->send( new SendCodeMail( $details ) );
+            Mail::to(auth()->user()->email)->send(new SendCodeMail($details));
 
 
-        } catch ( \Exception $e ) {
-            info( "Error: " . $e->getMessage() );
-            dd( $e );
+        } catch (\Exception $e) {
+            info("Error: ".$e->getMessage());
+            dd($e);
         }
     }
 
@@ -82,14 +84,14 @@ final class User extends Authenticatable {
     /**
      * @return BelongsToMany
      */
-/*    public function events(): BelongsToMany {
-        return $this->belongsToMany( Event::class, 'users_events' );
-    }*/
+    /*    public function events(): BelongsToMany {
+            return $this->belongsToMany( Event::class, 'users_events' );
+        }*/
 
     /**
      * @return HasMany
      */
-/*    public function worker_availabilities(): HasMany {
-        return $this->hasMany( WorkerAvailability::class, 'availability_id');
-    }*/
+    /*    public function worker_availabilities(): HasMany {
+            return $this->hasMany( WorkerAvailability::class, 'availability_id');
+        }*/
 }

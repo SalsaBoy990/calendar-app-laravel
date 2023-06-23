@@ -12,7 +12,8 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
-class Create extends Component {
+class Create extends Component
+{
     use InteractsWithBanner;
     use AuthorizesRequests;
 
@@ -24,18 +25,19 @@ class Create extends Component {
     // inputs
     public string $name;
     public string $slug;
-    public  Collection $allPermissions;
-    public  array $rolePermissions;
+    public Collection $allPermissions;
+    public array $rolePermissions;
 
     protected array $rules = [
-        'name' => [ 'required', 'string', 'max:255' ],
-        'slug' => [ 'required', 'string', 'max:255', 'unique:roles' ],
-        'rolePermissions' => [ 'array' ]
+        'name' => ['required', 'string', 'max:255'],
+        'slug' => ['required', 'string', 'max:255', 'unique:roles'],
+        'rolePermissions' => ['array']
     ];
 
-    public function mount( Collection $permissions, bool $hasSmallButton = false,  ) {
-        $this->modalId        = 'm-new-role';
-        $this->isModalOpen    = false;
+    public function mount(Collection $permissions, bool $hasSmallButton = false,)
+    {
+        $this->modalId = 'm-new-role';
+        $this->isModalOpen = false;
         $this->hasSmallButton = $hasSmallButton || false;
 
         $this->name = '';
@@ -46,11 +48,13 @@ class Create extends Component {
     }
 
 
-    public function render(): Factory|View|Application {
-        return view( 'livewire.role.create' );
+    public function render(): Factory|View|Application
+    {
+        return view('livewire.role.create');
     }
 
-    public function createRole() {
+    public function createRole()
+    {
         $this->authorize('create', Role::class);
 
         // validate user input
@@ -58,23 +62,23 @@ class Create extends Component {
 
         DB::transaction(
             function () {
-                $newRole = Role::create( [
-                    'name' => htmlspecialchars( $this->name ),
-                    'slug' => htmlspecialchars( $this->slug ),
-                ] );
+                $newRole = Role::create([
+                    'name' => htmlspecialchars($this->name),
+                    'slug' => htmlspecialchars($this->slug),
+                ]);
                 $newRole->save();
 
-/*                $roles = Permission::all();
-                $newRole->permissions()->saveMany( $roles );*/
+                /*                $roles = Permission::all();
+                                $newRole->permissions()->saveMany( $roles );*/
                 $newRole->permissions()->sync($this->rolePermissions);
             },
             2
         );
 
 
-        $this->banner( __('Successfully created the role ":name"!', ['name' => htmlspecialchars( $this->name )] ) );
+        $this->banner(__('Successfully created the role ":name"!', ['name' => htmlspecialchars($this->name)]));
 
-        return redirect()->route( 'role-permission.manage' );
+        return redirect()->route('role-permission.manage');
     }
 
 

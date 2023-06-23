@@ -15,20 +15,22 @@ use Illuminate\Support\Facades\Session;
 /**
  *
  */
-class UserCodeController extends Controller {
+class UserCodeController extends Controller
+{
     /**
      * Display a listing of the resource.
      *
      * @return Application|Factory|View
      */
-    public function index(): View|Factory|Application {
+    public function index(): View|Factory|Application
+    {
 
         // If session expires, resend code automatically when redirected to this page
-/*        if (! Session::has('user_2fa') ) {
-            auth()->user()->generateCode();
-        }*/
+        /*        if (! Session::has('user_2fa') ) {
+                    auth()->user()->generateCode();
+                }*/
 
-        return view( '2fa-verification' );
+        return view('2fa-verification');
     }
 
 
@@ -39,23 +41,24 @@ class UserCodeController extends Controller {
      *
      * @return Application|RedirectResponse|Redirector
      */
-    public function store( Request $request ): Application|RedirectResponse|Redirector {
-        $request->validate( [
+    public function store(Request $request): Application|RedirectResponse|Redirector
+    {
+        $request->validate([
             'code' => 'required|string'
-        ] );
+        ]);
 
-        $find = UserCode::where( 'user_id', auth()->id() )
-                        ->where( 'code', $request->code )
-                        ->where( 'updated_at', '>=', now()->subMinutes( 2 ) )
-                        ->first();
+        $find = UserCode::where('user_id', auth()->id())
+            ->where('code', $request->code)
+            ->where('updated_at', '>=', now()->subMinutes(2))
+            ->first();
 
-        if ( ! is_null( $find ) ) {
-            Session::put( 'user_2fa', auth()->id() );
+        if (!is_null($find)) {
+            Session::put('user_2fa', auth()->id());
 
-            return redirect( RouteServiceProvider::HOME );
+            return redirect(RouteServiceProvider::HOME);
         }
 
-        return back()->with( 'error', __( 'You entered wrong code.' ) );
+        return back()->with('error', __('You entered wrong code.'));
     }
 
 
@@ -64,7 +67,8 @@ class UserCodeController extends Controller {
      *
      * @return RedirectResponse
      */
-    public function resend(): RedirectResponse {
+    public function resend(): RedirectResponse
+    {
         auth()->user()->generateCode();
 
         return back()->with('success', __('We sent you code on your email.'));
