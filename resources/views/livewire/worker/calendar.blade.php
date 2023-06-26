@@ -103,7 +103,7 @@
                         id="selectedWorkerId"
                     >
                         @if( $selectedWorkerId === null )
-                            <option selected>{{ __("Select a worker") }}</option>
+                            <option selected value="">{{ __("Select a worker") }}</option>
                         @endif
                         @foreach ($workers as $worker)
                             <option {{ $selectedWorkerId === $worker->id ? "selected": "" }} value="{{ $worker->id }}">
