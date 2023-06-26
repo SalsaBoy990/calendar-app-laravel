@@ -74,10 +74,6 @@ class Calendar extends Component
     private int $interval;
     public array $rrule;
 
-
-    // Is all-day event?
-    public $allDay;
-
     // Event list as collection
     public Collection $events;
 
@@ -241,10 +237,16 @@ class Calendar extends Component
             return redirect()->route('calendar');
         }
 
+        $tformat = DateTimeInterface::ATOM;
+        $tz = new DateTimeZone('Europe/Budapest');
+
         if (!$changedEvent->is_recurring) {
-            $changedEvent->start = $event['start'];
+            $start = DateTime::createFromFormat($tformat, $event['start'], $tz);
+            $changedEvent->start = $start->format('Y-m-d H:i:s');
+
             if (Arr::exists($event, 'end')) {
-                $changedEvent->end = $event['end'];
+                $end = DateTime::createFromFormat($tformat, $event['end'], $tz);
+                $changedEvent->end = $end->format('Y-m-d H:i:s');
             }
             $changedEvent->save();
 
@@ -275,9 +277,6 @@ class Calendar extends Component
 
             // On resize, overwrite the duration field (the right way with DateTime class etc.)
             if (Arr::exists($event, 'start') && Arr::exists($event, 'end')) {
-                $tz = new DateTimeZone('Europe/Budapest');
-                $tformat = DateTimeInterface::ATOM;
-
                 $start = DateTime::createFromFormat($tformat, $event['start'], $tz);
                 $end = DateTime::createFromFormat($tformat, $event['end'], $tz);
 
