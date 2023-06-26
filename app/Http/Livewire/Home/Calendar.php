@@ -188,7 +188,7 @@ class Calendar extends Component
             'Hetente' => 'weekly',
             'Kéthetente' => '2-weekly',
             'Háromhetente' => '3-weekly',
-            'Havonta' => 'monthly'
+            'Négyhetente' => '4-weekly'
         ];
 
         $this->workerIds = [];
@@ -645,9 +645,9 @@ class Calendar extends Component
                 $this->frequency = 'weekly';
                 $this->interval = 3;
                 break;
-            case 'monthly':
-                $this->frequency = 'monthly';
-                $this->interval = 1;
+            case '4-weekly':
+                $this->frequency = 'weekly';
+                $this->interval = 4;
                 break;
             default:
                 $this->interval = 1;
