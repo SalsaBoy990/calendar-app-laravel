@@ -59,7 +59,7 @@ class Calendar extends Component
     public Collection $workers;
     public array $workerIds;
     public array $statusColors;
-    public int $clientId;
+    public ?int $clientId;
     public Collection $clients;
 
     // for recurring events (by recurrence rules)
@@ -162,7 +162,7 @@ class Calendar extends Component
         $this->newId = '';
         $this->updateId = '';
         $this->event = null;
-        $this->clientId = 0;
+        $this->clientId = null;
 
         // statuses
         $this->statusArray = [

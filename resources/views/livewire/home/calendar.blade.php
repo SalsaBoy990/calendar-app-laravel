@@ -92,7 +92,7 @@
                         aria-label="{{ __("Select the client") }}"
                         name="clientId"
                     >
-                        @if ($clientId === 0)
+                        @if ($clientId === null)
                             <option selected>{{ __("Select the type") }}</option>
                         @endif
                         @foreach ($clients as $client)
