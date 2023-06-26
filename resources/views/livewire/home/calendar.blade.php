@@ -443,8 +443,16 @@
 
             if (view.type === 'dayGridMonth') {
                 if (event.extendedProps.client !== null && event.extendedProps.client.name) {
+                    // Block events (events that spread on at least 2 days) have a bit different DOM structure
                     const eventTitle = el.childNodes[2];
-                    eventTitle.innerText = event.extendedProps.client.name;
+                    if (eventTitle) {
+                        eventTitle.innerText = event.extendedProps.client.name;
+                    } else {
+                        // this will get the title for block-style events
+                        const eventTitle = el.firstChild.firstChild.childNodes[1].firstChild;
+                        eventTitle.innerText = event.extendedProps.client.name;
+                        console.log(eventTitle)
+                    }
                 }
             }
 
