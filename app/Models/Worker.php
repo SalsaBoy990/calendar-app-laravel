@@ -21,7 +21,9 @@ class Worker extends Model
     protected $fillable = [
         'name',
         'email',
-        'phone'
+        'phone',
+        'bank_account_number',
+        'bank_account_name',
     ];
 
 

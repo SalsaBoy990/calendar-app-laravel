@@ -62,6 +62,35 @@
                     {{ $errors->has('phone') ? $errors->first('phone') : '' }}
                 </div>
 
+                <hr>
+
+                <!-- Bank Account Name -->
+                <label for="bankAccountName">{{ __('Bank account name') }}</label>
+                <input
+                    wire:model.defer="bankAccountName"
+                    type="text"
+                    class="{{ $errors->has('bankAccountName') ? 'border border-red' : '' }}"
+                    name="bankAccountName"
+                >
+
+                <div class="{{ $errors->has('bankAccountName') ? 'error-message' : '' }}">
+                    {{ $errors->has('bankAccountName') ? $errors->first('bankAccountName') : '' }}
+                </div>
+
+
+                <!-- Bank Account Number -->
+                <label for="bankAccountNumber">{{ __('Bank account number') }}</label>
+                <input
+                    wire:model.defer="bankAccountNumber"
+                    type="text"
+                    class="{{ $errors->has('bankAccountNumber') ? 'border border-red' : '' }}"
+                    name="bankAccountNumber"
+                >
+
+                <div class="{{ $errors->has('bankAccountNumber') ? 'error-message' : '' }}">
+                    {{ $errors->has('bankAccountNumber') ? $errors->first('bankAccountNumber') : '' }}
+                </div>
+
             </fieldset>
 
 

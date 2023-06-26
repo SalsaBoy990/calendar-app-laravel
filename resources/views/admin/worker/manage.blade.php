@@ -31,6 +31,7 @@
                         <th>{{ __('Name') }}</th>
                         <th>{{ __('Email') }}</th>
                         <th>{{ __('Phone') }}</th>
+                        <th>{{ __('Bank info') }}</th>
                         <th>{{ __('Actions') }}</th>
                     </tr>
                     </thead>
@@ -40,6 +41,11 @@
                             <td><b>{{ $worker->name }}</b></td>
                             <td>{{ $worker->email }}</td>
                             <td>{{ $worker->phone }}</td>
+                            <td>
+                                {{ $worker->bank_account_name }}
+                                <br>
+                                <b>{{ $worker->bank_account_number }}</b>
+                            </td>
                             <td>
                                 <div class="flex">
 

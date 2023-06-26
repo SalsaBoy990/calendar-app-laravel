@@ -22,11 +22,15 @@ class Create extends Component
     public string $name;
     public string $email;
     public string $phone;
+    public string $bankAccountNumber;
+    public string $bankAccountName;
 
     protected array $rules = [
         'name' => ['required', 'string', 'max:255'],
         'email' => ['nullable', 'email', 'max:255', 'unique:workers'],
         'phone' => ['nullable', 'string'],
+        'bankAccountNumber' => ['nullable', 'string'],
+        'bankAccountName' => ['nullable', 'string'],
     ];
 
     public function mount(bool $hasSmallButton = false)
@@ -38,6 +42,8 @@ class Create extends Component
         $this->name = '';
         $this->email = '';
         $this->phone = '';
+        $this->bankAccountNumber = '';
+        $this->bankAccountName = '';
     }
 
 
@@ -57,8 +63,10 @@ class Create extends Component
             function () {
                 $newWorker = Worker::create([
                     'name' => htmlspecialchars($this->name),
-                    'email' => htmlspecialchars($this->email),
+                    'email' => $this->email !== '' ? trim(htmlspecialchars($this->email)) : null,
                     'phone' => htmlspecialchars($this->phone),
+                    'bank_account_number' => trim(htmlspecialchars($this->bankAccountNumber)),
+                    'bank_account_name' => trim(htmlspecialchars($this->bankAccountName)),
                 ]);
 
                 $newWorker->save();

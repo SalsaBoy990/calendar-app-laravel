@@ -25,10 +25,15 @@ class Edit extends Component
     public Worker $worker;
     public int $workerId;
 
+    public string $bankAccountNumber;
+    public string $bankAccountName;
+
     protected array $rules = [
         'name' => ['required', 'string', 'max:255'],
-        'email' => ['nullable', 'string'],
+        'email' => ['nullable', 'email'],
         'phone' => ['nullable', 'string'],
+        'bankAccountNumber' => ['nullable', 'string'],
+        'bankAccountName' => ['nullable', 'string'],
     ];
 
     public function mount(
@@ -43,8 +48,11 @@ class Edit extends Component
         $this->worker = $worker;
         $this->workerId = $this->worker->id;
         $this->name = $this->worker->name;
-        $this->email = $this->worker->email;
-        $this->phone = $this->worker->phone;
+        $this->email = $this->worker->email ?? '';
+        $this->phone = $this->worker->phone ?? '';
+        $this->bankAccountNumber = $this->worker->bank_account_number ?? '';
+        $this->bankAccountName = $this->worker->bank_account_name ?? '';
+
     }
 
 
@@ -57,6 +65,10 @@ class Edit extends Component
     {
         $this->authorize('update', [Worker::class, $this->worker]);
 
+        if ($this->email !== '') {
+            $this->rules['email'] = 'nullable|email|unique:workers,email,'.$this->worker->id;
+        }
+
         // validate user input
         $this->validate();
 
@@ -64,8 +76,10 @@ class Edit extends Component
             function () {
                 $this->worker->update([
                     'name' => htmlspecialchars($this->name),
-                    'email' => htmlspecialchars($this->email),
+                    'email' => $this->email !== '' ? trim(htmlspecialchars($this->email)) : null,
                     'phone' => htmlspecialchars($this->phone),
+                    'bank_account_number' => trim(htmlspecialchars($this->bankAccountNumber)),
+                    'bank_account_name' => trim(htmlspecialchars($this->bankAccountName)),
                 ]);
                 $this->worker->save();
             },
