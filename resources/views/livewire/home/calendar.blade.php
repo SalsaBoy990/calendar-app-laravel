@@ -480,6 +480,14 @@
                     container.appendChild(address)
                 }
 
+                // Adds the optional description
+                if (event.extendedProps.description) {
+                    const description = document.createElement('p');
+                    description.innerText += event.extendedProps.description;
+                    description.classList.add('description', 'bold', 'black');
+                    container.appendChild(description)
+                }
+
                 if (event.extendedProps.workers && event.extendedProps.workers.length > 0) {
                     const workers = event.extendedProps.workers;
                     const bar = document.createElement('div');
