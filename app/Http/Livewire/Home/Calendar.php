@@ -472,8 +472,8 @@ class Calendar extends Component
                 $this->rrule['byweekday'] = $this->byweekday;
             }
 
-            $this->setFrequencyAndInterval();
-            $this->rrule['freq'] = $this->frequency;
+            $this->setFrequencyNameAndInterval();
+            $this->rrule['freq'] = $this->frequencyName;
             $this->rrule['interval'] = $this->interval;
 
 
@@ -586,7 +586,7 @@ class Calendar extends Component
 
         $this->description = $this->event->description;
 
-        $this->frequency = $this->event->rrule['freq'] ?? '';
+        $this->frequencyName = $this->event->rrule['freq'] ?? '';
         $this->byweekday = $this->event->rrule['byweekday'] ?? '';
         $this->dtstart = $this->event->rrule['dtstart'] ?? '';
         $this->until = $this->event->rrule['until'] ?? '';
@@ -629,24 +629,24 @@ class Calendar extends Component
 
     }
 
-    private function setFrequencyAndInterval()
+    private function setFrequencyNameAndInterval()
     {
 
         switch ($this->frequencyName) {
             case 'weekly':
-                $this->frequency = 'weekly';
+                $this->frequencyName = 'weekly';
                 $this->interval = 1;
                 break;
             case '2-weekly':
-                $this->frequency = 'weekly';
+                $this->frequencyName = 'weekly';
                 $this->interval = 2;
                 break;
             case '3-weekly':
-                $this->frequency = 'weekly';
+                $this->frequencyName = 'weekly';
                 $this->interval = 3;
                 break;
             case '4-weekly':
-                $this->frequency = 'weekly';
+                $this->frequencyName = 'weekly';
                 $this->interval = 4;
                 break;
             default:
@@ -657,7 +657,7 @@ class Calendar extends Component
 
     private function setFrequencyName()
     {
-        if ($this->frequency === 'weekly') {
+        if ($this->frequencyName === 'weekly') {
             if ($this->interval === 1) {
                 $this->frequencyName = 'weekly';
             } else {
@@ -670,7 +670,7 @@ class Calendar extends Component
                 }
             }
         } else {
-            if ($this->frequency === 'monthly') {
+            if ($this->frequencyName === 'monthly') {
                 $this->frequencyName = 'monthly';
             } else {
                 $this->frequencyName = 'weekly';
