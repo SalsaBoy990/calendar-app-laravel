@@ -1,11 +1,10 @@
 # Setup the project
 
 1. Install composer and npm packages
-2. Set up variables in **.env** file (db, make sure to have an smtp server that you can use to send emails for 2fa codes - I use mailcatcher locally - or use the mailtrap.io cloud service)
-3. Use the `gulacsi-new.sql.zip` file to import into the database.
-4. Run `npm run dev` and `php artisan serve`
+2. Set up variables in **.env** file (db, make sure to have an smtp server that you can use to send emails for 2fa codes - I use mailcatcher locally - or use the mailtrap.io cloud service or other)
+3. Use the `gulacsi.sql.zip` file to import into the database... `php artisan serve`, `npm run dev`
 
-**Use these credentails to log in:**
+**Use these credentails to log in to the test app (filled with fake data):**
 gulandras90@gmail.com
 $mOvjV&5G0Q0
 
