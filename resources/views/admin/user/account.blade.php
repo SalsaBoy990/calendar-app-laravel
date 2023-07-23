@@ -116,7 +116,7 @@
                                             title="{{ __('Are you sure you want to delete your account?') }}"
                                             id="delete-account-{{$user->id}}">
 
-                            <form action="{{ route('user.destroy', $user->id ) }}"
+                            <form action="{{ route('user.account.delete', $user->id ) }}"
                                   method="POST"
                                   enctype="application/x-www-form-urlencoded"
                                   accept-charset="UTF-8"
@@ -125,10 +125,20 @@
                                 @csrf
                                 @method('DELETE')
 
-                                <h2>{{ __('Delete account') }}</h2>
-                                <p>{{ __('This action cannot be undone.') }}</p>
+                                <h2 class="h3">{{ __('Delete account') }}</h2>
+                                <hr class="divider">
+                                <p>{{ __('Type in your password to delete your account. This action cannot be undone. ') }}</p>
 
-                                <div>
+
+                                <!-- Password -->
+                                <label for="password">{{ __('Password') }}<span class="text-red">*</span></label>
+                                <input
+                                    type="text"
+                                    name="password"
+                                    value=""
+                                >
+
+                                <div class="actions">
                                     <button type="submit" class="danger">{{ __('Delete account') }}</button>
                                     <button type="button" class="danger alt" @click="closeModal()">
                                         {{ __('Cancel') }}

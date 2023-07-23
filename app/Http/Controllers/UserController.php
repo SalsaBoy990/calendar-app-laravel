@@ -111,6 +111,31 @@ class UserController extends Controller
 
 
     /**
+     * Remove the specified resource from storage.
+     *
+     * @param  Request  $request
+     * @param  User  $user
+     *
+     * @return RedirectResponse
+     * @throws AuthorizationException
+     */
+    public function deleteAccount(Request $request, User $user): RedirectResponse
+    {
+        $this->authorize('delete', [User::class, $user]);
+        $oldName = htmlentities($user->name);
+
+        if ( Hash::check($request->input('password'), $user->password) ) {
+            $user->delete();
+            $this->banner(__('Successfully deleted the user with the name of ":name"!', [$oldName]));
+            return redirect()->route('login');
+        } else {
+            $this->banner(__('Incorrect password. Try again.'), 'danger');
+            return redirect()->route('user.account', $user->id);
+        }
+    }
+
+
+    /**
      * Show user account with current user data
      * @param  User  $user
      *
