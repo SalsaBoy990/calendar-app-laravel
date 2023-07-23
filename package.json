@@ -6,6 +6,7 @@
     },
     "devDependencies": {
         "alpinejs": "^3.11.1",
+        "@alpinejs/focus": "^3.12.1",
         "autoprefixer": "^10.4.7",
         "axios": "^1.1.2",
         "laravel-vite-plugin": "^0.7.2",

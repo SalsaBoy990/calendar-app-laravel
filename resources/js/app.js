@@ -1,4 +1,6 @@
 import Alpine from 'alpinejs';
+import focus from '@alpinejs/focus'
+
 import {data} from "./clean/modules/data";
 import {tabsData} from "./clean/modules/tabsData";
 import {accordionData} from "./clean/modules/accordionData";
@@ -17,6 +19,9 @@ import {offCanvasMenuData} from "./clean/modules/offCanvasMenuData";
 import './custom';
 
 window.Alpine = Alpine;
+
+// enable focus trap extension
+Alpine.plugin(focus);
 
 Alpine.data('data', data);
 Alpine.data('dropdownData', dropdownData);

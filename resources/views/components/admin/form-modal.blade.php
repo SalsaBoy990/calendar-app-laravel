@@ -4,15 +4,16 @@
 <div x-show="{{ $trigger }} == true"
      x-init="{ modalId: @js('#' . $id) }"
      x-on:keydown.escape.window="{{ $trigger }} = false"
-     class="clean-modal"
+     class="modal"
      :class="{'show': {{ $trigger }} == true}"
      x-cloak
 >
 
     <div
         id="{{ $id }}"
+        x-trap="{{ $trigger }} == true"
         {{ $attributes->merge(
-            ['class' => 'clean-modal-content content-600 card card-4 animate-top relative']) }}
+            ['class' => 'modal-content content-600 card card-4 animate-top relative']) }}
     >
 
         <!-- Modal header -->
