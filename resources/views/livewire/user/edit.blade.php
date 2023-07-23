@@ -3,11 +3,11 @@
 }">
 
     @if ($hasSmallButton)
-        <button @click="isModalOpen = true" class="fs-14 bold success" title="{{ __('Edit User') }}">
+        <button @click="isModalOpen = true" class="success margin-top-0" title="{{ __('Edit User') }}">
             <i class="fa fa-pencil"></i>
         </button>
     @else
-        <button @click="isModalOpen = true" class="fs-14 bold success">
+        <button @click="isModalOpen = true" class="success margin-top-0">
             <i class="fa fa-pencil"></i>{{ __('Edit') }}
         </button>
     @endif
@@ -27,7 +27,6 @@
                     type="text"
                     class="{{ $errors->has('name') ? 'border border-red' : '' }}"
                     name="name"
-                    value=""
                 >
 
                 <div class="{{ $errors->has('name') ? 'error-message' : '' }}">
@@ -41,7 +40,6 @@
                     wire:model.defer="email"
                     type="email"
                     name="name"
-                    value=""
                     readonly
                 >
 
@@ -56,7 +54,6 @@
                     type="text"
                     class="{{ $errors->has('password') ? 'border border-red' : '' }}"
                     name="password"
-                    value=""
                 >
 
                 <div class="{{ $errors->has('password') ? 'error-message' : '' }}">
@@ -90,7 +87,7 @@
             </fieldset>
 
 
-            <div>
+            <div class="actions">
                 <button type="submit" class="primary">
                     <span wire:loading wire:target="updateUser" class="animate-spin">&#9696;</span>
                     <span wire:loading.remove wire:target="updateUser">

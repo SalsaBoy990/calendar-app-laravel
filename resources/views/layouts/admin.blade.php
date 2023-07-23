@@ -11,8 +11,6 @@
 
     <link href="{{ url('assets/fontawesome-6.4.0/css/fontawesome.css') }}" rel="stylesheet">
     <link href="{{ url('assets/fontawesome-6.4.0/css/solid.css') }}" rel="stylesheet">
-    <link href="{{ url('css/trongate.css') }}" rel="stylesheet" type="text/css"/>
-    <link href="{{ url('css/app.css') }}" rel="stylesheet" type="text/css"/>
 
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="{{ url('apple-touch-icon.png') }}">

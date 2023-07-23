@@ -3,11 +3,11 @@
 }">
 
     @if ($hasSmallButton)
-        <button @click="isModalOpen = true" class="fs-14 bold danger" title="{{ __('Delete worker') }}">
+        <button @click="isModalOpen = true" class="danger margin-top-0" title="{{ __('Delete worker') }}">
             <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
         </button>
     @else
-        <button @click="isModalOpen = true" class="fs-14 bold danger">
+        <button @click="isModalOpen = true" class="danger margin-top-0">
             <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
             <span>{{ __('Delete') }}</span>
         </button>
@@ -16,7 +16,8 @@
     <x-admin.form-modal trigger="isModalOpen" title="{{ __('Are you sure you want to delete it?') }}"
                         id="{{ $modalId }}">
         <form wire:submit.prevent="deleteWorker">
-            <h2>{{ $name }}</h2>
+            <h2 class="h3">{{ $name }}</h2>
+            <hr class="divider">
 
             <input wire:model.defer="workerId"
                    disabled
@@ -26,7 +27,7 @@
                    value="{{ $workerId }}"
             >
 
-            <div>
+            <div class="actions">
                 <button type="submit" class="danger">
                     <span wire:loading wire:target="deleteWorker" class="animate-spin">&#9696;</span>
                     <span wire:loading.remove wire:target="deleteWorker">{{ __('Delete') }}</span>

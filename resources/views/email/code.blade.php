@@ -1,9 +1,10 @@
 <x-mail::message>
-    # {{ $title }}
+# {{ $title }}
 
-    {{ __('Your login code is: ') }} **{{ $code }}**
+{{ __('Your login code is: ') }}
+**{{ $code }}**
 
 
-    {{ __('Greetings,') }}<br>
-    {{ config('app.name') }}
+{{ __('Greetings,') }}<br>
+{{ config('app.name') }}
 </x-mail::message>

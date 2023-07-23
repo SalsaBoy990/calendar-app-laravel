@@ -1,4 +1,4 @@
-.clean-modal,
+.modal,
 .gallery-modal
     z-index: 3
     display: none
@@ -9,18 +9,25 @@
     height: 100%
     overflow: auto
     background-color: rgba(0, 0, 0, 0.6)
-    padding-top: 100px
+    padding-top: 60px
+
+
 
 
 .gallery-modal
     background-color: $black
 
 
-.clean-modal-content
+.modal-content
     position: relative
     padding: 0
     outline: 0
     margin: auto auto 2em
+
+    .actions
+        margin-top: 1em
+        button, .button
+            margin-top: 1em
 
     input, textarea, select
         font-weight: 700

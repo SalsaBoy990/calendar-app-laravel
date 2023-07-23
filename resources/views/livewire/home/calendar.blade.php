@@ -4,6 +4,12 @@
         <nav class="nav-links">
             @auth
                 @role('super-administrator|administrator')
+                <h1 class="h5 margin-0" style="display:inline;">{{ __('Works') }}</h1>
+                <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"
+                   href="{{ url('/admin/dashboard') }}">
+                    <i class="fa fa-tachometer" aria-hidden="true"></i>{{ __('Dashboard') }}
+                </a>
+
                 <a class="{{ request()->routeIs('calendar') ? 'active' : '' }}"
                    href="{{ route('calendar') }}">
                     <i class="fa fa-calendar" aria-hidden="true"></i>{{ __('Works') }}
@@ -23,10 +29,6 @@
                     {{ __('Statistics') }}
                 </a>
 
-                <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"
-                   href="{{ url('/admin/dashboard') }}">
-                    <i class="fa fa-tachometer" aria-hidden="true"></i>{{ __('Dashboard') }}
-                </a>
                 @endrole
             @endauth
         </nav>
@@ -267,11 +269,10 @@
                         {{-- var_export($rolePermissions) --}}
                     </div>
 
-
                 </fieldset>
 
 
-                <div>
+                <div class="actions">
                     <button type="submit" class="primary">
                         <span wire:loading.delay
                               wire:target="createOrUpdateEvent"
@@ -319,7 +320,7 @@
                 id="{{ $deleteModalId }}"
             >
                 <div>
-                    <h3 class="h5">{{ $event->title }}</h3>
+                    <h3 class="h5">{{ $event->client->name }}</h3>
 
                     <button wire:click="$emit('deleteEventListener')"
                             type="button"
@@ -495,7 +496,7 @@
 
                     for (let i = 0; i < workers.length; i++) {
                         const badge = document.createElement('span');
-                        badge.classList.add('badge', 'accent');
+                        badge.classList.add('badge', 'accent', 'semibold', 'fs-14');
                         badge.innerText = workers[i].name;
                         bar.appendChild(badge);
                     }

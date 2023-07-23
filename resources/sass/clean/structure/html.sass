@@ -1,6 +1,6 @@
 html, body
     box-sizing: border-box
-    overflow-x: hidden
+
     height: 100%
     font-family: $sans
     font-size: 1rem
@@ -12,16 +12,26 @@ body
     width: 100%
     background-color: $bg-light
     color: $text
+    margin: 0
+    padding: 0
+    min-height: 100vh
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+
+
+p
+    line-height: 1.5em
 
 
 *, *:before, *:after
-    box-sizing: inherit // DO NOT REMOVE THIS
+    box-sizing: inherit
+// DO NOT REMOVE THIS
 
 
 ::selection
     color: white
-    background: $primary-light !important
-
+    background: $primary-light
 
 @for $i from 1 through 10
     .z-#{$i}

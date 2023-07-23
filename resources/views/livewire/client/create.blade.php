@@ -2,8 +2,8 @@
     isModalOpen: $wire.entangle('isModalOpen')
 }">
 
-    <button @click="isModalOpen = true" class="fs-14 bold primary">
-        <i class="fa fa-plus"></i>{{ __('New') }}
+    <button @click="isModalOpen = true" class="primary">
+        <i class="fa fa-plus"></i>{{ __('New client') }}
     </button>
 
     <x-admin.form-modal
@@ -21,7 +21,6 @@
                     type="text"
                     class="{{ $errors->has('name') ? 'border border-red' : '' }}"
                     name="name"
-                    value=""
                 >
 
                 <div class="{{ $errors->has('name') ? 'error-message' : '' }}">
@@ -120,7 +119,7 @@
             </fieldset>
 
 
-            <div>
+            <div class="actions">
                 <button type="submit" class="primary">
                     <span wire:loading wire:target="createClient" class="animate-spin">&#9696;</span>
                     <span wire:loading.remove wire:target="createClient">

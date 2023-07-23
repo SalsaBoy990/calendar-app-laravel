@@ -1,0 +1,160 @@
+
+body
+    min-width: 320px
+    max-width: 1920px
+    background: $bg-light
+
+    @media screen and (min-width: 1920px)
+        margin: 0 auto
+
+
+.container
+    width: 100%
+    max-width: 1400px
+
+.container-fluid
+    width: 100%
+    max-width: 100%
+
+.dropdown-click
+    .fa
+        margin: 0 4px
+
+html.dark
+    .scroll-to-top-button
+        &:hover, &:focus
+            background-color: $primary-light
+
+    .admin
+        .admin-content
+            main, aside
+                background-color: rgba(255, 255, 255, 0.05)
+                border-color: $gray-80
+
+    .public
+        .public-content
+            main
+                background-color: rgba(255, 255, 255, 0.05)
+
+
+.welcome-content
+    display: contents
+
+    h1
+        width: 95%
+        margin: 0
+        color: $black
+
+        &::after
+            width: 100%
+            content: attr(data-text)
+            position: absolute
+            top: 8px
+            left: 0
+            /* Change the position of transformed element */
+            transform-origin: bottom
+            /*  Rotates around x-axis */
+            transform: rotateX(180deg)
+            line-height: 0.85em
+            /* linear-gradient defined by up,down,left ,right ,diagonal */
+            background-image: linear-gradient(0deg, rgba(0, 0, 0, 0.3) 0, transparent 75%)
+            filter: blur(2px) brightness(1.5)
+            -webkit-background-clip: text
+            color: transparent
+            opacity: 0.7
+
+
+[x-cloak], .hidden
+    display: none !important
+// reason: important not to overwrite
+
+fieldset
+    padding: 0
+    border: none
+
+.breadcrumb
+    @media screen and (max-width: 550px)
+        overflow-x: auto
+        justify-content: center
+
+    ol
+        list-style-type: none
+        display: flex
+        flex-wrap: nowrap
+        gap: 0.5em
+        padding-left: 0
+        padding-right: 0
+        margin-bottom: 0
+        margin-top: 0
+        font-size: 14px
+
+        @media screen and (max-width: 550px)
+            width: max-content
+            justify-content: center
+
+
+.notification
+    margin-top: 0
+    margin-bottom: 0
+    padding-top: 0.5em
+    padding-bottom: 0.5em
+
+    .notification-outer
+        display: flex
+        flex-direction: row
+        flex-wrap: wrap
+        align-items: center
+        justify-content: space-between
+
+        button
+            margin-top: 0
+            padding: 8px 6px 8px 8px
+
+        .notification-inner
+            display: flex
+            flex-direction: row
+            align-items: center
+            gap: 0.5em
+
+            p.message
+                margin: 0
+
+
+.dashboard-card-grid
+    margin-bottom: 0
+    padding: 0
+    display: grid
+    justify-items: stretch
+    align-items: center
+    column-gap: 1em
+    row-gap: 1em
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr))
+    justify-content: space-between
+    list-style-type: none
+
+    .card
+        box-shadow: rgba(50, 50, 93, 0.25) 0 2px 5px -1px, rgba(0, 0, 0, 0.3) 0 1px 3px -1px
+
+        &:hover, &:focus
+            box-shadow: rgba(50, 50, 93, 0.45) 0 2px 6px -1px, rgba(0, 0, 0, 0.5) 0 1px 4px -1px
+
+        .card-link
+            padding-top: 1em
+            padding-bottom: 1em
+            display: inline-block
+            width: 100%
+            height: 100%
+
+            i
+                margin-right: 4px
+
+
+.error-message
+    width: fit-content
+    padding: 0.25em 0.5em
+    margin-top: 0.25em
+    font-size: 14px
+    font-weight: 700
+    border-radius: 6px
+    color: #fff
+    background-color: $red

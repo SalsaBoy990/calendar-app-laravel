@@ -3,11 +3,11 @@
 }">
 
     @if ($hasSmallButton)
-        <button @click="isModalOpen = true" class="fs-14 bold danger" title="{{ __('Delete permission') }}">
+        <button @click="isModalOpen = true" class="danger margin-top-0" title="{{ __('Delete permission') }}">
             <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
         </button>
     @else
-        <button @click="isModalOpen = true" class="fs-14 bold danger">
+        <button @click="isModalOpen = true" class="danger margin-top-0">
             <i class="fa-solid fa-trash-can" aria-hidden="true"></i>
             <span>{{ __('Delete') }}</span>
         </button>
@@ -26,7 +26,7 @@
                    value="{{ $permissionId }}"
             >
 
-            <div>
+            <div class="actions">
                 <button type="submit" class="danger">
                     <span wire:loading wire:target="deletePermission" class="animate-spin">&#9696;</span>
                     <span wire:loading.remove wire:target="deletePermission">{{ __('Delete') }}</span>

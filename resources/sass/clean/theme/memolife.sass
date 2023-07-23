@@ -1,9 +1,10 @@
-@import url('https://fonts.bunny.net/css?family=museomoderno:700|noto-sans:400,400i,500,600,700')
+@import url('https://fonts.bunny.net/css?family=museomoderno:700|noto-sans:400,400i,500,600,700|roboto:300')
 
 // ----
 // SET THE THEME HERE -->
 // ----
 
+$border: #c5c5c5
 $bg-light: #F4F4F5
 $gray-60: #6C6C6C
 $gray-80: #303134
@@ -19,11 +20,14 @@ $accent-dark: #CD4800
 $link: $accent-light
 
 // Dark mode
-$bg-dark: #0c2a34
-$bg-content: #164E63
+$bg-dark: #1f292f
+$bg-content: #364e57
 $primary-darkmode: #FBBF24
 $primary-darkmode-hover: #fadca5
 
+
+$pale-dark: $accent-dark
+$pale-light: $accent-light
 
 // State colors
 $error-pale: #FFE4E6
@@ -53,6 +57,7 @@ $info-dark: #025370
 $sans: 'Noto Sans', sans-serif !default
 $serif: 'Noto Sans', serif !default
 $brand: 'MuseoModerno', serif !default
+$roboto: 'Roboto', sans-serif !default
 $mono: monospace
 
 body
@@ -67,6 +72,8 @@ h1, h2, h3, h4, h5, h6
     font-weight: 700
     letter-spacing: 2px
 
-button.secondary,
-.button.secondary
-    color: white !important
+
+@mixin primary-gradient
+    background: rgb(115,14,31)
+    background: linear-gradient(0deg, rgba(115,14,31,1) 0%, rgba(171,6,34,1) 80%)
+

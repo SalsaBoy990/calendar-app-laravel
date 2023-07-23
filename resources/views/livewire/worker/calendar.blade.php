@@ -4,6 +4,12 @@
         <nav class="nav-links">
             @auth
                 @role('super-administrator|administrator')
+                <h1 class="h5 margin-0" style="display:inline;">{{ __('Workers') }}</h1>
+                <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"
+                   href="{{ url('/admin/dashboard') }}">
+                    <i class="fa fa-tachometer" aria-hidden="true"></i>{{ __('Dashboard') }}
+                </a>
+
                 <a class="{{ request()->routeIs('calendar') ? 'active' : '' }}"
                    href="{{ route('calendar') }}">
                     <i class="fa fa-calendar" aria-hidden="true"></i>{{ __('Works') }}
@@ -23,10 +29,6 @@
                     {{ __('Statistics') }}
                 </a>
 
-                <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"
-                   href="{{ url('/admin/dashboard') }}">
-                    <i class="fa fa-tachometer" aria-hidden="true"></i>{{ __('Dashboard') }}
-                </a>
                 @endrole
             @endauth
         </nav>
@@ -62,8 +64,6 @@
                         >
                     @endif
 
-                    <!-- Title -->
-                    <!-- Address -->
 
                     <!-- Start date -->
                     <label for="start">{{ __('Start date') }}<span class="text-red">*</span></label>
@@ -119,7 +119,7 @@
                 </fieldset>
 
 
-                <div>
+                <div class="actions">
                     <button type="submit" class="primary">
                         <span wire:loading wire:target="createOrUpdateAvailability" class="animate-spin">&#9696;</span>
                         <span wire:loading.remove wire:target="createOrUpdateAvailability">
@@ -164,21 +164,24 @@
             >
                 <div>
                     <h3 class="h5">{{ $availability->worker->name }}</h3>
+                    <hr class="divider">
 
-                    <button wire:click="$emit('deleteAvailabilityListener')"
+                    <div class="actions">
+                        <button wire:click="$emit('deleteAvailabilityListener')"
+                                type="button"
+                                class="danger"
+                        >
+                            {{  __('Confirm delete!') }}
+                        </button>
+
+                        <button
                             type="button"
-                            class="danger"
-                    >
-                        {{  __('Confirm delete!') }}
-                    </button>
-
-                    <button
-                        type="button"
-                        class="alt"
-                        @click="isDeleteModalOpen = false"
-                    >
-                        {{ __('Cancel') }}
-                    </button>
+                            class="danger alt"
+                            @click="isDeleteModalOpen = false"
+                        >
+                            {{ __('Cancel') }}
+                        </button>
+                    </div>
 
                 </div>
 

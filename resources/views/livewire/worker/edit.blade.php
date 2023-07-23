@@ -3,11 +3,11 @@
 }">
 
     @if ($hasSmallButton)
-        <button @click="isModalOpen = true" class="fs-14 bold success" title="{{ __('Edit Worker') }}">
+        <button @click="isModalOpen = true" class="success margin-top-0" title="{{ __('Edit Worker') }}">
             <i class="fa fa-pencil"></i>
         </button>
     @else
-        <button @click="isModalOpen = true" class="fs-14 bold success">
+        <button @click="isModalOpen = true" class="success margin-top-0">
             <i class="fa fa-pencil"></i>{{ __('Edit') }}
         </button>
     @endif
@@ -27,7 +27,6 @@
                     type="text"
                     class="{{ $errors->has('name') ? 'border border-red' : '' }}"
                     name="name"
-                    value=""
                 >
 
                 <div class="{{ $errors->has('name') ? 'error-message' : '' }}">
@@ -55,14 +54,13 @@
                     type="text"
                     class="{{ $errors->has('phone') ? 'border border-red' : '' }}"
                     name="phone"
-                    value=""
                 >
 
                 <div class="{{ $errors->has('phone') ? 'error-message' : '' }}">
                     {{ $errors->has('phone') ? $errors->first('phone') : '' }}
                 </div>
 
-                <hr>
+                <hr class="divider">
 
                 <!-- Bank Account Name -->
                 <label for="bankAccountName">{{ __('Bank account name') }}</label>
@@ -94,7 +92,7 @@
             </fieldset>
 
 
-            <div>
+            <div class="actions">
                 <button type="submit" class="primary">
                     <span wire:loading wire:target="updateUser" class="animate-spin">&#9696;</span>
                     <span wire:loading.remove wire:target="updateUser">

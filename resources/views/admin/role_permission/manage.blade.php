@@ -57,7 +57,7 @@
 
                         <table>
                             <thead>
-                            <tr>
+                            <tr class="fs-14">
                                 <th>{{ __('Role') }}</th>
                                 <th>{{ __('Slug') }}</th>
                                 <th>{{ __('Permissions') }}</th>
@@ -79,7 +79,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <div class="flex">
+                                        <div class="flex flex-row flex-wrap">
                                             <!-- Delete role -->
                                             <livewire:role.delete title="{{ __('Delete role') }}"
                                                                   :role="$role"
@@ -120,7 +120,7 @@
 
                         <table>
                             <thead>
-                            <tr>
+                            <tr class="fs-14">
                                 <th>{{ __('Permission') }}</th>
                                 <th>{{ __('Slug') }}</th>
                                 <th>{{ __('Roles') }}</th>
@@ -143,7 +143,7 @@
                                     </td>
 
                                     <td>
-                                        <div class="flex">
+                                        <div class="flex flex-row flex-wrap">
                                             <!-- Delete role -->
                                             <livewire:permission.delete title="{{ __('Delete permission') }}"
                                                                         :permission="$permission"

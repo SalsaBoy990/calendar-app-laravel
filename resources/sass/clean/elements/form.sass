@@ -1,14 +1,50 @@
+form
+    width: 100%
+
+    fieldset
+        margin-top: 1.4em !important
+
+        &:first-child,
+        label:first-of-type
+            margin-top: 0
+
+
 input[type="text"],
 input[type="search"],
 input[type="number"],
-textarea,
 input[type="email"],
 input[type="password"],
-select
+input[type="datetime-local"],
+input[type="date"],
+input[type="time"],
+input[type="url"],
+select,
+textarea
+    border-radius: 6px
     font-family: $sans
+    padding: 0.6em 0.6em
+    font-size: 1em
+    width: 100%
+    border: 1px solid $border
+    box-sizing: border-box
 
     &:focus
         border-color: $primary-light
+
+
+input[type="text"]:focus,
+input[type="search"]:focus,
+input[type="number"]:focus,
+input[type="datetime-local"]:focus,
+input[type="date"]:focus,
+input[type="time"]:focus,
+textarea:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="url"]:focus,
+select:focus
+    border: 1px solid $primary-light
+    outline: 0
 
 
 input
@@ -17,6 +53,11 @@ input
     &:disabled
         cursor: not-allowed
         background-color: $gray-20
+
+
+input[readonly]
+    background-color: $gray-20
+    cursor: not-allowed
 
 
 input[type="radio"],
@@ -30,36 +71,29 @@ input[type="checkbox"]
         cursor: not-allowed
 
 
-[type="search"]
-    border-radius: 0.25em
-    outline: none
-
-
-textarea
-    resize: vertical
+/*input[type="checkbox"]
+    margin: 1.4em
+    top: 0.3em
+    position: relative*/
+input[type="radio"]
+    accent-color: $primary-light
 
 
 label ~ input[type="radio"]
     display: inline-block
 
+label
+    margin: 1.4em 0 0.4em 0
+    clear: both
+    display: block
 
-.disabled,
-button:disabled,
-.button:disabled
-    cursor: not-allowed
-    opacity: 0.3
-
-
-.disabled *, :disabled *
-    pointer-events: none
+    span
+        color: green
 
 
-fieldset
-    border: 1px solid $gray-20
+input[type="checkbox"]:checked
+    accent-color: $primary-light
 
-input[readonly]
-    background-color: $gray-20
-    cursor: not-allowed
 
 .checkbox-container
     label
@@ -68,9 +102,39 @@ input[readonly]
         input
             margin-bottom: 0
 
+
+[type="search"]
+    border-radius: 0.25em
+    outline: none
+
+textarea
+    resize: vertical
+    padding: 0.6em 0.6em
+    width: 100%
+    height: 100%
+    box-sizing: border-box
+    border: 1px solid $border
+    line-height: 1.6em
+
+
+fieldset
+    border: 1px solid $gray-20
+
 select
     background: white
 
-a.nav-link.active
-    font-weight: 700
-    background-color: $gray-20
+
+.disabled
+    cursor: not-allowed
+    opacity: 0.3
+
+
+.disabled *, :disabled *
+    pointer-events: none
+
+.form-row
+    padding: 0 0.5em
+    margin: 1.4em -1em 1em
+
+    & > .col
+        padding: 0 0.5em

@@ -29,7 +29,7 @@
 
                 <table>
                     <thead>
-                    <tr>
+                    <tr class="fs-14">
                         <th>{{ __('Name') }}</th>
                         <th>{{ __('Email') }}</th>
                         <th>{{ __('Role') }}</th>
@@ -43,7 +43,7 @@
                             <td>{{ $user->email }}</td>
                             <td>{{ isset($user->role) ? $user->role->name : '' }}</td>
                             <td>
-                                <div class="flex">
+                                <div class="flex flex-row flex-wrap">
 
                                     @if(! $user->hasRoles('super-administrator') || auth()->user()->hasRoles('super-administrator') )
 

@@ -3,10 +3,23 @@ table
     margin-top: 1em
     margin-bottom: 1em
     border-spacing: 0
+    border-collapse: collapse
+    width: 100%
     display: table
 
+
+    tr:hover, tr:nth-child(odd):hover
+        background-color: #fdfdea
+
+    tr:nth-child(odd)
+        background-color: #f3f3f3
+
+    td:hover
+        cursor: auto
+
     th, td
-        border-color: $black
+        border: 1px solid $black
+        padding: 0.7em
 
     th
         font-size: $fs-16

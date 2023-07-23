@@ -1,0 +1,63 @@
+/* HEADER */
+header.page-header
+    width: 100%
+    background-color: white
+    box-shadow: 0 0.25rem 0.5rem rgb(0 0 0 / 8%)
+    padding: 6px
+
+
+    .header-content
+        width: 95%
+        margin: 0 auto
+        display: flex
+        flex-direction: row
+        flex-wrap: nowrap
+        justify-content: space-between
+        align-items: center
+        gap: 0.5em
+
+        .dropdown-item
+            display: block
+            margin-bottom: 0.5em
+
+        nav
+            a:not(.dropdown-item)
+                margin: 0 0.5em
+                padding: 0 0.5em
+                text-decoration: underline
+
+            .dropdown-item
+                display: block
+                margin-bottom: 0.5em
+
+
+.main-navigation
+    display: flex
+    align-items: center
+
+    nav
+        display: inline-flex
+        align-items: center
+
+        @media screen and (max-width: 1115px)
+            display: none
+
+#hamburger-menu-button
+    @media screen and (min-width: 1115px)
+        display: none
+
+
+header .fa
+    margin: 0 4px
+
+.logo a
+    display: flex
+    align-items: center
+    column-gap: 0.5em
+    flex-wrap: nowrap
+
+
+    img
+        height: 55px
+        width: auto
+/* HEADER END */

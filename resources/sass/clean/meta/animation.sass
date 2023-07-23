@@ -1,14 +1,12 @@
-.ripple:active
-    opacity: 0.5
-
-
 .ripple
     transition: opacity 0s
+
+    &:active
+        opacity: 0.5
 
 
 .spin
     animation: spin 2s infinite linear
-
 
 @keyframes spin
     0%
@@ -19,7 +17,6 @@
 
 .animate-fading
     animation: fading 10s infinite
-
 
 @keyframes fading
     0%
@@ -33,7 +30,6 @@
 .animate-opacity
     animation: opac 0.8s
 
-
 @keyframes opac
     from
         opacity: 0
@@ -44,7 +40,6 @@
 .animate-top
     position: relative
     animation: animatetop 0.4s
-
 
 @keyframes animatetop
     from
@@ -59,7 +54,6 @@
     position: relative
     animation: animateleft 0.4s
 
-
 @keyframes animateleft
     from
         left: -300px
@@ -72,7 +66,6 @@
 .animate-right
     position: relative
     animation: animateright 0.4s
-
 
 @keyframes animateright
     from
@@ -87,7 +80,6 @@
     position: relative
     animation: animatebottom 0.4s
 
-
 @keyframes animatebottom
     from
         bottom: -300px
@@ -99,7 +91,6 @@
 
 .animate-zoom
     animation: animatezoom 0.6s
-
 
 @keyframes animatezoom
     from
@@ -113,3 +104,62 @@
 
     &:focus
         width: 100%
+
+
+.spinner
+    display: flex
+    align-items: center
+    justify-content: center
+    pointer-events: none
+    position: relative
+    margin: 0.6em
+
+
+    &::after
+        animation: spinning 0.5s infinite linear
+        width: 24px
+        height: 24px
+        background: 0 0
+        border: 3px solid $primary-light
+        border-radius: 50%
+        border-right-color: transparent
+        border-top-color: transparent
+        content: ""
+        display: block
+        opacity: 1
+        padding: 0
+        position: absolute
+        z-index: 1
+
+
+.spinner-lhs
+    justify-content: flex-start
+
+
+.spinner-rhs
+    justify-content: flex-end
+
+
+@keyframes spinning
+    0%
+        transform: rotate(0)
+
+    100%
+        transform: rotate(360deg)
+
+
+.blink
+    text-decoration: blink
+    -webkit-animation-name: blinker
+    -webkit-animation-duration: 0.5s
+    -webkit-animation-iteration-count: infinite
+    -webkit-animation-timing-function: ease-in-out
+    -webkit-animation-direction: alternate
+
+
+@-webkit-keyframes blinker
+    from
+        opacity: 1.0
+    to
+        opacity: 0.0
+

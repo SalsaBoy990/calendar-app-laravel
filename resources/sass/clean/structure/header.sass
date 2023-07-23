@@ -9,39 +9,6 @@ header
             color: $gray-80
 
 
-#slide-nav
-    a:hover
-        text-decoration: underline
-
-    ul
-        li
-            a
-                i
-                    width: 1.5em
-                    text-align: center
-                    margin-right: 0.5em
-
-
-#header-sm,
-#header-lg
-    .logo
-        a
-            display: flex
-            align-items: center
-            column-gap: 0.25em
-            font-size: $fs-14
-
-            span
-                font-weight: 700
-
-            img
-                height: 54px
-                width: auto
-
-
-#close-btn
-    cursor: pointer
-
 .pointer.darkmode-toggle
     margin-right: 0.5em
 
@@ -64,6 +31,7 @@ header
     a.active
         color: $black
         font-weight: 700
+
 html.dark
     #main-menu
         a.active
@@ -100,11 +68,15 @@ html.dark
     #mobile-menu
         padding: 60px 0.5em 0.5em
 
+        .user-dropdown-menu
+            margin-top: 1em
+
         #main-menu
             display: flex
             row-gap: 1em
             flex-direction: column
             align-items: flex-start
+            font-size: 18px
 
             a
                 &.active

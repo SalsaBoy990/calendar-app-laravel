@@ -27,9 +27,8 @@
 
                 <table>
                     <thead>
-                    <tr>
+                    <tr class="fs-14">
                         <th>{{ __('Name') }}</th>
-                        <th>{{ __('Email') }}</th>
                         <th>{{ __('Phone') }}</th>
                         <th>{{ __('Bank info') }}</th>
                         <th>{{ __('Actions') }}</th>
@@ -38,8 +37,7 @@
                     <tbody>
                     @foreach($workers as $worker)
                         <tr>
-                            <td><b>{{ $worker->name }}</b></td>
-                            <td>{{ $worker->email }}</td>
+                            <td><b>{{ $worker->name }}</b><br>{{ $worker->email }}</td>
                             <td>{{ $worker->phone }}</td>
                             <td>
                                 {{ $worker->bank_account_name }}
@@ -47,7 +45,7 @@
                                 <b>{{ $worker->bank_account_number }}</b>
                             </td>
                             <td>
-                                <div class="flex">
+                                <div class="flex flex-row flex-wrap">
 
                                     @if( auth()->user()->hasRoles('super-administrator|administrator') )
 

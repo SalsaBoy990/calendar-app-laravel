@@ -3,12 +3,12 @@
 }">
 
     @if ($hasSmallButton)
-        <button @click="isModalOpen = true" class="fs-14 bold primary" title="{{ __('New User') }}">
+        <button @click="isModalOpen = true" class="primary" title="{{ __('New User') }}">
             <i class="fa fa-plus"></i>
         </button>
     @else
-        <button @click="isModalOpen = true" class="fs-14 bold primary">
-            <i class="fa fa-plus"></i>{{ __('New') }}
+        <button @click="isModalOpen = true" class="primary">
+            <i class="fa fa-plus"></i>{{ __('New User') }}
         </button>
     @endif
 
@@ -27,7 +27,6 @@
                     type="text"
                     class="{{ $errors->has('name') ? 'border border-red' : '' }}"
                     name="name"
-                    value=""
                 >
 
                 <div class="{{ $errors->has('name') ? 'error-message' : '' }}">
@@ -42,7 +41,6 @@
                     type="email"
                     class="{{ $errors->has('email') ? 'border border-red' : '' }}"
                     name="name"
-                    value=""
                 >
 
                 <div class="{{ $errors->has('email') ? 'error-message' : '' }}">
@@ -56,7 +54,6 @@
                     type="text"
                     class="{{ $errors->has('password') ? 'border border-red' : '' }}"
                     name="password"
-                    value=""
                 >
 
                 <div class="{{ $errors->has('password') ? 'error-message' : '' }}">
@@ -78,7 +75,6 @@
                     @foreach ($rolesArray as $key => $value)
                         <option name="role" value="{{ $key }}">{{ $value }}</option>
                     @endforeach
-
                 </select>
 
                 <div class="{{ $errors->has('role') ? 'error-message' : '' }}">
@@ -88,7 +84,7 @@
             </fieldset>
 
 
-            <div>
+            <div class="actions">
                 <button type="submit" class="primary">
                     <span wire:loading wire:target="createUser" class="animate-spin">&#9696;</span>
                     <span wire:loading.remove wire:target="createUser">

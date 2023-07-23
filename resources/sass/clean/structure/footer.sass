@@ -1,26 +1,28 @@
 footer
-	display: inline-flex
-	flex-direction: column
-	width: 100%
-	padding: 1em 6%
-	margin-top: 2em
-	color: $gray-40
-	background-color: $bg-content
+    display: inline-flex
+    flex-direction: column
+    width: 100%
+    padding: 1em 6%
+    margin-top: 2em
+    color: $gray-40
+    background-color: $bg-content
 
-	a
-		color: $gray-40
+    a
+        //text-decoration: none
+        color: $gray-40
 
-		&:hover
-			color: $white
+        &:hover
+            text-decoration: underline
+            color: $white
 
-	.menu
-		&:last-of-type
-			margin-bottom: 1.25em
+    .menu
+        &:last-of-type
+            margin-bottom: 1.25em
 
-		@media screen and (max-width: $s-600)
-			margin-top: 1.25em
+        @media screen and (max-width: $s-600)
+            margin-top: 1.25em
 
 
-	b, p
-		color: $gray-0
+    strong, b, p
+        color: $gray-0
 

@@ -4,7 +4,7 @@
 
     <main class="card content-600">
         <div class="header">
-            <h1 class="h2 text-white">{{ __('Login') }}</h1>
+            <h1 class="h3 text-white">{{ __('Login') }}</h1>
         </div>
         <div class="padding-1-5">
             <form method="POST" action="{{ route('login') }}">

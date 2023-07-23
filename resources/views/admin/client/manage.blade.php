@@ -25,7 +25,7 @@
 
                 <table>
                     <thead>
-                    <tr>
+                    <tr class="fs-14">
                         <th>{{ __('Client') }}</th>
                         <th>{{ __('Details') }}</th>
                         <th>{{ __('Tax number') }}</th>
@@ -37,9 +37,10 @@
                         <tr>
                             <td>
                                 <b>{{ $client->name }}</b>
-                                <span class="fs-12 bold badge gray-60">{{ $clientTypes[$client->type] }}</span>
                                 <br>
-                                {{ $client->address }}
+                                <span class="fs-12 semibold badge gray-60">{{ $clientTypes[$client->type] }}</span>
+                                <br>
+                                <address>{{ $client->address }}</address>
                             </td>
                             <td>
                                 @if (isset($client->client_detail))
@@ -55,7 +56,7 @@
                                 @endif
                             </td>
                             <td>
-                                <div class="flex">
+                                <div class="flex flex-row flex-wrap">
                                     <!-- Delete user -->
                                     <livewire:client.delete title="{{ __('Delete client') }}"
                                                             :client="$client"

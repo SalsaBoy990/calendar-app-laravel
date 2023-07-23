@@ -3,12 +3,12 @@
 }">
 
     @if ($hasSmallButton)
-        <button @click="isModalOpen = true" class="fs-14 bold primary" title="{{ __('New Worker') }}">
+        <button @click="isModalOpen = true" class="primary" title="{{ __('New Worker') }}">
             <i class="fa fa-plus"></i>
         </button>
     @else
-        <button @click="isModalOpen = true" class="fs-14 bold primary">
-            <i class="fa fa-plus"></i>{{ __('New') }}
+        <button @click="isModalOpen = true" class="primary">
+            <i class="fa fa-plus"></i>{{ __('New Worker') }}
         </button>
     @endif
 
@@ -27,7 +27,6 @@
                     type="text"
                     class="{{ $errors->has('name') ? 'border border-red' : '' }}"
                     name="name"
-                    value=""
                 >
 
                 <div class="{{ $errors->has('name') ? 'error-message' : '' }}">
@@ -42,7 +41,6 @@
                     type="email"
                     class="{{ $errors->has('email') ? 'border border-red' : '' }}"
                     name="name"
-                    value=""
                 >
 
                 <div class="{{ $errors->has('email') ? 'error-message' : '' }}">
@@ -57,14 +55,13 @@
                     type="text"
                     class="{{ $errors->has('phone') ? 'border border-red' : '' }}"
                     name="phone"
-                    value=""
                 >
 
                 <div class="{{ $errors->has('phone') ? 'error-message' : '' }}">
                     {{ $errors->has('phone') ? $errors->first('phone') : '' }}
                 </div>
 
-                <hr>
+                <hr class="divider">
 
                 <!-- Bank Account Name -->
                 <label for="bankAccountName">{{ __('Bank account name') }}</label>
@@ -96,7 +93,7 @@
             </fieldset>
 
 
-            <div>
+            <div class="actions">
                 <button type="submit" class="primary">
                     <span wire:loading wire:target="createWorker" class="animate-spin">&#9696;</span>
                     <span wire:loading.remove wire:target="createWorker">

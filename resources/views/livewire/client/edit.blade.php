@@ -2,7 +2,7 @@
     isModalOpen: $wire.entangle('isModalOpen')
 }">
 
-    <button @click="isModalOpen = true" class="fs-14 bold success">
+    <button @click="isModalOpen = true" class="success margin-top-0">
         <i class="fa fa-pencil"></i>{{ __('Edit') }}
     </button>
 
@@ -117,7 +117,7 @@
             </fieldset>
 
 
-            <div>
+            <div class="actions">
                 <button type="submit" class="primary">
                     <span wire:loading
                           wire:target="updateClient"

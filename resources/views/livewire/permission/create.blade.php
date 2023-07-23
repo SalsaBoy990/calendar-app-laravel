@@ -3,11 +3,11 @@
 }">
 
     @if ($hasSmallButton)
-        <button @click="isModalOpen = true" class="fs-14 bold primary" title="{{ __('New Permission') }}">
+        <button @click="isModalOpen = true" class="primary margin-top-0" title="{{ __('New Permission') }}">
             <i class="fa fa-plus"></i>
         </button>
     @else
-        <button @click="isModalOpen = true" class="fs-14 bold primary">
+        <button @click="isModalOpen = true" class="primary margin-top-0">
             <i class="fa fa-plus"></i>{{ __('New Permission') }}
         </button>
     @endif
@@ -73,7 +73,7 @@
             </fieldset>
 
 
-            <div>
+            <div class="actions">
                 <button type="submit" class="primary">
                     <span wire:loading wire:target="createPermission" class="animate-spin">&#9696;</span>
                     <span wire:loading.remove wire:target="createPermission">

@@ -1,0 +1,65 @@
+/* DROPDOWN */
+.caret
+    cursor: pointer
+    user-select: none
+
+    &::before
+        font: var(--fa-font-solid)
+        display: inline-block
+        text-rendering: auto
+        -webkit-font-smoothing: antialiased
+        content: "\f0d7"
+        color: black
+        margin-right: 6px
+
+
+.active-list-item
+    background-color: whitesmoke
+
+
+/* rotate the arrow icon */
+.caret-down::before
+    //transform: rotate(90deg)
+    content: "\f0d8"
+
+/* hide the nested ul */
+.nested
+    display: none
+
+    &.active
+        background-color: whitesmoke
+
+/* show the nested list */
+.active
+    display: block
+// reason: important not to overwrite
+
+.active-category
+    background-color: gainsboro
+    border: 1px solid slategrey
+
+html.dark
+    .caret::before
+        color: white
+
+    .active-list-item
+        background-color: $gray-80
+
+    .nested.active
+        background-color: $gray-80
+
+    .active-category
+        background-color: $black
+        border: 1px solid $gray-60
+
+
+.upload-to-root
+    display: flex
+    flex-wrap: wrap
+    column-gap: 1em
+    justify-content: space-between
+    align-items: center
+
+    label, button
+        margin-top: 0
+/* DROPDOWN END */

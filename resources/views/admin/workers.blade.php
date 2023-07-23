@@ -3,7 +3,7 @@
 @section('content')
 
     <main>
-        <div class="padding-1-5">
+        <div class="padding-1">
             <livewire:worker.calendar></livewire:worker.calendar>
         </div>
     </main>

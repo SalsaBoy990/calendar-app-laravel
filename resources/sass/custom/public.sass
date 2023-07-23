@@ -1,0 +1,170 @@
+/* PUBLIC LAYOUT */
+.public
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    min-width: 320px
+
+
+    &.wrapper
+        border-top: 2px solid #D8D8D8
+
+    &.frontpage
+        background-image: url('./../../public/images/kizomba-hatter-min.jpg')
+
+    .highlighted-posts-container
+        display: flex
+        flex-direction: row
+        column-gap: 2em
+        row-gap: 2em
+
+        @media screen and (max-width: $s-800)
+            flex-direction: column
+
+        .featured
+            max-width: 424px
+
+            img
+                &:hover, &:focus, &:active
+                    transition: 0.35s all
+                    box-shadow: rgba(0, 0, 0, 0.25) 0 14px 28px, rgba(0, 0, 0, 0.22) 0 10px 10px
+
+            h3
+                &:hover, &:focus
+                    text-decoration: underline
+
+                @media screen and (max-width: $s-600)
+                    font-size: 20px
+
+            @media screen and (max-width: $s-800)
+                max-width: 100%
+                object-fit: cover
+
+        .highlighted
+            .highlighted-post-item
+                margin-top: 1em
+                margin-bottom: 2em
+                display: flex
+                flex-direction: row
+                flex-wrap: nowrap
+                column-gap: 1em
+                row-gap: 2em
+
+                span
+                    position: relative
+                    color: rgba(0, 0, 0, 0.7)
+                    font-size: 18px
+                    font-weight: 500
+                    font-variant: all-small-caps
+                    letter-spacing: 1px
+                    padding-left: 1em
+
+                    &:before
+                        position: absolute
+                        left: 0
+                        top: 8px
+                        content: ""
+                        width: 8px
+                        height: 8px
+                        border-radius: 8px
+                        background: #E7B56E
+
+                h3
+                    margin-top: 2px
+                    color: rgba(0, 0, 0, 0.80)
+                    font-size: 20px
+                    line-height: 120%
+                    letter-spacing: 1px
+
+                    @media screen and (max-width: $s-600)
+                        font-size: 16px
+
+                img
+                    width: 100%
+                    height: 135px
+                    object-fit: cover
+
+                    &:hover, &:focus, &:active
+                        transition: 0.35s all
+                        box-shadow: rgba(0, 0, 0, 0.25) 0 14px 28px, rgba(0, 0, 0, 0.22) 0 10px 10px
+
+    article
+        .card-body
+            padding: 0 2em
+            @media screen and (max-width: $s-600)
+                padding: 0 1em
+
+            .badge
+                background-color: $accent-light
+                text-decoration: none
+                text-transform: uppercase
+                font-size: 12px
+                line-height: 24px
+                color: $black
+                border-radius: 0.5em
+                padding: 0.25em 1em
+
+                &:hover, &:active
+                    background-color: $primary-dark
+                    color: white
+
+        h1
+            padding-bottom: 0.25em
+            @media screen and (max-width: 576px)
+                font-size: 1.7em
+
+        .post-content
+            padding-bottom: 2em
+
+            h1, .h1
+                font-size: 2em
+
+            h2, .h2
+                font-size: 1.6em
+
+            h3, .h3
+                font-size: 1.4em
+
+            h4, .h4
+                font-size: 1.2em
+
+            h5, .h5, h6, .h6
+                font-size: 1.0em
+
+            p, ul li, ol li
+                color: #333
+                font-size: 18px
+                line-height: 1.7
+
+                @media screen and (max-width: $s-600)
+                    font-size: 1em
+
+    & > .container
+        flex-grow: 1
+
+    .public-content
+        margin: 2em auto
+        margin-top: 0
+
+        @media screen and (max-width: $s-600)
+            margin-top: 0.5em
+
+        @media screen and (max-width: $s-1023)
+            grid-template-columns: 1fr
+            grid-template-areas: "main-content" "sidebar"
+
+        main
+            box-sizing: border-box
+            grid-area: main-content
+            background-color: white
+
+            .header
+                border-top-left-radius: 0.5em
+                border-top-right-radius: 0.5em
+                padding: 1em 1.5em
+                background-color: $bg-primary
+                color: white
+
+                h1
+                    margin: 0
+/* PUBLIC PAGE END */
