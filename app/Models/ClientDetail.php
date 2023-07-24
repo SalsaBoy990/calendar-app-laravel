@@ -13,7 +13,6 @@ class ClientDetail extends Model
 
 
     protected $fillable = [
-        'client_id',
         'contact_person',
         'phone_number',
         'email',
