@@ -25,6 +25,7 @@
                                         :modalId="'m-create-worker'">
                 </livewire:worker.create>
 
+                @if($workers->count() > 0)
                 <table>
                     <thead>
                     <tr class="fs-14">
@@ -73,8 +74,10 @@
                     @endforeach
                     </tbody>
                 </table>
-
                 {{ $workers->links('components.pagination') }}
+                @else
+                    <p>{{ __('There are no workers yet.') }}</p>
+                @endif
 
             </div>
         </main>

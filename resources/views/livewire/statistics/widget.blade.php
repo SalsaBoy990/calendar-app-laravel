@@ -121,19 +121,19 @@
         <span class="badge orange-dark text-white round" x-text="sumOfHours"></span>
     </h4>
 
-    <table>
-        <thead>
-        <tr>
-            <th>#</th>
-            <th>{{ __('Name') }}</th>
-            <th>{{ __('Hours') }}</th>
-            <th>{{ __('Start') }}</th>
-            <th>{{ __('End') }}</th>
-            <th>{{ __('Recurrence') }}</th>
-        </tr>
-        </thead>
-        <tbody>
-        @if (isset($cleaningJobs))
+    @if ($cleaningJobs->total() > 0)
+        <table>
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>{{ __('Name') }}</th>
+                <th>{{ __('Hours') }}</th>
+                <th>{{ __('Start') }}</th>
+                <th>{{ __('End') }}</th>
+                <th>{{ __('Recurrence') }}</th>
+            </tr>
+            </thead>
+            <tbody>
             @php
                 $index = 1;
 				$currentPage = $cleaningJobs->currentPage()
@@ -248,12 +248,12 @@
 
                 </tr>
             @endforeach
-        @endif
-        </tbody>
-    </table>
-
-    @if (isset($cleaningJobs))
+            </tbody>
+        </table>
         {{ $cleaningJobs->links('components.pagination-livewire') }}
+    @else
+        <p>{{ __('No results for the query.') }}</p>
+
     @endif
 
 </section>

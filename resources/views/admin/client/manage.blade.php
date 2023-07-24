@@ -23,6 +23,7 @@
                 <!-- Create new user -->
                 <livewire:client.create></livewire:client.create>
 
+                @if($clients->count() > 0)
                 <table>
                     <thead>
                     <tr class="fs-14">
@@ -77,10 +78,14 @@
 
                         </tr>
                     @endforeach
+
                     </tbody>
                 </table>
-
                 {{ $clients->links('components.pagination') }}
+
+                @else
+                    <p>{{ __('There are no clients yet.') }}</p>
+                @endif
 
             </div>
         </main>
