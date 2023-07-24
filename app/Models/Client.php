@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Client extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
     public const RECORDS_PER_PAGE = 10;
 
@@ -26,6 +28,8 @@ class Client extends Model
         'address',
         'type'
     ];
+
+    protected $dates = ['deleted_at'];
 
     /**
      * The attributes that should be cast.

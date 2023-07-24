@@ -210,7 +210,12 @@ class Calendar extends Component
      */
     public function render(): View|Factory|Application
     {
-        $this->events = Event::with(['workers', 'client'])->get();
+        /* Also query soft-deleted clients (needed for the event view) */
+        $this->events = Event::with(['workers'])->with([
+            'client' => function ($query) {
+                $query->withTrashed();
+            }
+        ])->get();
 
         return view('livewire.home.calendar');
     }
