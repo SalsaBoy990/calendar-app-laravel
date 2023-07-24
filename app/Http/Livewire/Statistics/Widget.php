@@ -17,13 +17,6 @@ class Widget extends Component
     use WithPagination;
 
     /**
-     * The data to pass to the Google Chart library to render
-     *
-     */
-    public ?Collection $chartData;
-
-
-    /**
      * Paginated Collection of jobs (events)
      * @var
      */
@@ -45,16 +38,6 @@ class Widget extends Component
     public string $startDate;
     public string $endDate;
 
-    /* Chart option properties */
-    public string $chartTitle;
-    public string $chartId;
-    public string $chartAreaWidth;
-    public string $chartColor;
-    public string $chartXAxisTitle;
-    public string $chartVAxisTitle;
-
-    public $totalWorks;
-
 
     protected array $rules = [
         'clientId' => ['required', 'int', 'max:255'],
@@ -68,11 +51,8 @@ class Widget extends Component
      */
     public function mount()
     {
-        $this->chartData = null;
         $this->cleaningJobs = null;
-
         $this->clientId = 0;
-        $this->totalWorks = null;
 
         $firstDayOfTheMonth = new DateTime('first day of this month', new DateTimeZone('Europe/Budapest'));
         $lastDayOfTheMonth = new DateTime('last day of this month', new DateTimeZone('Europe/Budapest'));
@@ -80,16 +60,9 @@ class Widget extends Component
         $this->startDate = $firstDayOfTheMonth->format('Y-m-d');
         $this->endDate = $lastDayOfTheMonth->format('Y-m-d');
 
-        $this->chartTitle = __('Hours of cleaning works by clients');
-        $this->chartId = 'chart_div';
-        $this->chartAreaWidth = '65%';
-        $this->chartColor = '#13B623';
-        $this->chartXAxisTitle = __('Hours of work');
-        $this->chartVAxisTitle = __('Client name');
-
         $this->clients = Client::all();
-
         $this->clientsData[__('All')] = 0;
+
         foreach ($this->clients as $client) {
             $this->clientsData[$client->name] = $client->id;
         }
@@ -101,7 +74,6 @@ class Widget extends Component
      */
     public function render()
     {
-        $this->queryDataForChart();
         $this->getJobList();
 
         return view('livewire.statistics.widget')->with([
@@ -173,44 +145,8 @@ class Widget extends Component
      */
     public function getResults(): void
     {
-        $this->queryDataForChart();
         $this->getJobList();
         $this->resetPage();
-    }
-
-
-    /**
-     * @throws Exception
-     */
-    public function queryDataForChart()
-    {
-        // validate user input
-        $this->validate();
-
-        $tz = new DateTimeZone('Europe/Budapest');
-        $startDate = new DateTime($this->startDate, $tz);
-        $endDate = new DateTime($this->endDate, $tz);
-        $interval = $startDate->diff($endDate);
-        $weeks = (int) floor($interval->days / 7);
-
-        $statistics = DB::table('events')
-            ->selectRaw(
-                "clients.name,
-                            SUM(CASE
-                                WHEN (events.is_recurring = 0) THEN
-                                     TIME_TO_SEC( TIMEDIFF( events.end, events.start ) ) / 3600
-                                WHEN (events.is_recurring = 1) THEN
-                                    TIME_TO_SEC(events.duration) / 3600 * FLOOR( $weeks / JSON_EXTRACT(`rrule` , '$.interval') )
-                            END) AS hours"
-            )
-            ->join('clients', 'events.client_id', '=', 'clients.id');
-
-        $statistics = $this->addWhereConditionsToQueries($statistics);
-        $statistics = $statistics
-            ->groupBy('clients.name', 'events.is_recurring')
-            ->get();
-
-        $this->chartData = $statistics;
     }
 
 

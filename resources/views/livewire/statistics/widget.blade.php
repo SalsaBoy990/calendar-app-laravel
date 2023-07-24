@@ -1,73 +1,4 @@
-@push('scripts')
-    <script src="{{ url('/js/google-charts-loader.js') }}"></script>
-@endpush
-
-<section x-data="{
-        /* Binding PHP and JS properties */
-        chartId: $wire.entangle('chartId'),
-        chartData: $wire.entangle('chartData'),
-        chartTitle: $wire.entangle('chartTitle'),
-        chartAreaWidth: $wire.entangle('chartAreaWidth'),
-        chartColor: $wire.entangle('chartColor'),
-        chartXAxisTitle: $wire.entangle('chartXAxisTitle'),
-        chartVAxisTitle: $wire.entangle('chartVAxisTitle'),
-        sumOfHours: 0,
-
-        /* Basic chart options */
-        getOptions() {
-            return {
-                title: this.chartTitle,
-                chartArea: {width: this.chartAreaWidth},
-                colors: [this.chartColor],
-                legend: {position: 'none'},
-                hAxis: {
-                    title: this.chartXAxisTitle,
-                    minValue: 0
-                },
-                vAxis: {
-                    title: this.chartVAxisTitle
-                }
-            }
-        },
-
-        /* Creates a 2D array from the PHP array of objects */
-        prepareChartData() {
-            var dataArray = [];
-            this.sumOfHours = 0;
-            for (var i = 0; i < this.chartData.length; i++) {
-                this.sumOfHours += parseFloat(this.chartData[i].hours);
-                dataArray.push([
-                    this.chartData[i].name, parseFloat(this.chartData[i].hours)
-                ]);
-            }
-            return dataArray;
-        },
-
-        /* Draws the Google Chart */
-        drawChart() {
-            console.log(this.chartData);
-
-            var dataArray = this.prepareChartData();
-            var data = new google.visualization.DataTable();
-            data.addColumn('string', 'Client');
-            data.addColumn('number', '');
-            data.addRows(dataArray);
-
-
-            var chart = new google.visualization.BarChart(document.getElementById(this.chartId));
-            chart.draw(data, this.getOptions());
-        }
-    }"
-         x-init="
-        // init google chart config with packages to be used
-        google.charts.load('current', {packages: ['corechart', 'bar']});
-        // Set a callback to run when the Google Visualization API is loaded. laod chart for the first time
-        google.charts.setOnLoadCallback(function() { drawChart(); });
-
-        // watches the changes for chartData, and re-renders the chart with the updated data
-        $watch('chartData', function() { drawChart(); })
-    "
->
+<section>
     <div>
         <form wire:submit.prevent="getResults">
             <div class="row-padding">
@@ -111,15 +42,6 @@
             <button type="submit">{{ __('Generate') }}</button>
         </form>
     </div>
-
-    <div id="chart_div"></div>
-
-    <h4 class="fs-18">{{ __('Total number works: ') }}
-        <span class="badge gray-60 text-white round">{{ $cleaningJobs->total() }}</span>
-    </h4>
-    <h4 class="fs-18">{{ __('Total working hours: ' ) }}
-        <span class="badge orange-dark text-white round" x-text="sumOfHours"></span>
-    </h4>
 
     @if ($cleaningJobs->total() > 0)
         <table>
