@@ -2,7 +2,6 @@
 <html
     lang="{{ str_replace('_', '-', app()->getLocale()) }}"
     x-data="data"
-    :class="{'dark': darkMode }"
 >
 <head>
     <meta charset="utf-8">
@@ -26,7 +25,7 @@
     @livewireStyles
 
 </head>
-<body @scroll="setScrollToTop()">
+<body @scroll="setScrollToTop()" style="overflow-y: hidden;">
 
 <div class="admin wrapper">
 
