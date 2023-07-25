@@ -6,9 +6,7 @@ use App\Models\Client;
 use App\Models\Event;
 use App\Models\Worker;
 use App\Support\InteractsWithBanner;
-use DateTime;
 use DateTimeInterface;
-use DateTimeZone;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -149,7 +147,6 @@ class Calendar extends Component
         $this->status = 'opened';
         $this->backgroundColor = null;
         $this->byweekday = '';
-        $this->frequency = '';
         $this->frequencyName = '';
         $this->dtstart = '';
         $this->until = '';
@@ -225,6 +222,7 @@ class Calendar extends Component
      * @param $event
      *
      * @return RedirectResponse|void
+     * @throws \Exception
      */
     public function eventChange($event)
     {
@@ -242,16 +240,16 @@ class Calendar extends Component
             return redirect()->route('calendar');
         }
 
-        $tformat = DateTimeInterface::ATOM;
-        $tz = new DateTimeZone('Europe/Budapest');
 
         if (!$changedEvent->is_recurring) {
-            $start = DateTime::createFromFormat($tformat, $event['start'], $tz);
-            $changedEvent->start = $start->format('Y-m-d H:i:s');
+            // input 'Y-m-d\TH:i:sP', output: 'Y-m-d H:i:s'
+            $changedEvent->start = Event::convertFromLocalToUtc($event['start'], Event::TIMEZONE, false,
+                DateTimeInterface::ATOM);
 
             if (Arr::exists($event, 'end')) {
-                $end = DateTime::createFromFormat($tformat, $event['end'], $tz);
-                $changedEvent->end = $end->format('Y-m-d H:i:s');
+                // input 'Y-m-d\TH:i:sP', output: 'Y-m-d H:i:s'
+                $changedEvent->end = Event::convertFromLocalToUtc($event['end'], Event::TIMEZONE, false,
+                    DateTimeInterface::ATOM);
             }
             $changedEvent->save();
 
@@ -269,21 +267,26 @@ class Calendar extends Component
             // Update the time part only
             // otherwise it would change the start date of the recurring event
             $newRules = $this->event->rrule;
-            $newStart = $newRules['dtstart'];
 
-            // get the existing date part
-            $newStart = substr($newStart, 0, -5);
-            // get the new time part
-            $newTime = date("H:i", strtotime($event['start']));
-
-            $newStart .= $newTime;
-            $newRules['dtstart'] = $newStart;
-
+            // input 'Y-m-d\TH:i:s', output: 'Y-m-d H:i:s'
+            $newRules['dtstart'] = Event::convertFromLocalToUtc($event['start'], Event::TIMEZONE, false, DateTimeInterface::ATOM, 'Y-m-d\TH:i:s\Z');
 
             // On resize, overwrite the duration field (the right way with DateTime class etc.)
             if (Arr::exists($event, 'start') && Arr::exists($event, 'end')) {
-                $start = DateTime::createFromFormat($tformat, $event['start'], $tz);
-                $end = DateTime::createFromFormat($tformat, $event['end'], $tz);
+
+                // input 'Y-m-d H:i:s', output: 'Y-m-d H:i:s'
+                $start = Event::convertFromLocalToUtc($event['start'], Event::TIMEZONE, true);
+
+                if ($start === false) {
+                    $start = Event::convertFromLocalToUtc($event['start'], Event::TIMEZONE, true, 'Y-m-d\\TH:i:sP');
+                }
+
+                // input 'Y-m-d H:i:s', output: 'Y-m-d H:i:s'
+                $end = Event::convertFromLocalToUtc($event['end'], Event::TIMEZONE, true);
+
+                if ($end === false) {
+                    $end = Event::convertFromLocalToUtc($event['end'], Event::TIMEZONE, true, 'Y-m-d\\TH:i:sP');
+                }
 
                 $difference = $end->diff($start);
                 $newDuration = $difference->format("%H:%I:%S");
@@ -473,17 +476,31 @@ class Calendar extends Component
 
         // recurring event props
         if ($this->isRecurring === 1) {
+            $eventProps['is_recurring'] = 1;
+
             if ($this->byweekday !== '') {
                 $this->rrule['byweekday'] = $this->byweekday;
             }
 
             $this->setFrequencyNameAndInterval();
+
             $this->rrule['freq'] = $this->frequencyName;
             $this->rrule['interval'] = $this->interval;
 
 
             if ($this->dtstart !== '') {
-                $this->rrule['dtstart'] = $this->dtstart;
+                // Fullcalendar returns inconsistent formats. FUCK YOU fullcalendar!
+                // The format can be either 'Y-m-d H:i:s', or 'Y-m-d\TH:i'
+                // Datetime need to be saved with the letters T and Z, so that it is recognized by fullcalendar as UTC,
+                // and will be converted to local timezone using moment.js
+                $this->rrule['dtstart'] = Event::convertFromLocalToUtc($this->dtstart, Event::TIMEZONE, false,
+                    'Y-m-d H:i:s', 'Y-m-d\TH:i:s\Z');
+
+
+                if ($this->rrule['dtstart'] === false) {
+                    $this->rrule['dtstart'] = Event::convertFromLocalToUtc($this->dtstart, Event::TIMEZONE, false,
+                        'Y-m-d\TH:i', 'Y-m-d\TH:i:s\Z');
+                }
             }
 
             if ($this->until !== '') {
@@ -498,9 +515,10 @@ class Calendar extends Component
                 $eventProps['rrule'] = $this->rrule;
             }
         } else {
-            // regular events
-            $eventProps['start'] = $this->start;
-            $eventProps['end'] = $this->end;
+            // regular events; input 'Y-m-d H:i:s', output: 'Y-m-d H:i:s'
+            $eventProps['start'] = Event::convertFromLocalToUtc($this->start, Event::TIMEZONE);
+            // input 'Y-m-d H:i:s', output: 'Y-m-d H:i:s'
+            $eventProps['end'] = Event::convertFromLocalToUtc($this->end, Event::TIMEZONE);
         }
 
         // If a client need to be associated with the event
@@ -593,7 +611,17 @@ class Calendar extends Component
 
         $this->frequencyName = $this->event->rrule['freq'] ?? '';
         $this->byweekday = $this->event->rrule['byweekday'] ?? '';
-        $this->dtstart = $this->event->rrule['dtstart'] ?? '';
+
+
+        if (isset($this->event->rrule['dtstart'])) {
+            // input 'Y-m-d\TH:i:s\Z', output: 'Y-m-d H:i:s'
+            $this->dtstart = Event::convertFromUtcToLocal($this->event->rrule['dtstart'], Event::TIMEZONE, false,
+                'Y-m-d\TH:i:s\Z');
+        } else {
+            $this->dtstart = '';
+        }
+
+
         $this->until = $this->event->rrule['until'] ?? '';
         $this->interval = $this->event->rrule['interval'] ?? 1;
         $this->duration = $this->event->duration ?? '';
@@ -619,15 +647,28 @@ class Calendar extends Component
     {
         // only for non-recurring events
         if ($this->isRecurring === 0) {
-
-            // datetime-local
-            $this->start = date("Y-m-d\TH:i:s", strtotime($this->event->start ?? $args['start']));
+            // datetime-local (input 'Y-m-d\TH:i:s.uP', output: 'Y-m-d H:i:s')
+            $this->start = isset($this->event->start) ?
+                $this->event->start->setTimezone(Event::TIMEZONE) :
+                Event::convertFromUtcToLocal($args['start'], Event::TIMEZONE, false, 'Y-m-d\TH:i:s.uP');
 
             if (isset($args['end'])) {
-                $this->end = date("Y-m-d\TH:i:s", strtotime($this->event->end ?? $args['end']));
+                // input 'Y-m-d\TH:i:s.uP', output: 'Y-m-d H:i:s'
+                $this->end = isset($this->event->end) ?
+                    $this->event->end->setTimezone(Event::TIMEZONE) :
+                    Event::convertFromUtcToLocal($args['end'], Event::TIMEZONE, false, 'Y-m-d\TH:i:s.uP');
+
             } else {
-                $this->end = $this->event->end ?? null;
+                $this->end = $this->event->end->setTimezone(Event::TIMEZONE) ?? null;
             }
+        }
+
+
+        if ($this->dtstart === '') {
+            /* Need to set dtstart for the modal for recurring events */
+            $this->dtstart = isset($this->event->start) ?
+                $this->event->start->setTimezone(Event::TIMEZONE) :
+                Event::convertFromUtcToLocal($args['start'], Event::TIMEZONE, false, 'Y-m-d\TH:i:s.uP');
         }
 
         $this->isModalOpen = true;

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Casts\HtmlSpecialCharsCast;
+use App\Trait\DateTimeConverter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Event extends Model
 {
     use HasFactory;
+    use DateTimeConverter;
 
     // no need for timestamps
     public $timestamps = false;
@@ -18,6 +20,7 @@ class Event extends Model
     protected $primaryKey = "event_id";
 
     public const RECORDS_PER_PAGE = 10;
+    public const TIMEZONE = 'Europe/Budapest';
 
     // the primary key is non-incrementing and a uuid string
     // if we want to use uuid as primary key
