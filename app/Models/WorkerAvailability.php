@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Casts\HtmlSpecialCharsCast;
+use App\Trait\DateTimeConverter;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -10,16 +11,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class WorkerAvailability extends Model
 {
     use HasFactory;
+    use DateTimeConverter;
 
     // no need for timestamps
     public $timestamps = false;
 
     protected $primaryKey = "availability_id";
 
-    // the primary key is non-incrementing and a uuid string
+    public const TIMEZONE = 'Europe/Budapest';
+
+    // the primary key is non-incrementing and an uuid string
     // if we want to use uuid as primary key
-//    public $incrementing = false;
-//    protected $keyType = 'string';
+    // public $incrementing = false;
+    // protected $keyType = 'string';
 
     protected $fillable = [
         'id',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Worker;
 
+use App\Models\Event;
 use App\Models\Worker;
 use App\Models\WorkerAvailability;
 use App\Support\InteractsWithBanner;
@@ -9,6 +10,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -114,10 +116,12 @@ class Calendar extends Component
     public function availabilityChange($availability): void
     {
         $changedAvailability = WorkerAvailability::where('id', $availability['id'])->first();
-        $changedAvailability->start = $availability['start'];
+        $changedAvailability->start = WorkerAvailability::convertFromLocalToUtc($availability['start'], WorkerAvailability::TIMEZONE, false,
+            'Y-m-d\\TH:i:sP');
 
         if (Arr::exists($availability, 'end')) {
-            $changedAvailability->end = $availability['end'];
+            $changedAvailability->end = WorkerAvailability::convertFromLocalToUtc($availability['end'], WorkerAvailability::TIMEZONE, false,
+                'Y-m-d\\TH:i:sP');
         }
 
         $changedAvailability->save();
@@ -128,7 +132,7 @@ class Calendar extends Component
      * Opens modal, fills up livewire class properties for the form modal
      *
      * @param  array  $args
-     *
+     * @return RedirectResponse|void
      */
     public function availabilityModal(array $args)
     {
@@ -155,10 +159,14 @@ class Calendar extends Component
 
         $this->allDay = $args['allDay'];
         if ($this->allDay === false) {
-            // datetime-local
-            // Y-m-d\TH:i:s
-            $this->start = date("Y-m-d\TH:i:s", strtotime($this->availability->start ?? $args['start']));
-            $this->end = date("Y-m-d\TH:i:s", strtotime($this->availability->end ?? $args['end']));
+
+            $this->start = isset($this->availability->start) ?
+                $this->availability->start->setTimezone(Event::TIMEZONE) :
+                Event::convertFromUtcToLocal($args['start'], Event::TIMEZONE, false, 'Y-m-d\TH:i:s.uP');
+
+            $this->end = isset($this->availability->end) ?
+                $this->availability->end->setTimezone(Event::TIMEZONE) :
+                Event::convertFromUtcToLocal($args['end'], Event::TIMEZONE, false, 'Y-m-d\TH:i:s.uP');
 
         } else {
             $this->start = date("Y-m-d\TH:i:s", strtotime($this->availability->start ?? $args['start']));
@@ -211,10 +219,9 @@ class Calendar extends Component
                         return redirect()->route('workers');
                     }
 
-                    $updateAvailability->update([
-                        'start' => $this->start,
-                        'end' => $this->end,
-                    ]);
+                    $data = $this->getAvailabilityProps();
+
+                    $updateAvailability->update($data);
 
                     if ($this->selectedWorkerId !== $updateAvailability->worker->id) {
                         // null parent relation
@@ -228,13 +235,12 @@ class Calendar extends Component
                     $updateAvailability->save();
 
                 } else {
-                    // create
-                    $newAvailability = WorkerAvailability::create([
-                        'id' => Str::uuid(),
-                        'start' => $this->start,
-                        'end' => $this->end,
-                    ]);
 
+                    $data = $this->getAvailabilityProps();
+                    $data['id'] = Str::uuid();
+
+                    // create
+                    $newAvailability = WorkerAvailability::create($data);
                     $newAvailability->worker()->associate($workerEntity);
                     $newAvailability->save();
                 }
@@ -311,5 +317,43 @@ class Calendar extends Component
     private function checkIfAvailabilityExists(): bool
     {
         return $this->availability === null;
+    }
+
+
+    /**
+     * @return array
+     */
+    private function getAvailabilityProps(): array
+    {
+        $start = WorkerAvailability::convertFromLocalToUtc($this->start, WorkerAvailability::TIMEZONE);
+
+        // inconsistent formats workaround
+        if ($start === false) {
+            $start = WorkerAvailability::convertFromLocalToUtc($this->start, WorkerAvailability::TIMEZONE,
+                false, 'Y-m-d\\TH:i:s');
+
+            if ($start === false) {
+                $start = WorkerAvailability::convertFromLocalToUtc($this->start, WorkerAvailability::TIMEZONE,
+                    false, 'Y-m-d\\TH:i');
+            }
+        }
+
+        // inconsistent formats workaround
+        $end = WorkerAvailability::convertFromLocalToUtc($this->end, WorkerAvailability::TIMEZONE);
+        if ($end === false) {
+            $end = WorkerAvailability::convertFromLocalToUtc($this->end, WorkerAvailability::TIMEZONE,
+                false, 'Y-m-d\\TH:i:s');
+
+            if ($end === false) {
+                $end = WorkerAvailability::convertFromLocalToUtc($this->end, WorkerAvailability::TIMEZONE,
+                    false, 'Y-m-d\\TH:i');
+
+            }
+        }
+
+        return [
+            'start' => $start,
+            'end' => $end,
+        ];
     }
 }
