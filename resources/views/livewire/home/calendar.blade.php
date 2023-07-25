@@ -4,7 +4,7 @@
         <nav class="nav-links">
             @auth
                 @role('super-administrator|administrator')
-                <h1 class="h5 margin-0" style="display:inline;">{{ __('Works') }}</h1>
+                <h1 class="margin-0 fs-16 relative" style="display:inline;top: -2px;">{{ __('Works') }}</h1>
                 <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"
                    href="{{ url('/admin/dashboard') }}">
                     <i class="fa fa-tachometer" aria-hidden="true"></i>{{ __('Dashboard') }}
@@ -86,6 +86,8 @@
                         {{ $errors->has('isRecurring') ? $errors->first('isRecurring') : '' }}
                     </div>
 
+                    <hr class="divider">
+
                     <!-- Client id -->
                     <label for="clientId">{{ __('Client') }}<span class="text-red">*</span></label>
                     <select
@@ -95,7 +97,7 @@
                         name="clientId"
                     >
                         @if ($clientId === null)
-                            <option selected>{{ __("Select the type") }}</option>
+                            <option selected>{{ __("Select the client") }}</option>
                         @endif
                         @foreach ($clients as $client)
                             <option {{ $clientId === $client->id ? "selected": "" }} name="clientId"
@@ -151,6 +153,7 @@
                                     aria-label="{{ __("Select a repeat frequency") }}"
                                     name="frequencyName"
                                 >
+                                    <option selected>{{ __("Select repeat frequency") }}</option>
                                     @foreach ($frequencies as $key => $value)
                                         <option
                                             {{ $frequencyName === $key ? "selected": "" }} value="{{ $value }}">{{ $key }}</option>
@@ -170,9 +173,9 @@
                                     <select
                                         wire:model.defer="byweekday"
                                         class="{{ $errors->has('byweekday') ? 'border border-red' : '' }}"
-                                        aria-label="{{ __("Select a weekday") }}"
                                         name="byweekday"
                                     >
+                                        <option selected>{{ __("Select a weekday") }}</option>
                                         @foreach ($weekDays as $key => $value)
                                             <option {{ $byweekday === $value ? "selected": "" }} value="{{ $value }}">
                                                 {{ $key }}
@@ -321,6 +324,7 @@
             >
                 <div>
                     <h3 class="h5">{{ $event->client->name }}</h3>
+                    <hr class="divider">
 
                     <button wire:click="$emit('deleteEventListener')"
                             type="button"
@@ -331,7 +335,7 @@
 
                     <button
                         type="button"
-                        class="alt"
+                        class="danger alt"
                         @click="isDeleteModalOpen = false"
                     >
                         {{ __('Cancel') }}
@@ -345,12 +349,18 @@
 
 </div>
 @push('scripts')
+    <!-- include moment and one of the moment-timezone builds -->
+    <script src="{{ url('/js/moment.js.min.2.29.4.js') }}"></script>
+    <script src="{{ url('/js/moment-timezone.min.5.40.js') }}"></script>
     <!-- rrule library -->
     <script src="{{ url('/js/rrule.2.6.4.min.js') }}"></script>
+
     <script src="{{ url('/js/fullcalendar.6.1.7.min.js') }}"></script>
 
     <!-- the rrule-to-fullcalendar connector. must go AFTER the rrule lib -->
     <script src="{{ url('/js/fullcalendar-rrule.6.1.7.min.js') }}"></script>
+    <!-- the connector. must go AFTER moment-timezone -->
+    <script src="{{ url('/js/fullcalendar.moment-timezone.min.6.1.8.js') }}"></script>
 
     <script>
         document.addEventListener('livewire:load', function () {
@@ -380,7 +390,7 @@
 
             const calendarEl = document.getElementById('calendar');
             const calendar = new FullCalendar.Calendar(calendarEl, {
-                timeZone: 'local', // the default
+                timeZone: 'Europe/Budapest',
                 initialView: 'timeGridWeek',
                 headerToolbar: {
                     left: 'prev,next today',
