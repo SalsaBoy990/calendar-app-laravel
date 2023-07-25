@@ -161,12 +161,12 @@ class Widget extends Component
         if ($this->clientId === 0) {
             $query = $query
                 ->whereRaw("events.start > ? AND events.start < ?", [$this->startDate, $this->endDate])
-                ->orWhereRaw("DATE(JSON_EXTRACT(events.rrule , '$.dtstart')) > ?", [$this->startDate]);
+                ->orWhereRaw("DATE(JSON_UNQUOTE(JSON_EXTRACT(events.rrule , '$.dtstart'))) > ?", [$this->startDate]);
         } else {
             $query = $query
                 ->whereRaw("events.start > ? AND events.start < ? AND events.client_id = ?",
                     [$this->startDate, $this->endDate, $this->clientId])
-                ->orWhereRaw("DATE(JSON_EXTRACT(events.rrule , '$.dtstart')) > ? AND events.client_id = ? ",
+                ->orWhereRaw("DATE(JSON_UNQUOTE(JSON_EXTRACT(events.rrule , '$.dtstart'))) > ? AND events.client_id = ? ",
                     [$this->startDate, $this->clientId]);
         }
 

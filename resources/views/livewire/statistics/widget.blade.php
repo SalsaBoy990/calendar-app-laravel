@@ -79,10 +79,13 @@
 
 						// variables needed for date calculations between start and end dates of the user-defined-interval
 						$intervalToAdd = '+' . $rrule->interval . ' ' . substr($rrule->freq, 0, -1); // example: +1 week
+					    $utc = new DateTimeZone( 'UTC' );
 					    $tz        = new DateTimeZone( 'Europe/Budapest' );
 						$startDate = new DateTime( $this->startDate, $tz );
 						$endDate = new DateTime( $this->endDate, $tz);
-						$iteratedDate = new DateTime( $rrule->dtstart, $tz);
+						$iteratedDate = new DateTime( $rrule->dtstart, $utc);
+                        $iteratedDate = $iteratedDate->setTimezone($tz);
+
 						$firstRun = 0;
 
 						while ($iteratedDate <= $endDate) {
