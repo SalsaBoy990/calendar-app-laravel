@@ -69,8 +69,7 @@ return [
     |
     */
 
-//    'timezone' => 'UTC',
-    'timezone' => 'Europe/Budapest',
+    'timezone' => 'UTC', // NEVER EVER USE LOCAL TIMEZONES!!!
 
     /*
     |--------------------------------------------------------------------------
