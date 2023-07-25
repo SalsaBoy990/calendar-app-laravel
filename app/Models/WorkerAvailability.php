@@ -35,8 +35,8 @@ class WorkerAvailability extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'start' => HtmlSpecialCharsCast::class,
-        'end' => HtmlSpecialCharsCast::class,
+        'start' => 'datetime', // ISO8601 (fullcalendar needs this format, mysql does not support it)
+        'end' => 'datetime', // ISO8601
         'description' => HtmlSpecialCharsCast::class,
         'backgroundColor' => HtmlSpecialCharsCast::class,
     ];

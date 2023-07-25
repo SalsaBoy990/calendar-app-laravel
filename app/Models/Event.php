@@ -47,8 +47,8 @@ class Event extends Model
      */
     protected $casts = [
         'title' => HtmlSpecialCharsCast::class,
-        'start' => HtmlSpecialCharsCast::class,
-        'end' => HtmlSpecialCharsCast::class,
+        'start' => 'datetime', // ISO8601 (fullcalendar needs this format, mysql does not support it)
+        'end' => 'datetime', // ISO8601
         'rrule' => 'array',
         'address' => HtmlSpecialCharsCast::class,
         'description' => HtmlSpecialCharsCast::class,
