@@ -11,6 +11,7 @@ use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
@@ -59,6 +60,8 @@ class Calendar extends Component
     public array $statusColors;
     public ?int $clientId;
     public Collection $clients;
+    public string $clientName;
+    public string $clientAddress;
 
     // for recurring events (by recurrence rules)
     private string $frequency;
@@ -160,6 +163,8 @@ class Calendar extends Component
         $this->updateId = '';
         $this->event = null;
         $this->clientId = null;
+        $this->clientName = '';
+        $this->clientAddress = '';
 
         // statuses
         $this->statusArray = [
@@ -257,7 +262,11 @@ class Calendar extends Component
             // always use the uuid column here (which is the 'id')!
             $eventId = $changedEvent->id;
             $this->updateId = $eventId;
-            $this->event = Event::where('id', '=', $eventId)->first();
+            $this->event = Event::where('id', '=', $eventId)->with([
+                'client' => function ($query) {
+                    $query->withTrashed();
+                }
+            ])->first();
 
             if ($this->checkIfEventExists() === null) {
                 $this->banner(__('Event does not exists!'), 'danger');
@@ -269,7 +278,8 @@ class Calendar extends Component
             $newRules = $this->event->rrule;
 
             // input 'Y-m-d\TH:i:s', output: 'Y-m-d H:i:s'
-            $newRules['dtstart'] = Event::convertFromLocalToUtc($event['start'], Event::TIMEZONE, false, DateTimeInterface::ATOM, 'Y-m-d\TH:i:s\Z');
+            $newRules['dtstart'] = Event::convertFromLocalToUtc($event['start'], Event::TIMEZONE, false,
+                DateTimeInterface::ATOM, 'Y-m-d\TH:i:s\Z');
 
             // On resize, overwrite the duration field (the right way with DateTime class etc.)
             if (Arr::exists($event, 'start') && Arr::exists($event, 'end')) {
@@ -365,7 +375,9 @@ class Calendar extends Component
 
                     $eventEntity->workers()->sync($this->workerIds);
                     $eventEntity->save();
-                    $eventEntity->refresh();
+                    // refresh would also refresh relations, but client will be null here, because
+                    // it does not query trashed (soft-deleted) clients as relations
+                    // $eventEntity->refresh();
 
                     $this->banner(__('Successfully updated the event ":name"!',
                         ['name' => htmlspecialchars($eventEntity->client->name)]));
@@ -379,7 +391,7 @@ class Calendar extends Component
 
                     $eventEntity->workers()->sync($this->workerIds);
                     $eventEntity->save();
-                    $eventEntity->refresh();
+                    // $eventEntity->refresh();
 
                     $this->banner(__('Successfully created the event ":name"!',
                         ['name' => htmlspecialchars($eventEntity->client->name)]));
@@ -539,7 +551,13 @@ class Calendar extends Component
     {
         foreach ($this->events as $event) {
             if ($event->id === $this->updateId) {
-                $this->event = $event;
+//                $this->event = $event;
+                $this->event = Event::with(['workers'])->with([
+                    'client' => function ($query) {
+                        $query->withTrashed();
+                    }
+                ])->where('id', '=', $this->updateId)->first();
+
                 break;
             }
         }
@@ -549,13 +567,18 @@ class Calendar extends Component
     /**
      * Get current event and return the entity
      *
-     * @return Event|null
+     * @return Model|Event|null
      */
-    private function getCurrentEvent(): ?Event
+    private function getCurrentEvent(): Model|Event|null
     {
         foreach ($this->events as $event) {
             if ($event->id === $this->updateId) {
-                return $event;
+//                return $event;
+                return Event::with(['workers'])->with([
+                    'client' => function ($query) {
+                        $query->withTrashed();
+                    }
+                ])->where('id', '=', $this->updateId)->first();
             }
         }
 
@@ -632,6 +655,8 @@ class Calendar extends Component
 
         if (isset($this->event->client)) {
             $this->clientId = $this->event->client->id;
+            $this->clientName = $this->event->client->name;
+            $this->clientAddress = $this->event->client->address;
         }
     }
 

@@ -50,7 +50,7 @@
 
         <x-admin.form-modal
             trigger="isModalOpen"
-            title="{{ $updateId ? $event->client->name . ' ('. $event->client->address . ')' : __('Add event') }}"
+            title="{{ $updateId ? (isset($event->client) ? $event->client->name : $clientName) . ' ('. (isset($event->client) ? $event->client->address : $clientAddress) . ')' : __('Add event') }}"
             id="{{ $modalId }}"
         >
             <form wire:submit.prevent="createOrUpdateEvent">
@@ -256,7 +256,7 @@
                     <div class="checkbox-container">
                         @foreach($workers as $worker)
                             <label for="workerIds">
-                                <input wire:model="workerIds"
+                                <input wire:model.defer="workerIds"
                                        type="checkbox"
                                        name="workerIds[]"
                                        value="{{ $worker->id }}"
@@ -323,7 +323,7 @@
                 id="{{ $deleteModalId }}"
             >
                 <div>
-                    <h3 class="h5">{{ $event->client->name }}</h3>
+                    <h3 class="h5">{{ $clientName }}</h3>
                     <hr class="divider">
 
                     <button wire:click="$emit('deleteEventListener')"
