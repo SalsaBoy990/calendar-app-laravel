@@ -7,7 +7,7 @@ use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkerController;
-// use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -90,7 +90,7 @@ Route::group(
 );
 // Routes only for authenticated users END
 
-/*Route::get('/migrate', function () {
+Route::get('/migrate', function () {
     Artisan::call('migrate',
         array(
             '--path' => 'database/migrations',
@@ -99,4 +99,4 @@ Route::group(
         ));
     echo 'Migration OK';
     exit;
-});*/
+});

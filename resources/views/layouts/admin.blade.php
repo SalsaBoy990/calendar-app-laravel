@@ -2,7 +2,6 @@
 <html
     lang="{{ str_replace('_', '-', app()->getLocale()) }}"
     x-data="data"
-    :class="{'dark': darkMode }"
 >
 <head>
     <meta charset="utf-8">
@@ -23,7 +22,8 @@
 
     <!-- Styles, Scripts -->
     @vite(['resources/sass/main.sass', 'resources/js/app.js'])
-    @livewireStyles
+    <?php $nonce = ["nonce" => csp_nonce()] ?>
+    @livewireStyles($nonce)
 
     @stack('google-charts')
 </head>
@@ -68,7 +68,7 @@
 
 @stack('modals')
 
-@livewireScripts
+@livewireScripts($nonce)
 
 <!-- To support inline scripts needed for the calendar library
 https://laravel-livewire.com/docs/2.x/inline-scripts

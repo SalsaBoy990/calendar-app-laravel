@@ -22,10 +22,11 @@
 
     <!-- Styles, Scripts -->
     @vite(['resources/sass/main.sass', 'resources/js/app.js'])
-    @livewireStyles
+    <?php $nonce = ["nonce" => csp_nonce()] ?>
+    @livewireStyles($nonce)
 
 </head>
-<body @scroll="setScrollToTop()" style="overflow-y: hidden;">
+<body @scroll="setScrollToTop()" class="overflow-y-hidden">
 
 <div class="admin wrapper">
 
@@ -56,7 +57,7 @@
 
 @stack('modals')
 
-@livewireScripts
+@livewireScripts($nonce)
 
 <!-- To support inline scripts needed for the calendar library
 https://laravel-livewire.com/docs/2.x/inline-scripts

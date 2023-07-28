@@ -4,7 +4,7 @@
         <nav class="nav-links">
             @auth
                 @role('super-administrator|administrator')
-                <h1 class="margin-0 fs-16 relative" style="display:inline;top: -2px;">{{ __('Works') }}</h1>
+                <h1 class="margin-0 fs-16 relative calendar-works">{{ __('Works') }}</h1>
                 <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"
                    href="{{ url('/admin/dashboard') }}">
                     <i class="fa fa-tachometer" aria-hidden="true"></i>{{ __('Dashboard') }}
@@ -362,7 +362,7 @@
     <!-- the connector. must go AFTER moment-timezone -->
     <script src="{{ url('/js/fullcalendar.moment-timezone.min.6.1.8.js') }}"></script>
 
-    <script>
+    <script nonce="{{ csp_nonce() }}">
         document.addEventListener('livewire:load', function () {
             var hu = {
                 code: 'hu',

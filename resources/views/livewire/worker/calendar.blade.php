@@ -4,7 +4,7 @@
         <nav class="nav-links">
             @auth
                 @role('super-administrator|administrator')
-                <h1 class="h5 margin-0" style="display:inline;">{{ __('Workers') }}</h1>
+                <h1 class="fs-16 margin-0 relative calendar-works">{{ __('Workers') }}</h1>
                 <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"
                    href="{{ url('/admin/dashboard') }}">
                     <i class="fa fa-tachometer" aria-hidden="true"></i>{{ __('Dashboard') }}
@@ -192,7 +192,7 @@
 </div>
 @push('scripts')
     <script src="{{ url('/js/fullcalendar.6.1.7.min.js') }}"></script>
-    <script>
+    <script nonce="{{ csp_nonce() }}">
         document.addEventListener('livewire:load', function () {
             var hu = {
                 code: 'hu',
