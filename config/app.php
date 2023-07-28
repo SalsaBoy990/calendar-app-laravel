@@ -197,6 +197,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\RolesServiceProvider::class, // registers @role Blade directive
         App\Providers\PermissionServiceProvider::class, // add permissions to @can directive
+        \Spatie\Csp\CspServiceProvider::class,
 
     ],
 

@@ -1,5 +1,5 @@
 <script src="{{ asset('/build/tinymce/tinymce.min.js') }}" referrerpolicy="origin"></script>
-<script>
+<script nonce="{{ csp_nonce() }}">
     tinymce.init({
         selector: 'textarea#update-content-editor',
         plugins: 'link code table lists image codesample',
