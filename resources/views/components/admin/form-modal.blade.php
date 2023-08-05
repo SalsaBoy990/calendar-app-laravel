@@ -26,7 +26,7 @@
         </div>
 
         <!-- Modal body -->
-        <div class="box white padding-bottom-2">
+        <div class="box white padding-bottom-2 round-bottom">
             {{ $slot }}
         </div>
 

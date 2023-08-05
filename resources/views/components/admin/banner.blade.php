@@ -1,8 +1,8 @@
 @props(['style' => session('flash.bannerStyle', 'success'), 'message' => session('flash.banner')])
 
 <div x-data="{{ json_encode(['show' => true, 'style' => $style, 'message' => $message]) }}"
-     class="panel notification padding-top-bottom-0"
-     :class="{ 'success': style == 'success', 'danger': style == 'danger', 'info': style != 'success' && style != 'danger' }"
+     class="alert notification padding-top-bottom-0"
+     :class="{ 'success': style === 'success', 'danger': style === 'danger', 'info': style !== 'success' && style !== 'danger' }"
      style="display: none;"
      x-show="show && message"
      x-init="
@@ -15,11 +15,11 @@
 
     <div class="notification-outer">
         <div class="notification-inner">
-                <span :class="{ 'success': style == 'success', 'danger': style == 'danger' }"
+                <span :class="{ 'success': style === 'success', 'danger': style === 'danger' }"
                       aria-label="{{ __('System response notification') }}">
-                    <i x-show="style == 'success'" class="fa fa-check" aria-hidden="true"></i>
-                    <i x-show="style == 'danger'" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-                    <i x-show="style != 'success' && style != 'danger'" class="fa fa-info-circle"
+                    <i x-show="style === 'success'" class="fa fa-check" aria-hidden="true"></i>
+                    <i x-show="style === 'danger'" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                    <i x-show="style !== 'success' && style !== 'danger'" class="fa fa-info-circle"
                        aria-hidden="true"></i>
                 </span>
 
@@ -30,7 +30,7 @@
             <button
                 type="button"
                 class=""
-                :class="{ 'success': style == 'success', 'danger': style == 'danger' }"
+                :class="{ 'success': style === 'success', 'danger': style === 'danger' }"
                 aria-label="{{  __('Dismiss system notification') }}"
                 x-on:click="show = false"
             >

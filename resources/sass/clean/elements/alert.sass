@@ -1,0 +1,46 @@
+.alert
+    padding: 1em
+    margin-top: 1em
+    margin-bottom: 1em
+    border-left: 0.5rem solid #adadad
+    border-radius: 0
+
+    .alert-message
+        margin: 0
+        padding-left: 1.8em
+
+    .close-button
+        color: $text
+        &:hover
+            color: white
+
+    &.warning
+        border-color: $warning-light
+        background-color: $warning-pale
+
+        &:hover
+            background-color: $warning-pale
+
+    &.success
+        border-color: $success-light
+        background-color: $success-pale
+
+        &:hover
+            background-color: $success-pale
+
+
+    &.danger,
+    &.error
+        border-color: $error-light
+        background-color: $error-pale
+
+        &:hover
+            background-color: $error-pale
+
+
+    &.info
+        border-color: $info-light
+        background-color: $info-pale
+
+        &:hover
+            background-color: $info-pale

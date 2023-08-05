@@ -23,13 +23,18 @@
 .bar
     width: 100%
 
+    button.bar-item
+        border: 1px solid $black
+
     .bar-item
+        border-radius: 0
         padding: 0.5em 1em
         margin: 0
         float: left
         width: auto
         display: block
-        outline: 0
+        &.float-right
+            float: right
 
     .bar-search
         display: flex
@@ -82,3 +87,72 @@
     .bar-item
         margin-top: 0
         width: 33.3%
+
+        &:nth-child(2n)
+            border-left: none
+            border-right: none
+
+
+.navbar
+    width: 100%
+    display: flex
+    justify-content: space-between
+    flex-wrap: wrap
+
+    nav
+        justify-content: space-between
+        width: fit-content
+
+        .bar-item
+            justify-content: center
+
+        @media screen and (max-width: 550px)
+            width: 100%
+
+
+    .bar-item
+        padding: 0.5em 1em
+        margin: 0
+        display: flex
+        width: auto
+        justify-content: center
+
+
+    .bar-search
+        display: flex
+        max-width: 100%
+        min-width: 200px
+        flex: none
+        flex-direction: row
+        column-gap: 0.25em
+        padding: 0 0 0 1em
+
+        @media screen and (max-width: 550px)
+            padding: 0 1em 0 1em
+            margin-bottom: 1em
+
+        .button, button
+            width: fit-content
+            margin-top: 0
+            display: flex
+            align-items: center
+            justify-content: center
+
+
+    .dropdown-hover,
+    .dropdown-click
+        position: relative
+        float: left
+
+
+    .dropdown
+        button
+            text-decoration: underline
+
+    .button, button
+        white-space: normal
+        margin-top: 0
+
+        @media screen and (max-width: $mobile)
+            display: block
+            margin-top: 1em

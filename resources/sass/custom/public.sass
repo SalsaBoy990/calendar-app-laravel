@@ -131,13 +131,22 @@
             h5, .h5, h6, .h6
                 font-size: 1.0em
 
+            p, ul, ol
+                margin-top: 1.25em
+                margin-bottom: 1.25em
+
+
             p, ul li, ol li
-                color: #333
-                font-size: 18px
-                line-height: 1.7
+                font-size: 20px
+                line-height: 1.6
 
                 @media screen and (max-width: $s-600)
                     font-size: 1em
+
+            blockquote
+                p
+                    font-size: 24px
+                    color: $gray-60
 
     & > .container
         flex-grow: 1

@@ -35,8 +35,31 @@
 // reason: important not to overwrite
 
 .active-category
+    padding-top: 0.5em
+    padding-bottom: 0.5em
+    display: flex
+    align-items: center
     background-color: gainsboro
-    border: 1px solid slategrey
+    border-top: 1px solid slategrey
+    border-left: 1px solid slategrey
+    border-right: 1px solid slategrey
+
+    &>div
+        align-items: center
+        display: flex
+
+.inactive-category
+    border-top: 1px solid slategrey
+    padding-top: 0.5em
+    padding-bottom: 0.5em
+    display: flex
+    align-items: center
+
+    &>div
+        align-items: center
+        display: flex
+
+
 
 html.dark
     .caret::before

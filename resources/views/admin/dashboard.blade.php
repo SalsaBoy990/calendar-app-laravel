@@ -5,7 +5,7 @@
         <main class="padding-1">
             <h1 class="h2 margin-top-0 text-center">{{ __('Dashboard') }}</h1>
 
-            <div class="main-content">
+            <div class="dashboard-content">
 
                 @auth
                     <ul class="dashboard-card-grid">

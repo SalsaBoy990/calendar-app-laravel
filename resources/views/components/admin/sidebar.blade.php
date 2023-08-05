@@ -11,8 +11,8 @@
 
         <?php } ?><!-- Custom content goes here END -->
 
-        <div class="padding-1">
-            <ul class="navbar-nav margin-top-0 padding-left-0 no-bullets">
+        <div class="padding-top-bottom-1">
+            <ul class="navbar-nav margin-top-0 padding-left-right-0 no-bullets">
                 <!-- Authentication Links -->
                 @guest
                     @if (Route::has('login'))

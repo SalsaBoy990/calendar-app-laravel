@@ -1,8 +1,90 @@
 .tooltip
     position: relative
+    width: fit-content
 
     span
         display: none
+
+    .tooltip-content
+        z-index: 3
+        position: absolute
+        transition: opacity .08s ease-in-out
+        background-color: #1b1b1b
+        border-radius: 0.25rem
+        color: #f0f0f0
+        display: none
+        font-size: 1rem
+        padding: 0.5rem
+        pointer-events: none
+        width: auto
+        white-space: pre
+
+        &:after
+            position: absolute
+            content: ""
+            display: block
+            width: 0
+            height: 0
+            pointer-events: none
+
+        &.tooltip-top
+            top: -44px
+            left: 0
+            margin-left: 14px
+
+            &:after
+                border-left: 5px solid transparent
+                border-right: 5px solid transparent
+                border-top: 5px solid #1b1b1b
+                bottom: -5px
+                left: 50%
+                margin-left: -5px
+
+        &.tooltip-right
+            top: -8px
+            margin-left: 8px
+
+            &:after
+                border-top: 5px solid transparent
+                border-bottom: 5px solid transparent
+                border-right: 5px solid #1b1b1b
+                top: 50%
+                left: -5px
+                bottom: 0
+                margin: -5px 0 0
+
+
+        &.tooltip-left
+            top: -8px
+            right: 100%
+            margin-right: 8px
+
+            &:after
+                border-top: 5px solid transparent
+                border-bottom: 5px solid transparent
+                border-right: 0
+                border-left: 5px solid #1b1b1b
+                top: 50%
+                right: -4px
+                bottom: 0
+                margin: -5px 0 0
+
+
+        &.tooltip-bottom
+            left: 0
+            bottom: -44px
+            margin-top: 8px
+            margin-left: 8px
+
+            &:after
+                border-top: 0
+                border-bottom: 5px solid #1b1b1b
+                border-left: 5px solid transparent
+                border-right: 5px solid transparent
+                top: 0
+                left: 50%
+                bottom: 0
+                margin: -5px 0 0
 
 
 .tooltip:hover span

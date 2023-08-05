@@ -71,16 +71,37 @@
 
                 .navbar-nav
                     li
-                        margin-bottom: 0.5em
+
 
                         a.nav-link
+                            padding-left: 1em
+                            padding-top: 0.4em
+                            padding-bottom: 0.4em
+                            border-bottom: 1px solid $gray-10
+                            border-left: 0.5rem solid transparent
                             display: flex !important
                             // .active class display block overwrite
                             align-items: center
                             column-gap: 0.5em
 
+
+                            &.active
+                                border-left: 0.5rem solid $text
+
+                            &:hover
+                                background-color: #f0f0f0
+
                             i
                                 text-align: center
                                 width: 16px
 
+                        &:last-child
+                            a
+                                border-bottom: none
+
 /* ADMIN LAYOUT END */
+.main-content
+    //overflow-y: hidden
+
+    table
+        overflow-y: scroll

@@ -12,7 +12,7 @@ table
         background-color: #fdfdea
 
     tr:nth-child(odd)
-        background-color: #f3f3f3
+        background-color: $gray-0
 
     td:hover
         cursor: auto
@@ -23,18 +23,18 @@ table
 
     th
         font-size: $fs-16
-        text-align: center
+        font-weight: bold
+        text-align: left
 
     thead
         height: 2em
-        background-color: $bg-primary
+        background-color: $gray-20
 
         tr
             height: 2em
 
         th
-            color: $gray-0
-            background-color: $bg-primary
+            background-color: $gray-20
 
 
     tbody
@@ -42,11 +42,9 @@ table
             height: 2em
 
             td
-                color: $gray-80
+                color: $text
 
 
     @media screen and (max-width: $s-600)
         width: 100%
-
-    @media screen and (max-width: $s-800)
         font-size: $fs-14

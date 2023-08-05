@@ -1,0 +1,40 @@
+.breadcrumb
+    max-width: 960px
+    margin: 0 auto
+    padding-bottom: 0.25em
+    width: 100%
+
+    @media screen and (max-width: 550px)
+        overflow-x: auto
+        justify-content: center
+
+    &.breadcrumb-center
+        display: flex
+        justify-content: center
+        width: 100%
+
+        ol
+            display: flex
+            justify-content: center
+            width: 100%
+
+    ol
+        list-style-type: none
+        display: flex
+        flex-wrap: nowrap
+        gap: 0.5em
+        padding-left: 0
+        padding-right: 0
+        margin-bottom: 0
+        margin-top: 0
+        font-size: 14px
+
+        @media screen and (max-width: 550px)
+            width: max-content
+            justify-content: center
+
+        li
+            i.fa-angle-right
+                font-size: $fs-14
+                color: $gray-60
+
