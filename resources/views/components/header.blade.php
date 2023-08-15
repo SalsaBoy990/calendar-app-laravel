@@ -60,7 +60,8 @@
 
                                 <a
                                     class="dropdown-item"
-                                    href="{{ route('logout') }}"
+                                    href="#"
+                                    role="button"
                                     onclick="event.preventDefault();
                                              document.getElementById('logout-form').submit();"
                                 >

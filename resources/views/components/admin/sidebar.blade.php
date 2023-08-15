@@ -116,7 +116,8 @@
                     <li class="nav-item">
                         <a
                             class="nav-link"
-                            href="{{ route('logout') }}"
+                            href="#"
+                            role="button"
                             onclick="event.preventDefault();
                                      document.getElementById('logout-form').submit();"
                         >

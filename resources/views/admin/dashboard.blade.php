@@ -81,7 +81,8 @@
                         <!-- Logout link -->
                         <li class="card text-center">
                             <a class="card-link"
-                               href="{{ route('logout') }}"
+                               href="#"
+                               role="button"
                                onclick="event.preventDefault();
                                     document.getElementById('logout-form-dashboard').submit();"
                             >
