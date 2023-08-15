@@ -25,7 +25,25 @@ export function data() {
         },
 
         init() {
-            this.$watch('darkMode', val => localStorage.setItem('darkMode', val));
+            if (this.darkMode === true) {
+                document.getElementById('light-logo').style.display = 'none';
+                document.getElementById('dark-logo').style.display = 'block';
+            } else {
+                document.getElementById('light-logo').style.display = 'block';
+                document.getElementById('dark-logo').style.display = 'none';
+            }
+
+
+            this.$watch('darkMode', (val) => {
+                localStorage.setItem('darkMode', val);
+                if (val === true) {
+                    document.getElementById('light-logo').style.display = 'none';
+                    document.getElementById('dark-logo').style.display = 'block';
+                } else {
+                    document.getElementById('light-logo').style.display = 'block';
+                    document.getElementById('dark-logo').style.display = 'none';
+                }
+            });
         },
     };
 }

@@ -2,7 +2,8 @@
     <div class="header-content">
         <div class="logo">
             <a href="/" class="brand">
-                <img src="{{ url('/images/szlavi-cleaning-team.png') }}" alt="{{ config('app.name', 'Laravel') }}">
+                <img id="light-logo" src="{{ url('/images/szlavi-cleaning-team.png') }}" alt="{{ config('app.name', 'Laravel') }}">
+                <img id="dark-logo" src="{{ url('/images/szlavi-cleaning-team-dark.png') }}" alt="{{ config('app.name', 'Laravel') }}">
             </a>
         </div>
         @if (Route::has('login'))
@@ -88,6 +89,19 @@
                     @endauth
 
                 </nav>
+
+                @php
+                    $light = __('Light mode');
+                    $dark = __('Dark mode');
+                @endphp
+                <button
+                    class="darkmode-toggle margin-top-0"
+                    rel="button"
+                    @click="toggleDarkMode"
+                    x-text="isDarkModeOn() ? '🔆' : '🌒'"
+                    :title="isDarkModeOn() ? '{{ $light }}' : '{{ $dark }}'"
+                >
+                </button>
 
                 <div x-data="offCanvasMenuData">
                     <button id="main-menu-offcanvas-toggle"

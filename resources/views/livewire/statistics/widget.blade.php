@@ -39,14 +39,14 @@
                 </div>
             </div>
 
-            <button type="submit">{{ __('Generate') }}</button>
+            <button type="submit" class="primary">{{ __('Generate') }}</button>
         </form>
     </div>
 
     @if ($cleaningJobs->total() > 0)
         <table>
             <thead>
-            <tr>
+            <tr class="fs-14">
                 <th>#</th>
                 <th>{{ __('Name') }}</th>
                 <th>{{ __('Hours') }}</th>

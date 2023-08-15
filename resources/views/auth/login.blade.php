@@ -30,7 +30,7 @@
                 <div class="inline-block margin-top-1 margin-bottom-1">
                     <input type="checkbox" name="remember" id="remember"
                            class="margin-left-0" {{ old('remember') ? 'checked' : '' }}>
-                    <label for="remember" style="display: inline">
+                    <label for="remember" class="inline">
                         {{ __('Remember Me') }}
                     </label>
                 </div>

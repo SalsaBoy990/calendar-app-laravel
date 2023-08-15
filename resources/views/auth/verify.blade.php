@@ -8,7 +8,7 @@
         <div class="padding-1-5">
 
             @if (session('resent'))
-                <div class="panel success" role="alert">
+                <div class="alert success" role="alert">
                     {{ __('A fresh verification link has been sent to your email address.') }}
                 </div>
             @endif

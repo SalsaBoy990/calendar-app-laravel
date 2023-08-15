@@ -156,3 +156,18 @@
         @media screen and (max-width: $mobile)
             display: block
             margin-top: 1em
+
+.tab-switcher
+    &:first-child
+        border-top-left-radius: 0.25em !important
+        &:hover
+            border-top-left-radius: 0.25em
+
+    &.tab-switcher-active
+        background-color: $gray-80
+        color: white
+        &:hover
+            color: white
+            background-color: $gray-80
+
+

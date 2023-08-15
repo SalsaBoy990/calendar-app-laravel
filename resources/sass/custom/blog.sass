@@ -1,0 +1,451 @@
+.public
+    .highlighted-posts-container
+        display: flex
+        flex-direction: row
+        column-gap: 2em
+        row-gap: 2em
+
+        @media screen and (max-width: $s-800)
+            flex-direction: column
+
+        .featured
+            max-width: 424px
+
+            img
+                &:hover, &:focus, &:active
+                    transition: 0.35s all
+                    box-shadow: rgba(0, 0, 0, 0.25) 0 14px 28px, rgba(0, 0, 0, 0.22) 0 10px 10px
+
+            h3
+                &:hover, &:focus
+                    text-decoration: underline
+
+                @media screen and (max-width: $s-600)
+                    font-size: 20px
+
+            @media screen and (max-width: $s-800)
+                max-width: 100%
+                object-fit: cover
+
+        .highlighted
+            .highlighted-post-item
+                margin-top: 1em
+                margin-bottom: 2em
+                display: flex
+                flex-direction: row
+                flex-wrap: nowrap
+                column-gap: 1em
+                row-gap: 2em
+
+                span
+                    position: relative
+                    color: rgba(0, 0, 0, 0.7)
+                    font-size: 18px
+                    font-weight: 500
+                    font-variant: all-small-caps
+                    letter-spacing: 1px
+                    padding-left: 1em
+
+                    &:before
+                        position: absolute
+                        left: 0
+                        top: 8px
+                        content: ""
+                        width: 8px
+                        height: 8px
+                        border-radius: 8px
+                        background: #E7B56E
+
+                h3
+                    margin-top: 2px
+                    color: rgba(0, 0, 0, 0.80)
+                    font-size: 20px
+                    line-height: 120%
+                    letter-spacing: 1px
+
+                    @media screen and (max-width: $s-600)
+                        font-size: 16px
+
+                img
+                    width: 100%
+                    height: 135px
+                    object-fit: cover
+
+                    &:hover, &:focus, &:active
+                        transition: 0.35s all
+                        box-shadow: rgba(0, 0, 0, 0.25) 0 14px 28px, rgba(0, 0, 0, 0.22) 0 10px 10px
+
+
+.public-post-grid
+    display: grid
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr))
+    row-gap: 1.5em
+    column-gap: 1em
+
+    @media screen and (max-width: $s-600)
+        grid-template-columns: repeat(auto-fill, minmax(248px, 1fr))
+
+    article
+        @include primary-gradient
+
+        &.card:hover,
+        &.card:active
+            transition: 0.35s all
+            box-shadow: rgba(0, 0, 0, 0.25) 0 14px 28px, rgba(0, 0, 0, 0.22) 0 10px 10px
+
+        a
+            .cover-image-container
+                height: 248px
+                width: 100%
+
+                .badge
+                    background-color: rgba(255, 255, 255, 0.8)
+                    color: black
+                    font-size: 16px
+                    font-weight: 500
+                    font-variant: all-small-caps
+                    line-height: 150%
+                    letter-spacing: 1px
+
+                img
+                    height: 248px
+                    object-fit: cover
+                    width: 100%
+
+
+.frontpage
+    .page-footer
+        margin-top: 0
+
+    .public-content
+        padding-top: 0
+        padding-bottom: 0
+        margin-bottom: 0 !important
+
+        > .card
+            border-radius: 0
+            max-width: 1120px
+            margin: 0 auto
+            padding: 20px 20px 4em
+
+    .most-popular-categories-title
+        display: grid
+        grid-template-columns: 475px 1fr
+        align-items: center
+
+        h2
+            font-family: $serif
+
+        @media screen and (max-width: $s-800)
+            grid-template-columns: 425px 1fr
+
+
+        @media screen and (max-width: $s-600)
+            grid-template-columns: 1fr
+
+            h2
+                font-size: 20px
+
+        .separator
+            height: 1px
+            background-color: #E0E0E0
+
+            @media screen and (max-width: $s-600)
+                display: none
+
+
+    .categories-container
+        display: flex
+        flex-direction: row
+        flex-wrap: wrap
+        row-gap: 2em
+        column-gap: 2em
+        justify-content: space-around
+
+        a
+            position: relative
+            width: fit-content
+            margin-right: 4em
+            padding-left: 1.5em
+
+            @media screen and (max-width: $s-960)
+                margin-right: 0
+
+            &:before
+                position: absolute
+                top: 3px
+                left: 0
+                content: ""
+                height: 16px
+                width: 16px
+                background-size: cover
+                background-image: url('./../../public/images/point-1.png')
+
+
+    .title
+        color: $primary-dark
+        font-size: 30px
+        font-family: $serif
+        font-weight: 700
+        line-height: 106.65%
+        letter-spacing: 1px
+        text-transform: uppercase
+
+        @media screen and (max-width: $s-600)
+            font-size: 24px
+
+    .intro
+        display: grid
+        grid-template-columns: 2fr 1fr 1fr
+        grid-auto-rows: min-content
+        grid-template-areas: "left-panel-1 right-panel-2 side-panel-4"
+        column-gap: 20px
+        row-gap: 40px
+        margin-bottom: 2em
+
+        @media screen and (max-width: $s-960)
+            grid-auto-rows: min-content
+            grid-template-columns: 1fr 1fr
+            grid-template-areas: "left-panel-1 right-panel-2" "side-panel-4 side-panel-4"
+
+        @media screen and (max-width: $s-600)
+            grid-auto-rows: min-content
+            grid-template-columns: 100%
+            grid-template-areas: "left-panel-1" "right-panel-2" "side-panel-4"
+
+
+        .left-panel-1
+            grid-area: left-panel-1
+
+            .card
+                @include primary-gradient
+
+                &:hover, &:focus, &:active
+                    transition: 0.35s all
+                    box-shadow: rgba(0, 0, 0, 0.25) 0 14px 28px, rgba(0, 0, 0, 0.22) 0 10px 10px
+
+            .cover-image-container
+                img
+                    height: 372px
+                    width: 100%
+                    object-fit: cover
+
+                    @media screen and (max-width: $s-960)
+                        height: 280px
+
+                    @media screen and (max-width: $s-600)
+                        height: 186px
+
+
+            .date
+                position: relative
+                margin-top: 10px
+                margin-bottom: 1px
+                color: rgba(255, 255, 255, 0.90)
+                font-size: 18px
+                font-weight: 500
+                text-transform: uppercase
+                font-variant: all-small-caps
+                line-height: 150%
+                letter-spacing: 1px
+                padding-left: 1em
+
+                &:before
+                    position: absolute
+                    top: 6px
+                    left: 0
+                    content: ""
+                    height: 14px
+                    width: 14px
+                    background-size: cover
+                    background-image: url('./../../public/images/point-1.png')
+
+            a.read-more
+                margin-bottom: 33px
+                border-radius: 1px
+                border: 1px solid $pale-dark
+                background: transparent
+                color: $pale-light
+                font-size: 12px
+                font-weight: 700
+                line-height: 120%
+                letter-spacing: 1px
+                text-transform: uppercase
+                padding: 10px 13px
+
+                &:hover, &:focus
+                    transition: 0.3s all
+                    color: $primary-dark
+                    background: $pale-dark
+
+            h2
+                color: #FFF
+                font-size: 30px
+                font-family: $sans
+                line-height: 120%
+                letter-spacing: 1px
+
+                @media screen and (max-width: $s-960)
+                    font-size: 24px
+
+                a
+                    color: white
+                    word-break: break-word
+
+                    &:hover, &:focus
+                        color: white
+                        text-decoration: underline !important
+
+
+        .right-panel-2
+            grid-area: right-panel-2
+            display: flex
+            flex-direction: column
+            row-gap: 20px
+
+            article
+                a
+                    .card
+                        &:hover, &:focus, &:active
+                            transition: 0.35s all
+                            box-shadow: rgba(0, 0, 0, 0.25) 0 14px 28px, rgba(0, 0, 0, 0.22) 0 10px 10px
+
+            .cover-image-container
+                margin-bottom: 0
+
+                img
+                    height: 186px
+                    width: 100%
+                    object-fit: cover
+
+            h2
+                position: relative
+                color: #000
+                font-size: 20px
+                line-height: 120%
+                font-family: $sans
+                letter-spacing: 1px
+                padding-bottom: 5px
+
+                a
+                    color: black
+                    word-break: break-word
+
+                    &:hover, &:focus
+                        color: black
+                        text-decoration: underline !important
+
+
+                &:after
+                    position: absolute
+                    bottom: -3px
+                    left: 0
+                    content: ""
+                    width: 55px
+                    height: 4px
+                    background: rgba(231, 181, 110, 0.70)
+
+
+        .side-panel-4
+            grid-area: side-panel-4
+
+            @media screen and (max-width: $s-600)
+                margin-top: 1em
+
+            ul
+                margin-top: 0
+                margin-bottom: 0
+                padding-right: 0.5em
+                padding-left: 0
+
+                li
+
+                    position: relative
+                    padding-bottom: 25px
+
+                    a
+                        word-break: break-word
+
+                    &:after
+                        position: absolute
+                        bottom: 0
+                        left: 0
+                        content: ""
+                        height: 1px
+                        width: 240px
+                        background: #E0E0E0
+
+                        @media screen and (max-width: $s-600)
+                            width: 100%
+
+                li:last-child
+                    padding-bottom: 0
+
+                    &:after
+                        content: none
+
+            article
+                .date
+                    padding-left: 1em
+                    position: relative
+                    margin-top: 10px
+                    color: rgba(0, 0, 0, 0.65)
+                    font-size: 16px
+                    font-weight: 500
+                    text-transform: uppercase
+                    font-variant: all-small-caps
+                    line-height: 150%
+                    letter-spacing: 1px
+
+                    &:before
+                        position: absolute
+                        left: 0
+                        top: 9px
+                        content: ""
+                        width: 8px
+                        height: 8px
+                        border-radius: 8px
+                        background: #E7B56E
+
+                h3
+                    margin-top: 3px
+                    margin-bottom: 0
+                    color: rgba(0, 0, 0, 0.80)
+                    font-size: 1em
+                    line-height: 120%
+                    letter-spacing: 1px
+
+                    a
+                        color: black
+
+                        &:hover, &:focus
+                            color: black
+                            text-decoration: underline !important
+
+
+            h2
+                margin-top: 0
+                padding-top: 8px
+                margin-bottom: 13px
+                position: relative
+                color: $primary-dark
+                font-size: 16px
+                line-height: 150%
+                letter-spacing: 1px
+                text-transform: uppercase
+
+                a
+                    color: black
+
+                    &:hover, &:focus
+                        color: black
+                        text-decoration: underline !important
+
+                &:before
+                    position: absolute
+                    top: 0
+                    left: 0
+                    content: ""
+                    width: 100%
+                    height: 3px
+                    background: $primary-dark

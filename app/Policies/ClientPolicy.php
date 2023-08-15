@@ -78,7 +78,7 @@ class ClientPolicy {
      * @return Response|bool
      */
     public function restore( User $user, Event $event ) {
-        //
+        return false;
     }
 
     /**
@@ -90,6 +90,6 @@ class ClientPolicy {
      * @return Response|bool
      */
     public function forceDelete( User $user, Event $event ) {
-        //
+        return false;
     }
 }

@@ -27,15 +27,14 @@ class PermissionServiceProvider extends ServiceProvider
     {
         try {
             Permission::with('roles')->get()->map(function ($permission) {
-               // check if user can (Gate)
-               Gate::define($permission->slug, function ($user) use ($permission) {
-                   return $user->hasPermissionTo($permission);
-               });
+                // check if user can (Gate)
+                Gate::define($permission->slug, function ($user) use ($permission) {
+                    return $user->hasPermissionTo($permission->slug);
+                });
             });
 
         } catch (\Exception $e) {
             report($e);
-            return false;
         }
     }
 }

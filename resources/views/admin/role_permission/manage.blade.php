@@ -9,7 +9,7 @@
                         <a href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
                     </li>
                     <li>
-                        <span>/</span>
+                        <i class="fa-solid fa-angle-right"></i>
                     </li>
                     <li>{{ __('Manage Roles and Permissions') }}</li>
                 </ol>
@@ -23,12 +23,12 @@
 
                 <div x-data="tabsData( @js($activeTab) )" class="border border-40 round">
 
-                    <div class="bar gray-10">
+                    <div class="bar roles-permissions-bar">
                         <a id="RolesTrigger"
                            href="javascript:void(0)"
                            class="bar-item tab-switcher"
                            @click="switchTab('Roles')"
-                           :class="{'red': tabId === 'Roles'}"
+                           :class="{'gray-80': tabId === 'Roles'}"
                         >
                             {{ __('Roles') }}
                         </a>
@@ -37,7 +37,7 @@
                            href="javascript:void(0)"
                            class="bar-item tab-switcher"
                            @click="switchTab('Permissions')"
-                           :class="{'red': tabId === 'Permissions'}"
+                           :class="{'gray-80': tabId === 'Permissions'}"
                         >
                             {{ __('Permissions') }}
                         </a>

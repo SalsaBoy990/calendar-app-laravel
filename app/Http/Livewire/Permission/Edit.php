@@ -47,7 +47,15 @@ class Edit extends Component
         $this->slug = $this->permission->slug;
 
         $this->allRoles = $roles;
-        $this->permissionRoles = $this->permission->roles()->get()->pluck(['id'])->toArray();
+    }
+
+
+    // delay the query after the first change
+    public function updated()
+    {
+        if ($this->isModalOpen === true) {
+            $this->permissionRoles = $this->permission->roles()->get()->pluck(['id'])->toArray();
+        }
     }
 
 

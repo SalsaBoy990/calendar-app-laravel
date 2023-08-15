@@ -1,3 +1,8 @@
+$primary-light-darkmode: #347bb4
+$primary-dark-darkmode: #005c92
+$accent-light-darkmode: #1da22a
+$accent-dark-darkmode: #0d6e16
+
 input[type="text"]:focus,
 input[type="search"]:focus,
 input[type="number"]:focus,
@@ -18,3 +23,66 @@ input[type="radio"]
 
 input[type="checkbox"]:checked
     accent-color: $bg-primary
+
+#light-logo,
+#dark-logo
+    display: none
+
+.dark
+
+    .darkmode-toggle
+        border-color: $gray-40
+        background-color: transparent
+        margin-right: 0.5em
+        width: 40px
+        justify-content: center
+        display: flex
+        &:hover
+            border-color: $gray-10
+
+    button,
+    .button
+        &:hover
+            border-color: $primary-light-darkmode
+
+
+        &.primary
+            color: white
+            background-color: $primary-light-darkmode
+            border-color: $primary-light-darkmode
+
+            &:hover
+                border-color: $primary-dark-darkmode
+                background-color: $primary-dark-darkmode
+                color: white
+
+            &.alt
+                color: $primary-light-darkmode
+                border-color: $primary-light-darkmode
+                background-color: transparent
+
+                &:hover, &:focus
+                    border-color: $primary-dark-darkmode
+                    background-color: white
+                    color: $primary-dark-darkmode
+
+
+        &.secondary
+            color: white
+            background-color: $accent-light-darkmode
+            border-color: $accent-light-darkmode
+
+            &:hover
+                border-color: $accent-dark-darkmode
+                background-color: $accent-dark-darkmode
+                color: white
+
+            &.alt
+                color: $accent-light-darkmode
+                border-color: $accent-light-darkmode
+                background-color: transparent
+
+                &:hover, &:focus
+                    border-color: $accent-dark-darkmode
+                    background-color: $accent-dark-darkmode
+                    color: white

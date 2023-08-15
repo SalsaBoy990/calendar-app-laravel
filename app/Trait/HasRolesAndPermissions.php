@@ -4,27 +4,30 @@ namespace App\Trait;
 
 use App\Models\Permission;
 use App\Models\Role;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * Role-based authorization with permissions. Use the trait in User model
  *
  */
-trait HasRolesAndPermissions {
+trait HasRolesAndPermissions
+{
 
     /**
      * @return BelongsTo
      */
-    public function role(): BelongsTo {
-        return $this->belongsTo( Role::class );
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
     }
 
     /**
      * @return BelongsToMany
      */
-    public function permissions(): BelongsToMany {
-        return $this->belongsToMany( Permission::class, 'users_permissions' );
+    public function permissions(): BelongsToMany
+    {
+        return $this->belongsToMany(Permission::class, 'users_permissions');
     }
 
     /**
@@ -32,9 +35,10 @@ trait HasRolesAndPermissions {
      *
      * @return bool
      */
-    public function hasRole( ...$roles ): bool {
-        foreach ( $roles as $role ) {
-            if ( isset($this->role) && $this->role->slug === $role  ) {
+    public function hasRole(...$roles): bool
+    {
+        foreach ($roles as $role) {
+            if (isset($this->role) && $this->role->slug === $role) {
                 return true;
             }
         }
@@ -46,30 +50,29 @@ trait HasRolesAndPermissions {
     /**
      * Check if user has one of the roles from the array
      *
-     * @param  string  $roles
+     * @param  string  $roles  format: 'super-admin|admin'
      *
      * @return bool
      */
-    public function hasRoles( string $roles ): bool {
-
+    public function hasRoles(string $roles): bool
+    {
+        $rolesArray = [];
         // multiple roles from middleware arguments
-        if ( str_contains($roles, '|') ) {
+        if (str_contains($roles, '|')) {
             $rolesTemp = explode('|', $roles);
-            $rolesArray = [];
 
-            foreach($rolesTemp as $role) {
+            foreach ($rolesTemp as $role) {
                 $rolesArray[] = $role;
             }
         } else {
             // only one role supplied through middleware
             $roleSlug = $roles;
-            $rolesArray = [];
             $rolesArray[] = $roleSlug;
         }
 
 
-        foreach ( $rolesArray as $role ) {
-            if ( isset($this->role) && $this->role->slug === $role  ) {
+        foreach ($rolesArray as $role) {
+            if (isset($this->role) && $this->role->slug === $role) {
                 return true;
             }
         }
@@ -82,22 +85,19 @@ trait HasRolesAndPermissions {
     /**
      * Checks if the user have the permission
      *
-     * @param  Permission|null  $permission
      * @param  string  $permissionName
      *
      * @return bool
      */
-    public function hasPermissionTo( ?Permission $permission, string $permissionName = '' ): bool {
+    public function hasPermissionTo(string $permissionName = ''): bool
+    {
+        $permission = $this->getPermissionBySlug($permissionName);
 
-        if ( ! $permission instanceof Permission ) {
-            $permission = $this->getPermissionBySlug( $permissionName );
-        }
-
-        if ( $permission === null ) {
+        if ($permission === null) {
             return false;
         }
 
-        return $this->hasPermissionThroughRole( $permission ) || $this->hasPermission( $permission );
+        return $this->hasPermissionThroughRole($permission) || $this->hasPermission($permission);
     }
 
 
@@ -108,8 +108,9 @@ trait HasRolesAndPermissions {
      *
      * @return bool
      */
-    protected function hasPermission( Permission $permission ): bool {
-        return (bool) $this->permissions->where( 'slug', $permission->slug )->count();
+    public function hasPermission(Permission $permission): bool
+    {
+        return (bool) $this->permissions->where('slug', $permission->slug)->count();
     }
 
 
@@ -120,8 +121,9 @@ trait HasRolesAndPermissions {
      *
      * @return Permission|null
      */
-    protected function getPermissionBySlug( string $slug ): ?Permission {
-        return Permission::where( 'slug', $slug )->first();
+    protected function getPermissionBySlug(string $slug): ?Permission
+    {
+        return Permission::where('slug', $slug)->firstOrFail();
     }
 
 
@@ -132,8 +134,9 @@ trait HasRolesAndPermissions {
      *
      * @return Role|null
      */
-    protected function getRoleBySlug( string $slug ): ?Role {
-        return Role::where( 'slug', $slug )->first();
+    protected function getRoleBySlug(string $slug): ?Role
+    {
+        return Role::where('slug', $slug)->firstOrFail();
     }
 
     /**
@@ -141,7 +144,8 @@ trait HasRolesAndPermissions {
      * User should have onl one role!
      *
      */
-    public function deleteUserRole(): void {
+    public function deleteUserRole(): void
+    {
         $this->role()->dissociate();
     }
 
@@ -153,10 +157,10 @@ trait HasRolesAndPermissions {
      *
      * @return bool
      */
-    public function hasPermissionThroughRole( Permission $permission ): bool {
-
-        foreach ( $permission->roles as $role ) {
-            if ( $this->role->id === $role->id ) {
+    public function hasPermissionThroughRole(Permission $permission): bool
+    {
+        foreach ($permission->roles as $role) {
+            if ($this->role->id === $role->id) {
                 return true;
             }
         }
@@ -171,8 +175,9 @@ trait HasRolesAndPermissions {
      *
      * @return mixed
      */
-    public function getAllPermissionsByArray( array $permissions ): mixed {
-        return Permission::whereIn( 'slug', $permissions )->get();
+    public function getAllPermissionsByArray(array $permissions): mixed
+    {
+        return Permission::whereIn('slug', $permissions)->get();
     }
 
 
@@ -181,7 +186,8 @@ trait HasRolesAndPermissions {
      *
      * @return mixed
      */
-    public function getAllPermissions(): mixed {
+    public function getAllPermissions(): mixed
+    {
         return Permission::all();
     }
 
@@ -193,50 +199,55 @@ trait HasRolesAndPermissions {
      *
      * @return $this
      */
-    public function givePermissionsTo(array $permissionsArray ): static {
+    public function givePermissionsTo(array $permissionsArray): static
+    {
 
         // slug of all permissions the user currently has
-        $permissionSlugs = $this->permissions()->pluck( 'slug' )->toArray();
+        $permissionSlugs = $this->permissions()->pluck('slug')->toArray();
 
         // These are the missing permissions (by slug) that are needed to be added to the users' permissions
-        $newPermissionSlugs = array_diff($permissionsArray, $permissionSlugs );
+        $newPermissionSlugs = array_diff($permissionsArray, $permissionSlugs);
         // No need to save if the user already has these permissions
-        if ( empty($newPermissionSlugs) ) {
+        if (empty($newPermissionSlugs)) {
             return $this;
         }
 
-        $newPermissions = $this->getAllPermissionsByArray( $newPermissionSlugs );
+        $newPermissions = $this->getAllPermissionsByArray($newPermissionSlugs);
 
         // Save the missing permissions in the pivot table
-        $this->permissions()->saveMany( $newPermissions );
+        $this->permissions()->saveMany($newPermissions);
 
         return $this;
     }
 
 
     /**
+     * TODO
      * Delete all permissions of the user
      *
      * @param  mixed  ...$permissions
      *
      * @return $this
      */
-    public function deletePermissions( ...$permissions ) {
-        $permissions = $this->getAllPermissions( $permissions );
-        $this->permissions()->detach( $permissions );
+    public function deletePermissions(...$permissions)
+    {
+        $permissions = $this->getAllPermissions($permissions);
+        $this->permissions()->detach($permissions);
 
         return $this;
     }
 
     /**
-     * @param  array $permissions
+     * NOT USED (no users_permissions pivot table)
+     * @param  array  $permissions
      *
      * @return HasRolesAndPermissions
      */
-    public function refreshPermissions(array $permissions ) {
+    public function refreshPermissions(array $permissions)
+    {
         $this->permissions()->detach();
-
-        return $this->givePermissionsTo( $permissions );
+        $this->permissions()->sync($permissions);
+        return $this;
     }
 
 

@@ -16,14 +16,14 @@
 
 
                 @if ($message = Session::get('success'))
-                    <div class="panel success text-green-dark border border-green-dark relative">
-                        <p><strong class="margin-0">{{ $message }}</strong></p>
+                    <div class="alert success relative">
+                        <p class="margin-0"><strong>{{ $message }}</strong></p>
                     </div>
                 @endif
 
                 @if ($message = Session::get('error'))
-                    <div class="panel danger text-red-dark border border-red-dark relative">
-                        <p><strong class="margin-0">{{ $message }}</strong></p>
+                    <div class="alert danger relative">
+                        <p class="margin-0"><strong>{{ $message }}</strong></p>
                     </div>
                 @endif
 

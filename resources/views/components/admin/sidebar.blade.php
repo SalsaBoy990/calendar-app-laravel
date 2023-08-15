@@ -1,6 +1,6 @@
 <aside>
     <header>
-        <h3 class="text-white fs-18">{{ __('Table of Content') }}</h3>
+        <h3 class="text-white fs-18">{{ Auth::user()->name }}</h3>
     </header>
     <div class="sidebar-content">
 

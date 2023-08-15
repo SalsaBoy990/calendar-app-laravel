@@ -9,7 +9,7 @@
                         <a href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
                     </li>
                     <li>
-                        <span>/</span>
+                        <i class="fa-solid fa-angle-right"></i>
                     </li>
                     <li>{{ __('My Account') }}</li>
                 </ol>
@@ -99,7 +99,7 @@
 
                 <h2 class="h3">{{ __('Delete account') }}</h2>
 
-                <div class="panel danger text-red-dark border border-red-dark">
+                <div class="alert danger">
                     <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                     {{ __('This action cannot be undone. It will permanently erase your account with all of your data.') }}
                 </div>

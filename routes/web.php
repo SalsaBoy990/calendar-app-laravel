@@ -7,7 +7,6 @@ use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\StatsController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WorkerController;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,6 +24,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
 // Auth endpoints from Laravel UI
 Auth::routes([
     'register' => false,
@@ -35,24 +35,21 @@ Auth::routes([
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
-// 2FA endpoints
-Route::get('2fa', [App\Http\Controllers\UserCodeController::class, 'index'])->name('2fa.index');
-Route::post('2fa', [App\Http\Controllers\UserCodeController::class, 'store'])->name('2fa.post');
-Route::get('2fa/reset', [App\Http\Controllers\UserCodeController::class, 'resend'])
-    ->name('2fa.resend');
-// 2FA endpoints END
-
-
-// A test endpoint
-Route::group(['middleware' => 'role:administrator'], function () {
-
-    Route::get('/admin-test', function() {
-        return 'You are an admin!';
-    });
-
-});
-
 // Routes only for authenticated users
+Route::group(
+    ['middleware' => ['auth']],
+    function () {
+
+        // 2FA endpoints
+        Route::get('2fa', [\App\Http\Controllers\Auth\UserCodeController::class, 'index'])->name('2fa.index');
+        Route::post('2fa', [\App\Http\Controllers\Auth\UserCodeController::class, 'store'])->name('2fa.post');
+        Route::get('2fa/reset', [\App\Http\Controllers\Auth\UserCodeController::class, 'resend'])
+            ->name('2fa.resend');
+        // 2FA endpoints END
+
+    }
+);
+
 
 // for super admins only
 Route::group(
@@ -62,6 +59,7 @@ Route::group(
              ->name('role-permission.manage');
     }
 );
+
 
 // for super admins and simple admins only
 Route::group(
@@ -77,6 +75,7 @@ Route::group(
     }
 );
 
+
 // for super admins, simple admins, and workers
 Route::group(
     ['middleware' => ['auth', 'verified', '2fa', 'role:super-administrator|administrator|worker'], 'prefix' => 'admin'],
@@ -90,7 +89,8 @@ Route::group(
 );
 // Routes only for authenticated users END
 
-Route::get('/migrate', function () {
+
+/*Route::get('/migrate', function () {
     Artisan::call('migrate',
         array(
             '--path' => 'database/migrations',
@@ -99,4 +99,4 @@ Route::get('/migrate', function () {
         ));
     echo 'Migration OK';
     exit;
-});
+});*/

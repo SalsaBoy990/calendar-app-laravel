@@ -16,17 +16,16 @@ html.dark,
         color: $gray-20
 
 
-    button.alt, .button.alt
-        background-color: white
-
     .accordion-button
-        border-color: $gray-20
+        border-color: $primary-light
 
+    select
+        background: $gray-20
 
     input, textarea
         color: $black
-        background: $gray-0
-        border-color: $gray-80
+        background: $gray-20
+        border-color: $gray-10
 
         &:disabled
             cursor: not-allowed
@@ -92,7 +91,7 @@ html.dark,
 
     header:not(.box)
         color: #c5c5c5
-        background-color: $black
+        background-color: rgba(255, 255, 255, 0.05)
 
 
     footer
@@ -106,13 +105,15 @@ html.dark,
 
 
     table
+        td, th
+            border-color: $gray-20
         thead
             th
-                background-color: $bg-primary
+                background-color: $bg-content
                 color: $gray-10
 
         tr:nth-child(odd)
-            background-color: rgba(255, 255, 255, 0.15)
+            background-color: rgba(0, 0, 0, 0.1)
 
         tr:nth-child(even)
             background-color: rgba(255, 255, 255, 0.05)
@@ -133,37 +134,125 @@ html.dark,
         color: white
 
 
-    .clean-modal
+    .modal
         background-color: rgba(255, 255, 255, 0.6)
 
 
-    .clean-modal-content
-        background-color: $gray-80
+    .modal-content
+        background-color: $gray-20
 
 
     .dropdown-content
         color: #fff
-        background-color: $black
+        background-color: $gray-80
 
 
     #main-menu-offcanvas-toggle
-        color: white
+        color: $gray-20
         background-color: transparent
-        border: 2px solid white
+        border: 2px solid $gray-20
 
         &:hover, &:focus
-            background-color: $primary-light
-            border: 2px solid white
+            color: white !important
+            border: 2px solid white !important
 
 
     a.nav-link.active
-        background-color: $accent-dark
+        background-color: $sidenav-active
 
 
-    .clean-modal-content
+    .modal-content
         .box.white
-            background-color: $bg-content
+            background-color: $bg-dark
 
-    .badge
+
+    .alert
+        color: $text
+        .alert-message
+            color: $text
+
+
+    .tooltip
+        .tooltip-content
+            background-color: $gray-20
+            color: $black
+
+            &.tooltip-top
+                &:after
+                    border-top: 5px solid $gray-20
+                    bottom: -5px
+                    left: 50%
+                    margin-left: -5px
+
+            &.tooltip-right
+                &:after
+                    border-right: 5px solid $gray-20
+
+
+            &.tooltip-left
+                &:after
+                    border-left: 5px solid $gray-20
+
+
+            &.tooltip-bottom
+                &:after
+                    border-bottom: 5px solid $gray-20
+
+    .public
+        &.wrapper
+            border-top: 1px solid $bg-content
+
+    .sidenav
+        background-color: $sidenav-dark
+
+        #main-menu-close-button
+            color: white !important
+
+        #mobile-menu
+            #main-menu
+                a
+                    border-bottom: 1px solid $gray-40
+                    color: white !important
+                    &:hover
+                        background-color: $sidenav-hover
+
+                a.active
+                    color: white !important
+                    background-color: $sidenav-active
+                    border-left: 6px solid $bg-dark
+                    font-weight: 700
+
+
+    .admin
+        .admin-content
+            aside
+                header
+                    background-color: $bg-content
+        aside
+            div.sidebar-content
+                .navbar-nav
+                    li
+                        a.nav-link:hover
+                            background-color: $gray-60
+
+        .roles-permissions-bar
+            background-color: $gray-60
+
+
+    .dashboard-card-grid .card
+        background-color: $bg-content
+
+
+    .user-dropdown-menu
+        .dropdown-content
+            .dropdown-item
+                color: #eeeeee !important
+                &:hover
+                    color: white !important
+
+    #calendar-container #calendar
+        background-color: transparent
+
+    .admin .admin-content aside div.sidebar-content .navbar-nav li a.nav-link.active
         color: white
-        background-color: $black
+        border-left: 0.5rem solid $gray-20

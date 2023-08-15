@@ -8,7 +8,7 @@
         <div class="padding-1-5">
 
             @if (session('status'))
-                <div class="panel success" role="alert">
+                <div class="alert success" role="alert">
                     {{ session('status') }}
                 </div>
             @endif

@@ -9,7 +9,7 @@
                         <a href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
                     </li>
                     <li>
-                        <span>/</span>
+                        <i class="fa-solid fa-angle-right"></i>
                     </li>
                     <li>{{ __('Manage Clients') }}</li>
                 </ol>

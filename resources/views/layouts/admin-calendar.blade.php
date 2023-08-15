@@ -2,6 +2,7 @@
 <html
     lang="{{ str_replace('_', '-', app()->getLocale()) }}"
     x-data="data"
+    :class="{'dark': darkMode }"
 >
 <head>
     <meta charset="utf-8">
