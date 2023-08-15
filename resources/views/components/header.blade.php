@@ -59,11 +59,10 @@
 
 
                                 <a
+                                    id="logout-form-header-trigger"
                                     class="dropdown-item"
                                     href="#"
                                     role="button"
-                                    onclick="event.preventDefault();
-                                             document.getElementById('logout-form').submit();"
                                 >
                                     <i class="fa fa-sign-out" aria-hidden="true"></i>
                                     <span>{{ __('Logout') }}</span>
@@ -71,7 +70,7 @@
                                 </a>
 
                                 <form
-                                    id="logout-form"
+                                    id="logout-form-header"
                                     action="{{ route('logout') }}"
                                     method="POST"
                                     class="d-none"

@@ -80,11 +80,11 @@
 
                         <!-- Logout link -->
                         <li class="card text-center">
-                            <a class="card-link"
-                               href="#"
-                               role="button"
-                               onclick="event.preventDefault();
-                                    document.getElementById('logout-form-dashboard').submit();"
+                            <a
+                                id="logout-form-dashboard-trigger"
+                                class="card-link"
+                                href="#"
+                                role="button"
                             >
                                 <i class="fa fa-sign-out" aria-hidden="true"></i>
                                 {{ __('Logout') }}

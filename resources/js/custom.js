@@ -36,3 +36,42 @@ document.getElementById('main-menu-close-button').addEventListener('click', clos
 document.getElementById("main-menu-offcanvas-toggle").addEventListener('click', openOffcanvasMenu);
 // Offcanvas menu END
 */
+
+
+/* Logout functions, events */
+function triggerLogout(id) {
+    event.preventDefault();
+    document.getElementById(id).submit();
+}
+
+
+const logoutAdminHeaderBtn = document.getElementById('logout-form-header-trigger');
+if (logoutAdminHeaderBtn) {
+    logoutAdminHeaderBtn.addEventListener('click', function () {
+        triggerLogout('logout-form-header');
+    });
+}
+
+
+const logoutAdminSidebarBtn = document.getElementById('logout-form-admin-sidebar-trigger');
+if (logoutAdminSidebarBtn) {
+    logoutAdminSidebarBtn.addEventListener('click', function () {
+        triggerLogout('logout-form-admin-sidebar');
+    });
+}
+
+
+const logoutAdminDashboardBtn = document.getElementById('logout-form-dashboard-trigger');
+if (logoutAdminDashboardBtn) {
+    logoutAdminDashboardBtn.addEventListener('click', function () {
+        triggerLogout('logout-form-dashboard');
+    });
+}
+
+
+const logoutUserDropdownBtn = document.getElementById('user-dropdown-logout-trigger');
+if (logoutUserDropdownBtn) {
+    logoutUserDropdownBtn.addEventListener('click', function () {
+        triggerLogout('user-dropdown-logout');
+    });
+}

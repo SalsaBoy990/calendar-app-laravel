@@ -115,18 +115,17 @@
                     <!-- Custom links END -->
                     <li class="nav-item">
                         <a
+                            id="logout-form-admin-sidebar-trigger"
                             class="nav-link"
                             href="#"
                             role="button"
-                            onclick="event.preventDefault();
-                                     document.getElementById('logout-form').submit();"
                         >
                             <i class="fa fa-sign-out" aria-hidden="true"></i>
                             {{ __('Logout') }}
                         </a>
 
                         <form
-                            id="logout-form"
+                            id="logout-form-admin-sidebar"
                             action="{{ route('logout') }}"
                             method="POST"
                             class="hide"
