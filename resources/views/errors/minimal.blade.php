@@ -25,7 +25,7 @@
         <div class="text-center">
             <div class="logo">
                 <a href="/" class="brand">
-                    <img src="{{ url('/images/szlavi-cleaning-team.png') }}" alt="{{ config('app.name', 'Laravel') }}">
+                    <img src="{{ url('/images/logo.png') }}" alt="{{ config('app.name', 'Laravel') }}">
                 </a>
             </div>
 

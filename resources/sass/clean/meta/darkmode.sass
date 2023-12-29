@@ -1,24 +1,45 @@
 html.dark,
-.spa-container.dark
+.dark
     background-color: $bg-dark !important
     color: $gray-20
 
 
+    /* General */
     body
         background-color: $bg-dark !important
         color: $gray-20
 
-    .content
-        background-color: $bg-content
-
-
     h1, h2, h3, h4, h5, h6, label, form
+        color: $gray-0
+
+    pre, code
         color: $gray-20
+        background-color: $black
+
+    ul:not(.card,.card-list,.box), ol
+        color: #c5c5c5
+
+    table
+        thead
+            th
+                background-color: $bg-primary
+                color: $gray-10
+
+        tr:nth-child(odd)
+            background-color: rgba(255, 255, 255, 0.15)
+
+        tr:nth-child(even)
+            background-color: rgba(255, 255, 255, 0.05)
+
+        tr:hover
+            background-color: rgba(0, 0, 0, 0.2)
+
+        td
+            color: $gray-10
+    /* General END */
 
 
-    .accordion-button
-        border-color: $primary-light
-
+    /* Forms */
     select
         background: $gray-20
 
@@ -39,12 +60,80 @@ html.dark,
         &:focus
             border-color: $primary-light
             background-color: rgba(255, 255, 225, 0.85)
+    /* Forms END */
 
+
+    /* General */
+    .public
+        &.wrapper
+            border-top: 1px solid $bg-content
+
+        #calendar-container #calendar
+            background-color: $bg-content
+
+
+        .card.white
+            h1
+                color: $gray-10
+            .breadcrumb
+                ol
+                    li
+                        color: $gray-10
+
+        .card-body
+            color: $gray-10
+            background-color: $bg-content
+
+            .post-header
+                .post-date
+                    color: $gray-20
+
+        aside
+           .bar.post-content-width.white
+               background-color: $bg-content
+
+        article .post-content blockquote p
+            color: $gray-20
+
+        .event-list-grid
+            .event-item.card.white
+                background-color: $bg-content
+
+                .event-date-red
+                    color: $pale-dark
+
+        .event-card.card.white
+            background-color: $bg-content
+
+            .event-card-header
+                background-color: $bg-content
+
+            .event-content-main
+                color: $gray-10
+                background-color: $bg-content
+
+            .event-content-aside
+                color: $gray-20
+
+        .event-container .event-card .event-card-header .event-dates
+            color: $pale-dark !important
+
+    .dropdown-content
+        color: #fff
+        background-color: $gray-80
+
+    .content
+        background-color: $bg-content
+
+    .accordion-button
+        border-color: $primary-light
+
+    .toc
+        background-color: $bg-content
 
     .banner
         h1, h2, h3, h4, h5, h6, p, ul, ol, span
-            color: $gray-20
-
+            color: $gray-0
 
     #search-results
         a
@@ -67,111 +156,91 @@ html.dark,
     .card
         h1, h2, h3, h4, h5, h6, p, ul, ol, span
             color: inherit
+    /* General END */
 
 
-    ul:not(.card,.card-list,.box), ol
-        color: #c5c5c5
-
-
+    /* Links, button links */
     a:not(.button, .close-button, .link-button, .button-square, .button-circle)
         color: $primary-darkmode
 
         &:hover
             color: $white
 
-
     a.bar-item.button,
     a.button.link-button
         color: white
 
-
     a.button.link-button:hover
         color: $accent-light
 
+    a.nav-link.active
+        background-color: $sidenav-active
+    /* Links, button links END */
+
+
+    /* Header */
+    header.page-header
+        box-shadow: 2px 4px 6px $black
 
     header:not(.box)
         color: #c5c5c5
-        background-color: rgba(255, 255, 255, 0.05)
-
-
-    footer
-        background-color: #0d0e11
-        color: $gray-40
-
-
-    pre, code
-        color: $gray-20
         background-color: $black
 
-
-    table
-        td, th
-            border-color: $gray-20
-        thead
-            th
-                background-color: $bg-content
-                color: $gray-10
-
-        tr:nth-child(odd)
-            background-color: rgba(0, 0, 0, 0.1)
-
-        tr:nth-child(even)
-            background-color: rgba(255, 255, 255, 0.05)
-
-        tr:hover
-            background-color: rgba(0, 0, 0, 0.2)
-
-        td
-            color: $gray-10
-
-
-    .toc
-        background-color: $bg-content
-
-
-    ul.card
-        background-color: rgba(255, 255, 255, 0.15)
-        color: white
-
-
-    .modal
-        background-color: rgba(255, 255, 255, 0.6)
-
-
-    .modal-content
-        background-color: $gray-20
-
-
-    .dropdown-content
-        color: #fff
-        background-color: $gray-80
-
-
     #main-menu-offcanvas-toggle
-        color: $gray-20
+        color: white
         background-color: transparent
-        border: 2px solid $gray-20
+        border: 2px solid white
 
         &:hover, &:focus
             color: white !important
             border: 2px solid white !important
 
+    .user-dropdown-menu
+        .dropdown-content
+            .dropdown-item
+                color: #eeeeee !important
 
-    a.nav-link.active
-        background-color: $sidenav-active
+                &:hover
+                    color: white !important
+    /* Header END */
 
+
+    /* Footer */
+    footer
+        background-color: #0d0e11
+        color: $gray-40
+    /* Footer END */
+
+
+    /* Card */
+    ul.card
+        background-color: rgba(255, 255, 255, 0.15)
+        color: white
+    /* Card END */
+
+
+    /* Modal */
+    .modal
+        background-color: rgba(255, 255, 255, 0.6)
 
     .modal-content
+        background-color: $gray-20
+
         .box.white
             background-color: $bg-dark
+    /* Modal END */
 
 
+    /* Alert */
     .alert
         color: $text
+
         .alert-message
             color: $text
+    /* Alert END */
 
 
+    /* Tooltip */
     .tooltip
         .tooltip-content
             background-color: $gray-20
@@ -188,20 +257,17 @@ html.dark,
                 &:after
                     border-right: 5px solid $gray-20
 
-
             &.tooltip-left
                 &:after
                     border-left: 5px solid $gray-20
 
-
             &.tooltip-bottom
                 &:after
                     border-bottom: 5px solid $gray-20
+    /* Tooltip END */
 
-    .public
-        &.wrapper
-            border-top: 1px solid $bg-content
 
+    /* Sidenav */
     .sidenav
         background-color: $sidenav-dark
 
@@ -213,6 +279,7 @@ html.dark,
                 a
                     border-bottom: 1px solid $gray-40
                     color: white !important
+
                     &:hover
                         background-color: $sidenav-hover
 
@@ -221,13 +288,16 @@ html.dark,
                     background-color: $sidenav-active
                     border-left: 6px solid $bg-dark
                     font-weight: 700
+    /* Sidenav END */
 
 
+    /* Admin */
     .admin
         .admin-content
             aside
                 header
-                    background-color: $bg-content
+                    background-color: $black
+
         aside
             div.sidebar-content
                 .navbar-nav
@@ -241,18 +311,38 @@ html.dark,
 
     .dashboard-card-grid .card
         background-color: $bg-content
+    /* Admin END */
 
 
-    .user-dropdown-menu
-        .dropdown-content
-            .dropdown-item
-                color: #eeeeee !important
-                &:hover
-                    color: white !important
+    /* TinyMCE */
+    .tox .tox-edit-area__iframe
+        background-color: $gray-20
+    /* TinyMCE END */
 
-    #calendar-container #calendar
-        background-color: transparent
 
-    .admin .admin-content aside div.sidebar-content .navbar-nav li a.nav-link.active
-        color: white
-        border-left: 0.5rem solid $gray-20
+    /* Badge */
+    .badge
+        &[class*=" gray-"]
+            background-color: $black
+    /* Badge END */
+
+
+    /* Frontpage */
+    .frontpage .featured .post-item.white,
+    .frontpage .public-content > .card
+        background-color: $bg-content
+
+    .frontpage .intro .side-panel-4 article h3 a,
+    .frontpage .intro .right-panel-2 h2 a
+        color: $gray-0
+
+    .frontpage .highlighted-posts-container .highlighted .highlighted-post-item span,
+    .frontpage .intro .side-panel-4 article .date
+        color: $gray-20
+
+    .frontpage .intro .side-panel-4 h2
+        color: $pale-dark
+
+    .frontpage .intro .side-panel-4 h2:before
+        background: $pale-dark
+    /* Frontpage END */

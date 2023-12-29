@@ -93,7 +93,7 @@
                 .fc-event-title.fc-sticky
                     font-family: $sans
                     font-weight: 700
-                    font-size: 14px
+                    font-size: 12px
 
             .address
                 margin-top: 0
@@ -104,7 +104,7 @@
 
             .description
                 margin-top: 0
-                font-size: 12px
+                font-size: 10px
 
             .workers-container
                 display: flex
@@ -173,20 +173,6 @@
                 font-size: $fs-14
 
 
-html.dark
-    #calendar-container
-        #calendar
-            .fc-timegrid-axis-cushion.fc-scrollgrid-shrink-cushion.fc-scrollgrid-sync-inner,
-            .fc-timegrid-slot-label-frame.fc-scrollgrid-shrink-frame
-                color: $gray-20
-
-            a.fc-daygrid-day-number
-                color: $gray-20
-
-            a.fc-event.fc-daygrid-event.fc-daygrid-dot-event
-                color: white
-
-
 .mini-calendar-menu
     display: flex
     justify-content: space-between
@@ -205,4 +191,16 @@ html.dark
         a.active
             font-weight: 700
 
-/* CALENDAR END */
+
+html.dark
+    #calendar-container
+        #calendar
+            .fc-timegrid-axis-cushion.fc-scrollgrid-shrink-cushion.fc-scrollgrid-sync-inner,
+            .fc-timegrid-slot-label-frame.fc-scrollgrid-shrink-frame
+                color: $gray-20
+
+            a.fc-daygrid-day-number
+                color: $gray-20
+
+            a.fc-event.fc-daygrid-event.fc-daygrid-dot-event
+                color: white

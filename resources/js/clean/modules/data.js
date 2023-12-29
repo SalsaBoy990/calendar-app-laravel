@@ -25,23 +25,48 @@ export function data() {
         },
 
         init() {
+            const lightLogo = document.getElementById('light-logo');
+            const darkLogo = document.getElementById('dark-logo');
             if (this.darkMode === true) {
-                document.getElementById('light-logo').style.display = 'none';
-                document.getElementById('dark-logo').style.display = 'block';
+                if (lightLogo) {
+                    lightLogo.style.display = 'none';
+                }
+
+                if (darkLogo) {
+                    darkLogo.style.display = 'block';
+                }
             } else {
-                document.getElementById('light-logo').style.display = 'block';
-                document.getElementById('dark-logo').style.display = 'none';
+                if (lightLogo) {
+                    lightLogo.style.display = 'block';
+                }
+
+                if (darkLogo) {
+                    darkLogo.style.display = 'none';
+                }
             }
 
 
             this.$watch('darkMode', (val) => {
                 localStorage.setItem('darkMode', val);
+                const lightLogo = document.getElementById('light-logo');
+                const darkLogo = document.getElementById('dark-logo');
+
                 if (val === true) {
-                    document.getElementById('light-logo').style.display = 'none';
-                    document.getElementById('dark-logo').style.display = 'block';
+                    if (lightLogo) {
+                        lightLogo.style.display = 'none';
+                    }
+
+                    if (darkLogo) {
+                        darkLogo.style.display = 'block';
+                    }
                 } else {
-                    document.getElementById('light-logo').style.display = 'block';
-                    document.getElementById('dark-logo').style.display = 'none';
+                    if (lightLogo) {
+                        lightLogo.style.display = 'block';
+                    }
+
+                    if (darkLogo) {
+                        darkLogo.style.display = 'none';
+                    }
                 }
             });
         },

@@ -1,4 +1,4 @@
-@extends('layouts.public')
+@extends('auth.layouts.public')
 
 @section('content')
     <main class="card content-600">
@@ -21,6 +21,7 @@
                     type="email"
                     class="form-control @error('email') border border-dark-red @enderror"
                     name="email"
+                    id="email"
                     value="{{ old('email') }}"
                     required
                     autocomplete="email"

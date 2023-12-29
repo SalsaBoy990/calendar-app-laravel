@@ -1,4 +1,4 @@
-@extends('layouts.public')
+@extends('auth.layouts.public')
 
 @section('content')
 

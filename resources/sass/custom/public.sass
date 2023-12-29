@@ -9,6 +9,35 @@
         border-top: 2px solid #D8D8D8
 
 
+    & > .container
+        flex-grow: 1
+
+
+    .public-content
+        margin: 0 auto 2em
+
+        @media screen and (max-width: $s-600)
+            margin-top: 0.5em
+
+        @media screen and (max-width: $s-1023)
+            grid-template-columns: 1fr
+            grid-template-areas: "main-content" "sidebar"
+
+        main
+            box-sizing: border-box
+            grid-area: main-content
+            background-color: white
+
+            .header
+                border-top-left-radius: 0.5em
+                border-top-right-radius: 0.5em
+                padding: 0.5em 1.5em
+                background-color: $bg-primary
+                color: white
+
+                h1
+                    margin: 0
+
     article
         .card-body
             padding: 0 2em
@@ -58,7 +87,7 @@
 
 
             p, ul li, ol li
-                font-size: 20px
+                font-size: 18px
                 line-height: 1.6
 
                 @media screen and (max-width: $s-600)
@@ -68,33 +97,4 @@
                 p
                     font-size: 24px
                     color: $gray-60
-
-    & > .container
-        flex-grow: 1
-
-    .public-content
-        margin: 2em auto
-        margin-top: 0
-
-        @media screen and (max-width: $s-600)
-            margin-top: 0.5em
-
-        @media screen and (max-width: $s-1023)
-            grid-template-columns: 1fr
-            grid-template-areas: "main-content" "sidebar"
-
-        main
-            box-sizing: border-box
-            grid-area: main-content
-            background-color: white
-
-            .header
-                border-top-left-radius: 0.5em
-                border-top-right-radius: 0.5em
-                padding: 0.5em 1.5em
-                background-color: $bg-primary
-                color: white
-
-                h1
-                    margin: 0
 

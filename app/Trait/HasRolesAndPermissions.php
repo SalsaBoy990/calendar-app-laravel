@@ -231,7 +231,7 @@ trait HasRolesAndPermissions
      */
     public function deletePermissions(...$permissions)
     {
-        $permissions = $this->getAllPermissions($permissions);
+        $permissions = $this->getAllPermissions();
         $this->permissions()->detach($permissions);
 
         return $this;

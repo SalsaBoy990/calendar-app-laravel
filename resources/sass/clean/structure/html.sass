@@ -1,11 +1,11 @@
 html, body
     box-sizing: border-box
-
-    height: 100%
     font-family: $sans
     font-size: 1rem
     line-height: 1.5
     scroll-behavior: smooth
+    overflow-x: hidden
+    height: 100%
 
 
 body
@@ -24,18 +24,26 @@ p
     line-height: 1.5em
 
 
+/* DO NOT REMOVE THIS */
 *, *:before, *:after
     box-sizing: inherit
-// DO NOT REMOVE THIS
 
 
 ::selection
     color: white
     background: $primary-light
 
+
 @for $i from 1 through 10
     .z-#{$i}
         z-index: $i
 
-.clearfix
-    overflow: auto
+
+.sr-only
+    clip: rect(0 0 0 0)
+    clip-path: inset(50%)
+    height: 1px
+    overflow: hidden
+    position: absolute
+    white-space: nowrap
+    width: 1px

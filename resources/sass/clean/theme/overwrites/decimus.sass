@@ -1,0 +1,186 @@
+// General
+h1
+    line-height: 1.25
+    font-weight: 900
+    font-family: $serif
+
+
+h2, h3, h4, h5, h6
+    line-height: 1.25
+    font-weight: 700
+    font-family: $sans
+
+
+// Header
+header.page-header
+    background-color: $primary-dark !important
+
+    .header-content
+        .logo
+            position: relative
+
+            a
+                img
+                    height: 55px
+
+        #main-menu-offcanvas-toggle
+            color: $gray-20
+            border-color: $gray-20
+            border-width: 2px
+
+            &:hover, &:focus
+                color: $white
+                border-color: $white
+                background-color: transparent
+                border-width: 2px
+
+        #event-link-mobile-menu
+            @media screen and (min-width: 1024px)
+                display: none
+
+    .user-dropdown-menu
+        a:not(.dropdown-item)
+            color: white
+            text-decoration: underline
+
+            &.active
+                color: $pale-light
+                font-weight: bold
+
+
+    .main-navigation
+        #main-menu
+            a:not(.dropdown-item)
+                color: $gray-10
+
+                &:hover
+                    color: white
+
+                &.active
+                    color: $pale-light
+                    font-weight: bold
+
+
+// Sidenav menu
+.sidenav
+    background-color: #f5f0ed
+
+    #main-menu
+        a:not(.dropdown-item)
+            color: $primary-dark !important
+
+            &.active
+                color: #333 !important
+                font-weight: bold
+
+
+// Footer
+footer.page-footer.public-footer
+    border-top: 2px solid $gray-80
+    text-align: center
+    background: rgb(20, 20, 20)
+    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(20, 20, 20, 1) 50%)
+
+    .footer-content
+        nav
+            margin-bottom: 3em
+
+            a
+                padding: 0 0.5em
+
+            a.active
+                display: inline
+                font-weight: bold
+                color: $pale-light
+
+        .logo
+            a
+                justify-content: center
+
+
+// Frontpage
+
+// Other
+.filemanager-container
+    width: 100%
+    height: 550px
+    overflow: hidden
+    border: none
+
+.post-date
+    font-size: 18px
+    font-weight: 500
+    text-transform: uppercase
+    font-variant: all-small-caps
+    line-height: 150%
+    letter-spacing: 1px
+
+
+$primary-light-darkmode: #e42b4a
+$primary-dark-darkmode: #ad0e29
+$accent-light-darkmode: #1da22a
+$accent-dark-darkmode: #0d6e16
+
+.dark
+    button,
+    .button
+
+
+        &.primary
+            color: white
+            background-color: $primary-light-darkmode
+            border-color: $primary-light-darkmode
+
+            &:hover
+                border-color: $primary-dark-darkmode
+                background-color: $primary-dark-darkmode
+                color: white
+
+            &.alt
+                color: $primary-light-darkmode
+                border-color: $primary-light-darkmode
+                background-color: transparent
+
+                &:hover, &:focus
+                    border-color: $primary-dark-darkmode
+                    background-color: white
+                    color: $primary-dark-darkmode
+
+
+        &.secondary
+            color: white
+            background-color: $accent-light-darkmode
+            border-color: $accent-light-darkmode
+
+            &:hover
+                border-color: $accent-dark-darkmode
+                background-color: $accent-dark-darkmode
+                color: white
+
+            &.alt
+                color: $accent-light-darkmode
+                border-color: $accent-light-darkmode
+                background-color: transparent
+
+                &:hover, &:focus
+                    border-color: $accent-dark-darkmode
+                    background-color: $accent-dark-darkmode
+                    color: white
+
+
+.post-header
+    display: flex
+    align-items: center
+    justify-content: flex-start
+    column-gap: 1em
+
+.a2a_buttons__small
+    a
+        margin-left: 0
+
+        img
+            width: 24px
+            height: 24px
+
+.osm-embed
+    border: 1px solid black

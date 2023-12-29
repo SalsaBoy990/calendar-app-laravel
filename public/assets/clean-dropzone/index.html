@@ -1,0 +1,156 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>bs-dropzone.js: Drag'n'drop File Upload Plugin Examples</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/4.6.0/darkly/bootstrap.min.css">
+    <link rel="stylesheet" href="dist/css/bs-dropzone.css">
+    <link href="https://www.jqueryscript.net/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+    <style>
+        .container {
+            margin: 150px auto;
+        }
+
+        h2 {
+            margin: 1rem auto;
+            font-size: 1.25rem;
+        }
+    </style>
+</head>
+
+<body>
+<div id="jquery-script-menu">
+    <div class="jquery-script-center">
+        <ul>
+            <li><a href="https://www.jqueryscript.net/form/bs-dropzone.html">Download This Plugin</a></li>
+            <li><a href="https://www.jqueryscript.net/">Back To jQueryScript.Net</a></li>
+        </ul>
+        <div id="carbon-block"></div>
+        <div class="jquery-script-ads">
+            <script type="text/javascript"><!--
+            google_ad_client = "ca-pub-2783044520727903";
+            /* jQuery_demo */
+            google_ad_slot = "2780937993";
+            google_ad_width = 728;
+            google_ad_height = 90;
+            //-->
+            </script>
+            <script type="text/javascript"
+                    src="https://pagead2.googlesyndication.com/pagead/show_ads.js">
+            </script>
+        </div>
+        <div class="jquery-script-clear"></div>
+    </div>
+</div>
+<div class="container">
+    <h1>bs-dropzone.js: Drag'n'drop File Upload Plugin Examples</h1>
+    <p class="lead">A jQuery & Bootstrap 4 based dropzone file upload plugin that allows you to select files to upload
+        via drag and drop.</p>
+    <h2>Basic</h2>
+    <form method="post" action="#" class="mb-0">
+        <div class="form-group">
+            <input type="file" name="demo-1" id="demo-1">
+        </div>
+        <div class="form-group mb-0">
+            <button type="submit" class="btn btn-primary">Upload</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+        </div>
+    </form>
+    <h2>With Image Preview</h2>
+    <form method="post" action="#" class="mb-0">
+        <div class="form-group">
+            <input type="file" name="demo-2" id="demo-2">
+        </div>
+        <div class="form-group mb-0">
+            <button type="submit" class="btn btn-primary">Upload</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+        </div>
+    </form>
+    <h2>Custom Styles</h2>
+    <form method="post" action="#" class="mb-0">
+        <div class="form-group">
+            <input type="file" name="demo-3" id="demo-3">
+        </div>
+        <div class="form-group mb-0">
+            <button type="submit" class="btn btn-primary">Upload</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+        </div>
+    </form>
+    <h2>Multiple Files</h2>
+    <form method="post" action="#" class="mb-0">
+        <div class="form-group">
+            <input type="file" name="demo-4" id="demo-4" multiple>
+        </div>
+        <div class="form-group mb-0">
+            <button type="submit" class="btn btn-primary">Upload</button>
+            <button type="reset" class="btn btn-secondary">Reset</button>
+        </div>
+    </form>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns"
+        crossorigin="anonymous"></script>
+<script src="dist/js/bs-dropzone.js"></script>
+<script>
+    $('#demo-1').bs_dropzone();
+    $('#demo-2').bs_dropzone({
+        preview: true
+    });
+    $('#demo-3').bs_dropzone({
+        preview: true,
+        boxClass: 'alert p-5 text-center font-weight-bold',
+        noneColorClass: 'alert-info border-info',
+        dragColorClass: 'alert-warning border-warning',
+        doneColorClass: 'alert-success border-success',
+        failColorClass: 'alert-danger border-danger'
+    });
+    $('#demo-4').bs_dropzone({
+        preview: true,
+        accepted: ['jpg', 'jpeg', 'png'],
+        dropzoneTemplate: '<div class="bs-dropzone"><div class="bs-dropzone-area"></div><div class="bs-dropzone-message"></div><div class="bs-dropzone-preview mt-0"></div></div>',
+        parentTemplate: '<div class="row ml-0 justify-content-center align-items-center"></div>',
+        childTemplate: '<div class="col-4 col-md-3 pl-0"></div>',
+        imageClass: 'img-fluid mt-3 rounded'
+    });
+</script>
+<script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-36251023-1']);
+    _gaq.push(['_setDomainName', 'jqueryscript.net']);
+    _gaq.push(['_trackPageview']);
+
+    (function () {
+        var ga = document.createElement('script');
+        ga.type = 'text/javascript';
+        ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(ga, s);
+    })();
+
+</script>
+<script>
+    try {
+        fetch(new Request("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js", {
+            method: 'HEAD',
+            mode: 'no-cors'
+        })).then(function (response) {
+            return true;
+        }).catch(function (e) {
+            var carbonScript = document.createElement("script");
+            carbonScript.src = "//cdn.carbonads.com/carbon.js?serve=CK7DKKQU&placement=wwwjqueryscriptnet";
+            carbonScript.id = "_carbonads_js";
+            document.getElementById("carbon-block").appendChild(carbonScript);
+        });
+    } catch (error) {
+        console.log(error);
+    }
+</script>
+</body>
+</html>

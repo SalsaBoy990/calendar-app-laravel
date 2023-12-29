@@ -17,8 +17,9 @@ class UserPolicy
      *
      * @return Response|bool
      */
-    public function viewAny(User $user): Response|bool {
-        return $user->hasRoles('super-administrator|administrator');
+    public function viewAny(User $user): Response|bool
+    {
+        return $user->hasPermissionTo('manage-users');
     }
 
     /**
@@ -29,11 +30,12 @@ class UserPolicy
      *
      * @return Response|bool
      */
-    public function view(User $user, User $model): Response|bool {
+    public function view(User $user, User $model): Response|bool
+    {
         if (!$user->hasRoles('super-administrator') && $model->hasRoles('super-administrator')) {
             return false;
         }
-        return $user->id === $model->id || $user->hasRoles('super-administrator|administrator');
+        return ($user->id === $model->id && $user->hasPermissionTo('manage-account')) || $user->hasRoles('super-administrator|administrator');
     }
 
     /**
@@ -43,8 +45,9 @@ class UserPolicy
      *
      * @return Response|bool
      */
-    public function create(User $user): Response|bool {
-        return $user->hasRoles('super-administrator|administrator');
+    public function create(User $user): Response|bool
+    {
+        return $user->hasPermissionTo('manage-users');
     }
 
     /**
@@ -55,11 +58,12 @@ class UserPolicy
      *
      * @return Response|bool
      */
-    public function update(User $user, User $model): Response|bool {
+    public function update(User $user, User $model): Response|bool
+    {
         if (!$user->hasRoles('super-administrator') && $model->hasRoles('super-administrator')) {
             return false;
         }
-        return $user->id === $model->id || $user->hasRoles('super-administrator|administrator');
+        return ($user->id === $model->id && $user->hasPermissionTo('manage-account')) || $user->hasPermissionTo('manage-users');
     }
 
     /**
@@ -68,14 +72,14 @@ class UserPolicy
      * @param  User  $user
      * @param  User  $model
      *
-     * @return Response|bool
+     * @return bool
      */
-    public function delete(User $user, User $model)
+    public function delete(User $user, User $model): bool
     {
         if (!$user->hasRoles('super-administrator') && $model->hasRoles('super-administrator')) {
             return false;
         }
-        return $user->id === $model->id || $user->hasRoles('super-administrator|administrator');
+        return ($user->id === $model->id && $user->hasPermissionTo('manage-account')) || $user->hasRoles('super-administrator|administrator');
     }
 
     /**
@@ -86,7 +90,7 @@ class UserPolicy
      *
      * @return Response|bool
      */
-    public function restore(User $user, User $model)
+    public function restore(User $user, User $model): Response|bool
     {
         return false;
     }
@@ -99,7 +103,7 @@ class UserPolicy
      *
      * @return Response|bool
      */
-    public function forceDelete(User $user, User $model)
+    public function forceDelete(User $user, User $model): Response|bool
     {
         return false;
     }

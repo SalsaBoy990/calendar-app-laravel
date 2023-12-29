@@ -18,8 +18,9 @@ class RolePolicy
      *
      * @return Response|bool
      */
-    public function viewAny(User $user): Response|bool {
-        return $user->hasRoles('super-administrator');
+    public function viewAny(User $user): Response|bool
+    {
+        return $user->hasPermissionTo('manage-roles');
     }
 
     /**
@@ -30,8 +31,9 @@ class RolePolicy
      *
      * @return Response|bool
      */
-    public function view(User $user, Role $role): Response|bool {
-        return $user->hasRoles('super-administrator');
+    public function view(User $user, Role $role): Response|bool
+    {
+        return $user->hasPermissionTo('manage-roles');
     }
 
     /**
@@ -41,8 +43,9 @@ class RolePolicy
      *
      * @return Response|bool
      */
-    public function create(User $user): Response|bool {
-        return $user->hasRoles('super-administrator');
+    public function create(User $user): Response|bool
+    {
+        return $user->hasPermissionTo('manage-roles');
     }
 
     /**
@@ -53,8 +56,9 @@ class RolePolicy
      *
      * @return Response|bool
      */
-    public function update(User $user, Role $role): Response|bool {
-        return $user->hasRoles('super-administrator');
+    public function update(User $user, Role $role): Response|bool
+    {
+        return $user->hasPermissionTo('manage-roles');
     }
 
     /**
@@ -65,8 +69,9 @@ class RolePolicy
      *
      * @return Response|bool
      */
-    public function delete(User $user, Role $role): Response|bool {
-        return $user->hasRoles('super-administrator');
+    public function delete(User $user, Role $role): Response|bool
+    {
+        return $user->hasPermissionTo('manage-roles');
     }
 
     /**
@@ -77,7 +82,7 @@ class RolePolicy
      *
      * @return Response|bool
      */
-    public function restore(User $user, Role $role)
+    public function restore(User $user, Role $role): Response|bool
     {
         return false;
     }
@@ -90,7 +95,7 @@ class RolePolicy
      *
      * @return Response|bool
      */
-    public function forceDelete(User $user, Role $role)
+    public function forceDelete(User $user, Role $role): Response|bool
     {
         return false;
     }

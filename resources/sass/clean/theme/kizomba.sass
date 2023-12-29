@@ -1,11 +1,29 @@
-@import url('https://fonts.bunny.net/css?family=merriweather:700,900|montserrat:400,400i,600,700')
+@import url('https://fonts.bunny.net/css?family=merriweather:700,900|public-sans:300,400,400i,600,700,800')
+
+//@import url('https://fonts.bunny.net/css?family=merriweather:700,900|montserrat:400')
+//@import url('https://fonts.bunny.net/css?family=merriweather:700,900|rubik:400,400i,600,700')
+//@import url('https://fonts.bunny.net/css?family=merriweather:700,900|source-sans-pro:400,400i,600,700')
+
 // ----
-// SET THE THEME HERE -->
+// KIZOMBA THEME -->
 // ----
+$white: #fff
+$gray-0: #f5f5f5
+$grey-0: $gray-0
+$gray-10: darken($gray-0, 5%)
+$grey-10: $gray-10
+$gray-20: #d8d8d8
+$grey-20: $gray-20
+$gray-40: #9e9e9e
+$grey-40: $gray-40
+$grey-60: #62676B
+$gray-60: $grey-60
+$grey-80: #303234
+$gray-80: $grey-80
 
 $bg-light: #F0F0F0
-$gray-60: #62676B
-$gray-80: #303234
+$border: #c5c5c5
+
 $text: #333
 $black: #222
 $primary-dark: #730E1F
@@ -15,17 +33,24 @@ $bg-primary: #730E1F
 $link: $primary-light
 $accent-light: #EFCC9A
 $accent-dark: #E7B56E
-
-$blockquote-color: $accent-light
-
 $pale-dark: #FFB197
 $pale-light: #FFC6B2
 
 // Dark mode
-$bg-dark: #1f3943
-$bg-content: #164E63
-$primary-darkmode: #E1F2FF
-$primary-darkmode-hover: #F3F9FE
+//$bg-dark: #2f2f2f
+$bg-dark: #2e3033
+$bg-content: #393B3D
+$primary-darkmode: #dedcdc
+$primary-darkmode-hover: #e0c5c5
+
+
+// Sidenav colors
+$sidenav: #d2d1cd
+$sidenav-dark: rgb(87, 77, 79)
+$sidenav-hover: rgb(115, 97, 101)
+$sidenav-hover-light: $gray-20
+$sidenav-active: $black
+$sidenav-active-light: $gray-20
 
 
 // State colors
@@ -53,10 +78,14 @@ $info-light: #007fad
 $info-dark: #025370
 
 
-$sans: 'Montserrat', sans-serif
+@mixin primary-gradient
+    background: rgb(115, 14, 31)
+    background: linear-gradient(0deg, rgba(115, 14, 31, 1) 0%, rgba(171, 6, 34, 1) 80%)
+
+
+// Typography
+$sans: "Public Sans", sans-serif
 $serif: 'Merriweather', serif
 $mono: monospace
 
-@mixin primary-gradient
-    background: rgb(115,14,31)
-    background: linear-gradient(0deg, rgba(115,14,31,1) 0%, rgba(171,6,34,1) 80%)
+

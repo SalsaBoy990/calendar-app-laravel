@@ -11,7 +11,7 @@ export function accordionData() {
         accordionItemClass: '',
 
         init() {
-            this.accordionId = '';
+            this.accordionId = 'accordionOne';
             this.sameClick = false;
             this.toggleClass = "show";
             this.headerActiveClass = "accordion-button";
@@ -28,11 +28,26 @@ export function accordionData() {
                 // Hide it when shown
                 if (this.sameClick === false) {
                     x.classList.remove(this.toggleClass);
+                    // remove active state
                     x.previousElementSibling.classList.remove(this.headerActiveClass);
+
+                    // change back icon to plus
+                    const icon = x.previousElementSibling.getElementsByTagName('i')[0]
+                    if (icon) {
+                        icon.classList.remove('fa-minus');
+                        icon.classList.add('fa-plus');
+                    }
                     this.sameClick = true;
-                } else { // Show it when hidden
+                } else {
+                    // Show it when hidden
                     x.classList.add(this.toggleClass);
                     x.previousElementSibling.classList.add(this.headerActiveClass);
+                    // change icon to minus
+                    const icon = x.previousElementSibling.getElementsByTagName('i')[0]
+                    if (icon) {
+                        icon.classList.remove('fa-plus');
+                        icon.classList.add('fa-minus');
+                    }
                     this.sameClick = false;
                 }
 
@@ -51,6 +66,12 @@ export function accordionData() {
                     }
                     if (accordionItem.previousElementSibling.classList.contains(this.headerActiveClass)) {
                         accordionItem.previousElementSibling.classList.remove(this.headerActiveClass);
+                        // change back icon to plus
+                        const icon = accordionItem.previousElementSibling.getElementsByTagName('i')[0]
+                        if (icon) {
+                            icon.classList.remove('fa-minus');
+                            icon.classList.add('fa-plus');
+                        }
                     }
                 }
 
@@ -58,6 +79,16 @@ export function accordionData() {
                 if (x.classList) {
                     x.classList.toggle(this.toggleClass);
                     x.previousElementSibling.classList.toggle(this.headerActiveClass);
+                    const icon = x.previousElementSibling.getElementsByTagName('i')[0];
+
+                    // change icon to minus
+                    if (x.previousElementSibling.classList.contains(this.headerActiveClass)) {
+                        if (icon) {
+                            icon.classList.remove('fa-plus');
+                            icon.classList.add('fa-minus');
+                        }
+                    }
+
                 } else {
                     // Fallback for IE9 and earlier
                     const toggleClassString = " " + this.toggleClass;
@@ -70,6 +101,11 @@ export function accordionData() {
 
 
             }
+        },
+
+        isAccordionContentExpanded(accordionId) {
+            return this.accordionId === accordionId && this.sameClick === false
+
         }
     };
 

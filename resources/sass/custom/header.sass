@@ -3,23 +3,28 @@ header.page-header
     width: 100%
     background-color: white
     box-shadow: 0 0.25rem 0.5rem rgb(0 0 0 / 8%)
-    padding: 10px 6px
-
+    padding: 10px 24px
+    display: flex
+    align-items: center
 
     .header-content
-        width: 95%
+        width: 100%
         margin: 0 auto
         display: flex
         flex-direction: row
         flex-wrap: nowrap
-        justify-content: space-between
+        justify-content: flex-start
         align-items: center
         gap: 0.5em
+
+        @media screen and (max-width: 1100px)
+            justify-content: space-between
 
         .user-dropdown-menu
             .dropdown-content
                 .dropdown-item
                     color: $primary-dark
+
                     &:hover
                         color: $black
 
@@ -35,7 +40,7 @@ header.page-header
 
             .dropdown-item
                 display: block
-                margin-bottom: 0.5em
+                margin-bottom: 0.75em
 
 
 .main-navigation
@@ -46,29 +51,31 @@ header.page-header
         display: inline-flex
         align-items: center
 
-        @media screen and (max-width: 1115px)
+        @media screen and (max-width: 1100px)
             display: none
 
         .mobile-menu-only
-            @media screen and (min-width: 1115px)
+            @media screen and (min-width: 1100px)
                 display: none
 
+
 #hamburger-menu-button
-    @media screen and (min-width: 1115px)
+    @media screen and (min-width: 1100px)
         display: none
 
 
-header .fa
-    //margin: 0 4px
+.logo
+    margin-right: auto
+    a
+        display: flex
+        align-items: center
+        column-gap: 0.5em
+        flex-wrap: nowrap
 
-.logo a
-    display: flex
-    align-items: center
-    column-gap: 0.5em
-    flex-wrap: nowrap
+        img
+            height: 55px
+            width: auto
 
 
-    img
-        height: 55px
-        width: auto
-/* HEADER END */
+#logout-form-admin-header-trigger
+    margin-bottom: 0

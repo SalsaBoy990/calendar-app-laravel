@@ -7,7 +7,7 @@
         <title>@yield('title')</title>
 
         <!-- Styles -->
-        <style>
+        <style nonce="{{ csp_nonce() }}">
             html, body {
                 background-color: #fff;
                 color: #636b6f;

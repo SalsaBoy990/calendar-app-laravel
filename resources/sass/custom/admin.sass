@@ -7,8 +7,20 @@
         flex-direction: column
         justify-content: space-between
 
+        header.page-header
+            .header-content
+                justify-content: space-between
+
+                .darkmode-toggle
+                    margin-right: 0.5em
+
         & > .container
             flex-grow: 1
+            max-width: unset
+            width: 95%
+            margin: 0 auto
+            padding-left: 0
+            padding-right: 0
 
 
     .admin-content
@@ -102,7 +114,7 @@
                             a
                                 border-bottom: none
 
-/* ADMIN LAYOUT END */
+
 .main-content
     overflow-y: hidden
 

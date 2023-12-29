@@ -27,6 +27,7 @@
                 max-width: 100%
                 object-fit: cover
 
+
         .highlighted
             .highlighted-post-item
                 margin-top: 1em
@@ -86,7 +87,7 @@
         grid-template-columns: repeat(auto-fill, minmax(248px, 1fr))
 
     article
-        @include primary-gradient
+        @include primary-gradient()
 
         &.card:hover,
         &.card:active
@@ -127,6 +128,8 @@
             max-width: 1120px
             margin: 0 auto
             padding: 20px 20px 4em
+            background-color: white
+
 
     .most-popular-categories-title
         display: grid
@@ -136,22 +139,22 @@
         h2
             font-family: $serif
 
-        @media screen and (max-width: $s-800)
-            grid-template-columns: 425px 1fr
-
-
-        @media screen and (max-width: $s-600)
-            grid-template-columns: 1fr
-
-            h2
-                font-size: 20px
-
         .separator
             height: 1px
             background-color: #E0E0E0
 
             @media screen and (max-width: $s-600)
                 display: none
+
+
+        @media screen and (max-width: $s-800)
+            grid-template-columns: 425px 1fr
+
+        @media screen and (max-width: $s-600)
+            grid-template-columns: 1fr
+
+            h2
+                font-size: 20px
 
 
     .categories-container
@@ -193,6 +196,7 @@
 
         @media screen and (max-width: $s-600)
             font-size: 24px
+
 
     .intro
         display: grid
@@ -260,7 +264,10 @@
                     background-size: cover
                     background-image: url('./../../public/images/point-1.png')
 
+
             a.read-more
+                display: inline-block !important
+                width: auto !important
                 margin-bottom: 33px
                 border-radius: 1px
                 border: 1px solid $pale-dark
@@ -309,6 +316,7 @@
                         &:hover, &:focus, &:active
                             transition: 0.35s all
                             box-shadow: rgba(0, 0, 0, 0.25) 0 14px 28px, rgba(0, 0, 0, 0.22) 0 10px 10px
+
 
             .cover-image-container
                 margin-bottom: 0

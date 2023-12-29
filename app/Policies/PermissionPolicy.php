@@ -7,7 +7,8 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
 
-class PermissionPolicy {
+class PermissionPolicy
+{
     use HandlesAuthorization;
 
     /**
@@ -17,8 +18,9 @@ class PermissionPolicy {
      *
      * @return Response|bool
      */
-    public function viewAny( User $user ): Response|bool {
-        return $user->hasRoles( 'super-administrator' );
+    public function viewAny(User $user): Response|bool
+    {
+        return $user->hasRoles('super-administrator');
     }
 
     /**
@@ -29,8 +31,9 @@ class PermissionPolicy {
      *
      * @return Response|bool
      */
-    public function view( User $user, Permission $permission ): Response|bool {
-        return $user->hasRoles( 'super-administrator' );
+    public function view(User $user, Permission $permission): Response|bool
+    {
+        return $user->hasPermissionTo('manage-permissions');
     }
 
     /**
@@ -40,8 +43,9 @@ class PermissionPolicy {
      *
      * @return Response|bool
      */
-    public function create( User $user ): Response|bool {
-        return $user->hasRoles( 'super-administrator' );
+    public function create(User $user): Response|bool
+    {
+        return $user->hasPermissionTo('manage-permissions');
     }
 
     /**
@@ -52,8 +56,9 @@ class PermissionPolicy {
      *
      * @return Response|bool
      */
-    public function update( User $user, Permission $permission ): Response|bool {
-        return $user->hasRoles( 'super-administrator' );
+    public function update(User $user, Permission $permission): Response|bool
+    {
+        return $user->hasPermissionTo('manage-permissions');
     }
 
     /**
@@ -64,8 +69,9 @@ class PermissionPolicy {
      *
      * @return Response|bool
      */
-    public function delete( User $user, Permission $permission ): Response|bool {
-        return $user->hasRoles( 'super-administrator' );
+    public function delete(User $user, Permission $permission): Response|bool
+    {
+        return $user->hasPermissionTo('manage-permissions');
     }
 
     /**
@@ -76,7 +82,8 @@ class PermissionPolicy {
      *
      * @return Response|bool
      */
-    public function restore( User $user, Permission $permission ) {
+    public function restore(User $user, Permission $permission): Response|bool
+    {
         return false;
     }
 
@@ -88,7 +95,8 @@ class PermissionPolicy {
      *
      * @return Response|bool
      */
-    public function forceDelete( User $user, Permission $permission ) {
+    public function forceDelete(User $user, Permission $permission): Response|bool
+    {
         return false;
     }
 }

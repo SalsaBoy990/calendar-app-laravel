@@ -1,4 +1,4 @@
-@extends('layouts.public')
+@extends('auth.layouts.public')
 
 @section('content')
 
@@ -16,6 +16,7 @@
                     type="email"
                     class="@error('email') border border-dark-red @enderror"
                     name="email"
+                    id="email"
                     value="{{ $email ?? old('email') }}"
                     required
                     autocomplete="email"
@@ -33,6 +34,7 @@
                     type="password"
                     class="@error('password') border border-dark-red @enderror"
                     name="password"
+                    id="password"
                     required
                     autocomplete="new-password"
                 >
@@ -47,6 +49,7 @@
                 <input
                     type="password"
                     name="password_confirmation"
+                    id="password-confirm"
                     required
                     autocomplete="new-password"
                 >

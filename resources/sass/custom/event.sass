@@ -3,7 +3,7 @@ $s-800: 800px
 .event-container
 
     .back-to-event-calendar-link
-        @media screen and (max-width: 1115px)
+        @media screen and (max-width: 1024px)
             display: none
 
     .facebook-icon-event
@@ -119,12 +119,12 @@ $s-800: 800px
 
         .event-card-header
             background-color: white
-            padding: 0.5em 2em 1em
+            padding: 2em 2em 1em
             border-top-left-radius: 0.5em
             border-top-right-radius: 0.5em
 
             @media screen and (max-width: $s-800)
-                padding: 0.5em 1em 1em
+                padding: 1.5em 1em 1em
 
             @media screen and (max-width: $s-600)
                 .event-dates
@@ -174,11 +174,20 @@ $s-800: 800px
 
 
 .event-list-widget
+    .event-list-widget--container
+        //max-width: 960px
+        margin-top: 0
+
+    .event-list-widget--search-button
+        display: flex
+        justify-content: space-between
+        align-items: center
+
     .reset-filters-button
-        margin-top: 3.7em
+        //margin-top: 3.7em
 
         @media screen and (max-width: $s-600)
-            margin-top: 0.5em
+            //margin-top: 0.5em
 
 
 .absolute-center

@@ -22,9 +22,16 @@
 .container
     background-color: inherit
     width: 100%
-    //max-width: 940px
     margin: 0 auto
     padding: 1em
+
+    @media screen and (max-width: $s-1400)
+        padding-left: 24px
+        padding-right: 24px
+
+    @media screen and (max-width: $s-960)
+        padding-left: 1em
+        padding-right: 1em
 
 
 .col, .half, .third, .twothird, .threequarter, .quarter

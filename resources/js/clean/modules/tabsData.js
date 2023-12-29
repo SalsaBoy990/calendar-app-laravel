@@ -30,7 +30,12 @@ export function tabsData(tabId = 'London', activeColor = 'red') {
             for (let i = 0; i < x.length; i++) {
                 activeButton[i].className = activeButton[i].className.replace(activeButtonClassString, "");
             }
-            document.getElementById(this.tabId).style.display = "block";
+            const selectedTab = document.getElementById(this.tabId);
+            if(selectedTab) {
+                selectedTab.style.display = "block";
+            }
+
+
 
         }
 

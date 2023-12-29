@@ -1,24 +1,8 @@
-
 .button, button
-    display: inline-block
-    margin: 1em 0.1em 0 0
-    padding: 0.5em 1em
-    border-radius: .25rem
+    @include button()
     background-color: $primary-light
     border: 2px solid $primary-light
-    font-size: 14px
-    font-weight: 600
     color: #fff
-    font-family: $sans
-    text-align: center
-    text-decoration: none
-    cursor: pointer
-    line-height: normal
-    vertical-align: middle
-    overflow: hidden
-    white-space: nowrap
-    box-sizing: border-box
-    user-select: none
 
     &:hover
         background-color: $primary-dark
@@ -231,22 +215,8 @@
 
 
 .close-button
+    @include close-button()
     margin: 0 !important
-    width: auto
-    border: none
-    display: inline-block
-    padding: 0.5em
-    vertical-align: middle
-    overflow: hidden
-    text-decoration: none
-    text-align: center
-    cursor: pointer
-    white-space: nowrap
-    box-sizing: border-box
-    user-select: none
-    font-family: $sans
-    line-height: 1
-    background-color: transparent
 
     &:hover
         border: none
@@ -268,18 +238,18 @@ a.link-button
         color: $primary-dark
 
 
-
-
 .scroll-to-top-button
     position: fixed
     right: 1.5em
     bottom: 2.5em
     background-color: $gray-20
+    border-color: $gray-20
     color: $text
     z-index: 4
 
     &:hover, &:focus
         background-color: $primary-light
+        border-color: $primary-light
         color: white
 
 
@@ -317,7 +287,6 @@ button.button-circle
     flex-wrap: nowrap
 
 
-
 .button-group
     column-gap: 0.5em
 
@@ -351,7 +320,8 @@ button.button-circle
 
 
 @media screen and (max-width: 550px)
-    button, .button
+    button:not(.scroll-to-top-button):not(.button-circle):not(.button-square):not(.darkmode-toggle):not(.event-list-widget--search-button),
+    .button:not(.scroll-to-top-button):not(.button-circle):not(.button-square):not(.darkmode-toggle):not(.event-list-widget--search-button)
         width: 100%
         display: block
 

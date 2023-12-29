@@ -5,15 +5,14 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Mail\SendCodeMail;
 use App\Trait\HasRolesAndPermissions;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\HasApiTokens;
 
-final class User extends Authenticatable
+final class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, HasRolesAndPermissions;
 
@@ -28,6 +27,7 @@ final class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
         'enable_2fa',
     ];
 
@@ -76,22 +76,7 @@ final class User extends Authenticatable
 
         } catch (\Exception $e) {
             info("Error: ".$e->getMessage());
-            dd($e);
+            exit;
         }
     }
-
-
-    /**
-     * @return BelongsToMany
-     */
-    /*    public function events(): BelongsToMany {
-            return $this->belongsToMany( Event::class, 'users_events' );
-        }*/
-
-    /**
-     * @return HasMany
-     */
-    /*    public function worker_availabilities(): HasMany {
-            return $this->hasMany( WorkerAvailability::class, 'availability_id');
-        }*/
 }

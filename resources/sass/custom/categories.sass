@@ -11,6 +11,7 @@
         content: "\f0d7"
         color: black
         margin-right: 6px
+        transform: rotate(270deg)
 
 
 .active-list-item
@@ -19,8 +20,9 @@
 
 /* rotate the arrow icon */
 .caret-down::before
-    //transform: rotate(90deg)
+    transform: rotate(180deg)
     content: "\f0d8"
+
 
 /* hide the nested ul */
 .nested
@@ -29,36 +31,52 @@
     &.active
         background-color: whitesmoke
 
+
 /* show the nested list */
 .active
     display: block
-// reason: important not to overwrite
+
 
 .active-category
+    padding-right: 0.5em
     padding-top: 0.5em
     padding-bottom: 0.5em
     display: flex
+    justify-content: space-between
     align-items: center
     background-color: gainsboro
     border-top: 1px solid slategrey
     border-left: 1px solid slategrey
     border-right: 1px solid slategrey
 
-    &>div
+    & > div
         align-items: center
         display: flex
 
+
 .inactive-category
+    padding-right: 0.5em
     border-top: 1px solid slategrey
+    justify-content: space-between
     padding-top: 0.5em
     padding-bottom: 0.5em
     display: flex
     align-items: center
 
-    &>div
+    & > div
         align-items: center
         display: flex
 
+
+.upload-to-root
+    display: flex
+    flex-wrap: wrap
+    column-gap: 1em
+    justify-content: space-between
+    align-items: center
+
+    label, button
+        margin-top: 0
 
 
 html.dark
@@ -74,15 +92,3 @@ html.dark
     .active-category
         background-color: $black
         border: 1px solid $gray-60
-
-
-.upload-to-root
-    display: flex
-    flex-wrap: wrap
-    column-gap: 1em
-    justify-content: space-between
-    align-items: center
-
-    label, button
-        margin-top: 0
-/* DROPDOWN END */
