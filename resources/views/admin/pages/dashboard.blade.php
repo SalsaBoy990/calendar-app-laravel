@@ -13,7 +13,7 @@
                     @role('super-administrator|administrator')
                     <!-- Custom links -->
                     <!-- Manage workers link -->
-                    <li class="card text-center">
+                    <li class="card text-center glassmorphic">
                         <a class="card-link" href="{{ route('worker.manage') }}">
                             <i class="fa-solid fa-person-digging" aria-hidden="true"></i>
                             {{ __('Manage workers') }}
@@ -21,7 +21,7 @@
                     </li>
 
                     <!-- Event calendar link -->
-                    <li class="card text-center">
+                    <li class="card text-center glassmorphic">
                         <a class="card-link" href="{{ route('calendar') }}">
                             <i class="fa fa-calendar" aria-hidden="true"></i>
                             <span>{{ __('Manage events') }}</span>
@@ -29,7 +29,7 @@
                     </li>
 
                     <!-- Worker availabilities link -->
-                    <li class="card text-center">
+                    <li class="card text-center glassmorphic">
                         <a class="card-link" href="{{ route('workers') }}">
                             <i class="fa-regular fa-clock" aria-hidden="true"></i>
                             <span>{{ __('Worker availabilities') }}</span>
@@ -37,14 +37,14 @@
                     </li>
 
                     <!-- Manage clients link -->
-                    <li class="card text-center">
+                    <li class="card text-center glassmorphic">
                         <a class="card-link" href="{{ route('client.manage') }}">
                             <i class="fa fa-address-card" aria-hidden="true"></i>
                             <span>{{ __('Manage clients') }}</span>
                         </a>
                     </li>
 
-                    <li class="card text-center">
+                    <li class="card text-center glassmorphic">
                         <a href="{{ route('statistics') }}" class="card-link">
                             <i class="fa fa-line-chart" aria-hidden="true"></i>{{ __('Statistics') }}
                         </a>
@@ -53,7 +53,7 @@
 
                     @role('super-administrator')
                     <!-- Manage users link -->
-                    <li class="card text-center">
+                    <li class="card text-center glassmorphic">
                         <a class="card-link" href="{{ route('user.manage') }}">
                             <i class="fa fa-users" aria-hidden="true"></i>
                             {{ __('Manage users') }}
@@ -62,7 +62,7 @@
 
 
                     <!-- Manage roles and permissions link -->
-                    <li class="card text-center">
+                    <li class="card text-center glassmorphic">
                         <a class="card-link" href="{{ route('role-permission.manage') }}">
                             <i class="fa fa-lock" aria-hidden="true"></i>
                             {{ __('Roles and Permissions') }}
@@ -71,7 +71,7 @@
                     @endrole
 
                     <!-- Account link -->
-                    <li class="card text-center">
+                    <li class="card text-center glassmorphic">
                         <a class="card-link" href="{{ route('user.account', auth()->id()) }}">
                             <i class="fa fa-user" aria-hidden="true"></i>
                             <span>{{ __('My Account') }}</span>
@@ -79,7 +79,7 @@
                     </li>
 
                     <!-- Logout link -->
-                    <li class="card text-center">
+                    <li class="card text-center glassmorphic">
                         <a
                             id="logout-form-dashboard-trigger"
                             class="card-link"

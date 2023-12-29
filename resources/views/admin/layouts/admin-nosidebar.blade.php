@@ -5,6 +5,9 @@
     :class="{'dark': darkMode }"
 >
 <head>
+    <script nonce="{{ csp_nonce() }}">
+        document.querySelector('html').classList.add(localStorage.getItem('darkMode') === 'true' ? 'dark' : 'light')
+    </script>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name') }}</title>

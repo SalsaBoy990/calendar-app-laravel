@@ -4,26 +4,26 @@
         <nav class="nav-links">
             @auth
                 @role('super-administrator|administrator')
-                <h1 class="margin-0 fs-16 relative calendar-works">{{ __('Works') }}</h1>
-                <a class="{{ request()->routeIs('dashboard') ? 'active' : '' }}"
+                <h1 class="margin-0 fs-18 relative calendar-works padding-right-2">{{ __('Works') }}</h1>
+                <a class="fs-14 {{ request()->routeIs('dashboard') ? 'active' : '' }}"
                    href="{{ url('/admin/dashboard') }}">
                     <i class="fa fa-tachometer" aria-hidden="true"></i>{{ __('Dashboard') }}
                 </a>
 
-                <a class="{{ request()->routeIs('calendar') ? 'active' : '' }}"
+                <a class="fs-14 {{ request()->routeIs('calendar') ? 'active' : '' }}"
                    href="{{ route('calendar') }}">
                     <i class="fa fa-calendar" aria-hidden="true"></i>{{ __('Works') }}
                 </a>
 
                 <!-- Worker availabilities link -->
-                <a class="{{ request()->routeIs('workers') ? 'active' : '' }}"
+                <a class="fs-14 {{ request()->routeIs('workers') ? 'active' : '' }}"
                    href="{{ route('workers') }}">
                     <i class="fa-regular fa-clock" aria-hidden="true"></i>
                     {{ __('Availabilities') }}
                 </a>
 
                 <!-- Statistics -->
-                <a class="{{ request()->routeIs('statistics') ? 'active' : '' }}"
+                <a class="fs-14 {{ request()->routeIs('statistics') ? 'active' : '' }}"
                    href="{{ route('statistics') }}">
                     <i class="fa fa-line-chart" aria-hidden="true"></i>
                     {{ __('Statistics') }}
