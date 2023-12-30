@@ -13,19 +13,14 @@ use App\Interface\Services\DateTimeServiceInterface;
 use App\Interface\Services\ImageServiceInterface;
 use App\Interface\Services\RolePermissionServiceInterface;
 
-use App\Repository\CategoryRepository;
 use App\Repository\ClientRepository;
 use App\Repository\ModelRepository;
-use App\Repository\PostRepository;
-use App\Repository\TagRepository;
 use App\Repository\UserRepository;
-
 use App\Services\ArchiveEntityService;
 use App\Services\DateTimeService;
 use App\Services\ImageService;
 use App\Services\RolePermissionService;
 
-use GuzzleHttp\ClientInterface;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
