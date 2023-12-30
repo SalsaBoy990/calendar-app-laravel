@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin\Client;
 
+use App\Interface\Repository\ClientRepositoryInterface;
 use App\Models\Client;
 use App\Support\InteractsWithBanner;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -12,6 +13,13 @@ class Delete extends Component
 {
     use InteractsWithBanner;
     use AuthorizesRequests;
+
+
+    /**
+     * @var ClientRepositoryInterface
+     */
+    private ClientRepositoryInterface $clientRepository;
+
 
     // used by blade / alpinejs
     public string $modalId;
@@ -27,6 +35,22 @@ class Delete extends Component
         'clientId' => 'required|int|min:1',
     ];
 
+
+    /**
+     * @param  ClientRepositoryInterface  $clientRepository
+     * @return void
+     */
+    public function boot(ClientRepositoryInterface $clientRepository): void
+    {
+        $this->clientRepository = $clientRepository;
+    }
+
+
+    /**
+     * @param  string  $modalId
+     * @param  Client  $client
+     * @return void
+     */
     public function mount(string $modalId, Client $client)
     {
         $this->modalId = $modalId;
@@ -37,11 +61,19 @@ class Delete extends Component
     }
 
 
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
     public function render()
     {
         return view('admin.livewire.client.delete');
     }
 
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function deleteClient()
     {
         $this->client = Client::findOrFail($this->clientId);
@@ -54,8 +86,7 @@ class Delete extends Component
         // save category, rollback transaction if fails
         DB::transaction(
             function () {
-                $this->client->delete();
-                $this->client->client_detail()->delete();
+                $this->clientRepository->deleteClient($this->client);
             },
             2
         );

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin\Client;
 
+use App\Interface\Repository\ClientRepositoryInterface;
 use App\Models\Client;
 use App\Models\ClientDetail;
 use App\Support\InteractsWithBanner;
@@ -14,6 +15,13 @@ class Edit extends Component
 {
     use InteractsWithBanner;
     use AuthorizesRequests;
+
+
+    /**
+     * @var ClientRepositoryInterface
+     */
+    private ClientRepositoryInterface $clientRepository;
+
 
     // used by blade / alpinejs
     public string $modalId;
@@ -45,6 +53,21 @@ class Edit extends Component
         'taxNumber' => ['nullable', 'string', 'max:255'],
     ];
 
+
+    /**
+     * @param  ClientRepositoryInterface  $clientRepository
+     * @return void
+     */
+    public function boot(ClientRepositoryInterface $clientRepository): void
+    {
+        $this->clientRepository = $clientRepository;
+    }
+
+
+    /**
+     * @param  Client  $client
+     * @return void
+     */
     public function mount(Client $client)
     {
         $this->modalId = '';
@@ -69,11 +92,19 @@ class Edit extends Component
     }
 
 
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
     public function render()
     {
         return view('admin.livewire.client.edit');
     }
 
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function updateClient()
     {
         $this->authorize('update', [Client::class, $this->client]);
@@ -108,25 +139,8 @@ class Edit extends Component
                     $details['tax_number'] = strip_tags(trim($this->taxNumber));
                 }
 
-                // if user sets detail fields and we don't have a client detail record yet
-                if (!empty($details) && $this->client->client_detail_id === null) {
-
-                    $details['client_id'] = $this->client->id;
-                    $newClientDetails = new ClientDetail($details);
-                    $newClientDetails->save();
-
-                    // refresh properties
-                    $newClientDetails->refresh();
-
-                    // set client detail id for the client to be saved
-                    $client['client_detail_id'] = $newClientDetails->id;
-
-                } else {
-                    $this->client->client_detail()->update($details);
-                }
-
-                $this->client->update($client);
-
+                $this->clientRepository->updateClient($this->client, $client, $details,
+                    $this->client->client_detail_id);
             },
             2
         );

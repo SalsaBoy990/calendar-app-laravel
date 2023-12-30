@@ -3,7 +3,7 @@
 @section('content')
 
     <main class="padding-1">
-        <nav class="breadcrumb">
+        <nav class="breadcrumb breadcrumb-left">
             <ol>
                 <li>
                     <a href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>

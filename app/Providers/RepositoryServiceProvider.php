@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Interface\Repository\CategoryRepositoryInterface;
+use App\Interface\Repository\ClientRepositoryInterface;
 use App\Interface\Repository\ModelRepositoryInterface;
 use App\Interface\Repository\PostRepositoryInterface;
 use App\Interface\Repository\TagRepositoryInterface;
@@ -13,6 +14,7 @@ use App\Interface\Services\ImageServiceInterface;
 use App\Interface\Services\RolePermissionServiceInterface;
 
 use App\Repository\CategoryRepository;
+use App\Repository\ClientRepository;
 use App\Repository\ModelRepository;
 use App\Repository\PostRepository;
 use App\Repository\TagRepository;
@@ -23,6 +25,7 @@ use App\Services\DateTimeService;
 use App\Services\ImageService;
 use App\Services\RolePermissionService;
 
+use GuzzleHttp\ClientInterface;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -38,6 +41,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ModelRepositoryInterface::class, ModelRepository::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(ArchiveEntityServiceInterface::class, ArchiveEntityService::class);
+        $this->app->bind(ClientRepositoryInterface::class, ClientRepository::class);
 
 
         /* $this->app->when([LocationController::class])

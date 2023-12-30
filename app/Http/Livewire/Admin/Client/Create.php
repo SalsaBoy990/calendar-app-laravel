@@ -2,8 +2,8 @@
 
 namespace App\Http\Livewire\Admin\Client;
 
+use App\Interface\Repository\ClientRepositoryInterface;
 use App\Models\Client;
-use App\Models\ClientDetail;
 use App\Support\InteractsWithBanner;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Support\Facades\DB;
@@ -14,6 +14,13 @@ class Create extends Component
 {
     use InteractsWithBanner;
     use AuthorizesRequests;
+
+
+    /**
+     * @var ClientRepositoryInterface
+     */
+    private ClientRepositoryInterface $clientRepository;
+
 
     // used by blade / alpinejs
     public string $modalId;
@@ -42,6 +49,10 @@ class Create extends Component
         'taxNumber' => ['nullable', 'string', 'max:255'],
     ];
 
+
+    /**
+     * @return void
+     */
     public function mount()
     {
         $this->modalId = 'm-new-client';
@@ -61,11 +72,29 @@ class Create extends Component
     }
 
 
+    /**
+     * @param  ClientRepositoryInterface  $clientRepository
+     * @return void
+     */
+    public function boot(ClientRepositoryInterface $clientRepository): void
+    {
+        $this->clientRepository = $clientRepository;
+    }
+
+
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
     public function render()
     {
         return view('admin.livewire.client.create');
     }
 
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function createClient()
     {
         $this->authorize('create', Client::class);
@@ -93,25 +122,14 @@ class Create extends Component
                 if (isset($this->taxNumber)) {
                     $details['tax_number'] = strip_tags($this->taxNumber);
                 }
-                if (!empty($details)) {
-                    // we need to create a new ClientDetail record
-                    $newClientDetails = new ClientDetail($details);
-                    $newClientDetails->save();
 
-                    // refresh data
-                    $newClientDetails->refresh();
-                }
-
-
-                $newClient = Client::create([
+                $clientData = [
                     'name' => strip_tags($this->name),
                     'address' => strip_tags($this->address),
                     'type' => strip_tags($this->type),
-                    'client_detail_id' => $newClientDetails->id ?? null // store the client detail id
-                ]);
+                ];
 
-                $newClient->save();
-
+                $this->clientRepository->createClient($clientData, $details);
             },
             2
         );
