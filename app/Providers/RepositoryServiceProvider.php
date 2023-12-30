@@ -2,11 +2,9 @@
 
 namespace App\Providers;
 
-use App\Interface\Repository\CategoryRepositoryInterface;
 use App\Interface\Repository\ClientRepositoryInterface;
+use App\Interface\Repository\EventRepositoryInterface;
 use App\Interface\Repository\ModelRepositoryInterface;
-use App\Interface\Repository\PostRepositoryInterface;
-use App\Interface\Repository\TagRepositoryInterface;
 use App\Interface\Repository\UserRepositoryInterface;
 use App\Interface\Services\ArchiveEntityServiceInterface;
 use App\Interface\Services\DateTimeServiceInterface;
@@ -14,6 +12,7 @@ use App\Interface\Services\ImageServiceInterface;
 use App\Interface\Services\RolePermissionServiceInterface;
 
 use App\Repository\ClientRepository;
+use App\Repository\EventRepository;
 use App\Repository\ModelRepository;
 use App\Repository\UserRepository;
 use App\Services\ArchiveEntityService;
@@ -37,6 +36,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(ArchiveEntityServiceInterface::class, ArchiveEntityService::class);
         $this->app->bind(ClientRepositoryInterface::class, ClientRepository::class);
+        $this->app->bind(EventRepositoryInterface::class, EventRepository::class);
 
 
         /* $this->app->when([LocationController::class])

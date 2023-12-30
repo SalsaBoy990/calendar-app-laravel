@@ -43,6 +43,7 @@ trait DateTimeConverter
         return $data;
     }
 
+
     /**
      * Need to convert datetime to UTC for the database to store, because
      * database should not deal with timezones
@@ -53,6 +54,7 @@ trait DateTimeConverter
      * @param  string  $inputFormat
      * @param  string  $outputFormat
      * @return string|DateTime|false
+     * @throws Exception
      */
     public static function convertFromLocalToUtc(
         string $datetime,
@@ -66,8 +68,8 @@ trait DateTimeConverter
         $utcTz = new \DateTimeZone('UTC');
 
         $datetimeObject = DateTime::createFromFormat($inputFormat, $datetime, $localTz);
-        // unsuccessful creation
         if ($datetimeObject === false) {
+            // unsuccessful creation
             return false;
         }
 
@@ -87,6 +89,7 @@ trait DateTimeConverter
      * @param  string  $inputFormat
      * @param  string  $outputFormat
      * @return string|DateTime|bool
+     * @throws Exception
      */
     public static function convertFromUtcToLocal(
         string $datetime,
@@ -99,8 +102,8 @@ trait DateTimeConverter
         $utcTz = new \DateTimeZone('UTC');
 
         $datetimeObject = DateTime::createFromFormat($inputFormat, $datetime, $utcTz);
-        // unsuccessful creation
         if ($datetimeObject === false) {
+            // unsuccessful creation
             return false;
         }
 

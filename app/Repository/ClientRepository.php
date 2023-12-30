@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Interface\Repository\ClientRepositoryInterface;
 use App\Models\Client;
 use App\Models\ClientDetail;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 class ClientRepository implements ClientRepositoryInterface
@@ -99,5 +100,10 @@ class ClientRepository implements ClientRepositoryInterface
         $client->delete();
         $client->client_detail()->delete();
         return true;
+    }
+
+    public function getAllClients(): Collection
+    {
+        return Client::with('client_detail')->get();
     }
 }

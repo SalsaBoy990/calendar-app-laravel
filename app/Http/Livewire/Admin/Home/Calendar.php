@@ -2,7 +2,8 @@
 
 namespace App\Http\Livewire\Admin\Home;
 
-use App\Models\Client;
+use App\Interface\Repository\ClientRepositoryInterface;
+use App\Interface\Repository\EventRepositoryInterface;
 use App\Models\Event;
 use App\Models\Worker;
 use App\Support\InteractsWithBanner;
@@ -21,68 +22,230 @@ use Livewire\Redirector;
 
 class Calendar extends Component
 {
-
     use InteractsWithBanner;
 
     // used by blade / alpinejs
+    /**
+     * @var string
+     */
     public string $modalId;
+
+
+    /**
+     * @var string
+     */
     public string $deleteModalId;
+
+
+    /**
+     * @var bool
+     */
     public bool $isModalOpen;
+
+
+    /**
+     * @var bool
+     */
     public bool $isDeleteModalOpen;
 
+
     // inputs
-    // uuid for new event
+    /**
+     * uuid for new event
+     *
+     * @var string
+     */
     public string $newId;
 
-    // uui for existing event
+
+    /**
+     * uui for existing event
+     * @var string
+     */
     public string $updateId;
 
-    // Event model entity
+
+    /**
+     * Event model entity
+     *
+     * @var Event|null
+     */
     public ?Event $event;
 
-    // start and end is for regular events
+
+    /**
+     * start and end is for regular events
+     * @var string
+     */
     public string $start;
+
+
+    /**
+     * @var string|null
+     */
     public ?string $end;
 
 
+    /**
+     * @var int
+     */
     public int $isRecurring;
+
+
+    /**
+     * @var string
+     */
     public string $duration;
+
 
     // basic event properties
     // all types of events can have these props
+    /**
+     * @var string
+     */
     public string $description;
+
+
+    /**
+     * @var string
+     */
     public string $status;
+
+
+    /**
+     * @var string|null
+     */
     public ?string $backgroundColor;
 
+
+    /**
+     * @var array
+     */
     public array $statusArray;
+
+
+    /**
+     * @var Collection
+     */
     public Collection $workers;
+
+
+    /**
+     * @var array
+     */
     public array $workerIds;
+
+
+    /**
+     * @var array
+     */
     public array $statusColors;
+
+
+    /**
+     * @var int|null
+     */
     public ?int $clientId;
+
+
+    /**
+     * @var Collection
+     */
     public Collection $clients;
+
+
+    /**
+     * @var string
+     */
     public string $clientName;
+
+
+    /**
+     * @var string
+     */
     public string $clientAddress;
 
+
     // for recurring events (by recurrence rules)
+    /**
+     * @var string
+     */
     private string $frequency;
+
+
+    /**
+     * @var array
+     */
     public array $frequencies;
+
+
+    /**
+     * @var string
+     */
     public string $frequencyName;
 
+
+    /**
+     * @var string
+     */
     public string $dtstart;
+
+
+    /**
+     * @var string
+     */
     public string $until;
+
+
+    /**
+     * @var string
+     */
     public string $byweekday;
+
+
+    /**
+     * @var array
+     */
     public array $weekDays;
+
+
+    /**
+     * @var int
+     */
     private int $interval;
+
+
+    /**
+     * @var array
+     */
     public array $rrule;
 
+
     // Event list as collection
+    /**
+     * @var Collection
+     */
     public Collection $events;
 
 
-    // dynamically set rules based on event type (recurring or regular)
-    protected function rules()
-    {
+    /**
+     * @var EventRepositoryInterface
+     */
+    private EventRepositoryInterface $eventRepository;
 
+
+    /**
+     * @var ClientRepositoryInterface
+     */
+    private ClientRepositoryInterface $clientRepository;
+
+
+    /**
+     * dynamically set rules based on event type (recurring or regular)
+     * @return array[]
+     */
+    protected function rules(): array
+    {
         // shared property validation rules
         $rules = [
             'updateId' => ['nullable', 'uuid', 'max:255'],
@@ -96,8 +259,6 @@ class Calendar extends Component
             $rules['start'] = ['required', 'string', 'max:255'];
             $rules['end'] = ['nullable', 'string', 'max:255'];
 
-            return $rules;
-
         } else {
             // recurring
             $rules['frequencyName'] = ['required', 'string'];
@@ -106,14 +267,17 @@ class Calendar extends Component
             $rules['until'] = ['nullable', 'string'];
             $rules['duration'] = ['required', 'string'];
 
-            return $rules;
-
         }
+        return $rules;
 
     }
 
 
-    // listen to frontend calendar events, bind them with backend methods with Livewire (ajax requests)
+    /**
+     * listen to frontend calendar events, bind them with backend methods with Livewire (ajax requests)
+     *
+     * @var string[]
+     */
     protected $listeners = [
         'deleteEventListener' => 'deleteEvent',
         'openDeleteEventModal' => 'openDeleteEventModal',
@@ -121,20 +285,42 @@ class Calendar extends Component
     ];
 
 
-    // Mount life-cycle hook of the livewire component
-    public function mount()
+    /**
+     * @param  EventRepositoryInterface  $eventRepository
+     * @param  ClientRepositoryInterface  $clientRepository
+     * @return void
+     */
+    public function boot(EventRepositoryInterface $eventRepository, ClientRepositoryInterface $clientRepository): void
+    {
+        $this->eventRepository = $eventRepository;
+        $this->clientRepository = $clientRepository;
+    }
+
+
+    /**
+     * Mount life-cycle hook of the livewire component
+     * @return void
+     */
+    public function mount(): void
     {
         $this->initializeProperties();
 
         $this->workers = Worker::all();
     }
 
-    public function updatedIsModalOpen()
+
+    /**
+     * @return void
+     */
+    public function updatedIsModalOpen(): void
     {
         $this->initializeProperties();
     }
 
-    public function initializeProperties()
+    /**
+     * @return void
+     */
+    public function initializeProperties(): void
     {
         // Alpine
         $this->modalId = 'event-modal';
@@ -203,7 +389,7 @@ class Calendar extends Component
             'closed' => '#62626b'
         ];
 
-        $this->clients = Client::with('client_detail')->get();
+        $this->clients = $this->clientRepository->getAllClients();
     }
 
 
@@ -213,11 +399,7 @@ class Calendar extends Component
     public function render(): View|Factory|Application
     {
         /* Also query soft-deleted clients (needed for the event view) */
-        $this->events = Event::with(['workers'])->with([
-            'client' => function ($query) {
-                $query->withTrashed();
-            }
-        ])->get();
+        $this->events = $this->eventRepository->getEvents();
 
         return view('admin.livewire.home.calendar');
     }
@@ -262,11 +444,7 @@ class Calendar extends Component
             // always use the uuid column here (which is the 'id')!
             $eventId = $changedEvent->id;
             $this->updateId = $eventId;
-            $this->event = Event::where('id', '=', $eventId)->with([
-                'client' => function ($query) {
-                    $query->withTrashed();
-                }
-            ])->first();
+            $this->event = $this->eventRepository->getEventById($eventId);
 
             if ($this->checkIfEventExists() === null) {
                 $this->banner(__('Event does not exists!'), 'danger');
@@ -371,9 +549,7 @@ class Calendar extends Component
 
                     $this->setEventProperties($eventProps);
 
-                    $eventEntity->update($eventProps);
-
-                    $eventEntity->workers()->sync($this->workerIds);
+                    $eventEntity = $this->eventRepository->updateEvent($eventEntity, $eventProps, $this->workerIds);
                     $eventEntity->save();
                     // refresh would also refresh relations, but client will be null here, because
                     // it does not query trashed (soft-deleted) clients as relations
@@ -387,9 +563,7 @@ class Calendar extends Component
 
                     $this->setEventProperties($eventProps);
 
-                    $eventEntity = Event::create($eventProps);
-
-                    $eventEntity->workers()->sync($this->workerIds);
+                    $eventEntity = $this->eventRepository->createEvent($eventProps, $this->workerIds);
                     $eventEntity->save();
                     // $eventEntity->refresh();
 
@@ -430,7 +604,7 @@ class Calendar extends Component
             // delete role, rollback transaction if fails
             DB::transaction(
                 function () use ($event) {
-                    $event->delete();
+                    $this->eventRepository->deleteEvent($event);
                 },
                 2
             );
@@ -482,6 +656,7 @@ class Calendar extends Component
      * @param $eventProps
      *
      * @return void
+     * @throws \Exception
      */
     private function setEventProperties(&$eventProps): void
     {
@@ -551,13 +726,8 @@ class Calendar extends Component
     {
         foreach ($this->events as $event) {
             if ($event->id === $this->updateId) {
-//                $this->event = $event;
-                $this->event = Event::with(['workers'])->with([
-                    'client' => function ($query) {
-                        $query->withTrashed();
-                    }
-                ])->where('id', '=', $this->updateId)->first();
-
+                // $this->event = $event;
+                $this->event = $this->eventRepository->getEventById($this->updateId);
                 break;
             }
         }
@@ -573,12 +743,8 @@ class Calendar extends Component
     {
         foreach ($this->events as $event) {
             if ($event->id === $this->updateId) {
-//                return $event;
-                return Event::with(['workers'])->with([
-                    'client' => function ($query) {
-                        $query->withTrashed();
-                    }
-                ])->where('id', '=', $this->updateId)->first();
+                // return $event;
+                return $this->eventRepository->getEventById($this->updateId);
             }
         }
 
@@ -597,7 +763,6 @@ class Calendar extends Component
                 return $value;
             }
         }
-
         return null;
     }
 
@@ -621,6 +786,7 @@ class Calendar extends Component
     /**
      * Initialize properties from event object for the modal
      * @return void
+     * @throws \Exception
      */
     private function initializeExistingPropertiesForModal(): void
     {
@@ -631,10 +797,13 @@ class Calendar extends Component
             ->toArray();
 
         $this->description = $this->event->description;
-
         $this->frequencyName = $this->event->rrule['freq'] ?? '';
         $this->byweekday = $this->event->rrule['byweekday'] ?? '';
-
+        $this->until = $this->event->rrule['until'] ?? '';
+        $this->interval = $this->event->rrule['interval'] ?? 1;
+        $this->duration = $this->event->duration ?? '';
+        $this->isRecurring = $this->event->is_recurring ?? 0;
+        $this->clientId = 0;
 
         if (isset($this->event->rrule['dtstart'])) {
             // input 'Y-m-d\TH:i:s\Z', output: 'Y-m-d H:i:s'
@@ -643,13 +812,6 @@ class Calendar extends Component
         } else {
             $this->dtstart = '';
         }
-
-
-        $this->until = $this->event->rrule['until'] ?? '';
-        $this->interval = $this->event->rrule['interval'] ?? 1;
-        $this->duration = $this->event->duration ?? '';
-        $this->isRecurring = $this->event->is_recurring ?? 0;
-        $this->clientId = 0;
 
         $this->setFrequencyName();
 
@@ -667,6 +829,7 @@ class Calendar extends Component
      * @param  array  $args
      *
      * @return void
+     * @throws \Exception
      */
     private function initializePropertiesFromArgs(array $args): void
     {
@@ -700,9 +863,12 @@ class Calendar extends Component
 
     }
 
-    private function setFrequencyNameAndInterval()
-    {
 
+    /**
+     * @return void
+     */
+    private function setFrequencyNameAndInterval(): void
+    {
         switch ($this->frequencyName) {
             case 'weekly':
                 $this->frequencyName = 'weekly';
@@ -726,7 +892,10 @@ class Calendar extends Component
     }
 
 
-    private function setFrequencyName()
+    /**
+     * @return void
+     */
+    private function setFrequencyName(): void
     {
         if ($this->frequencyName === 'weekly') {
             if ($this->interval === 1) {

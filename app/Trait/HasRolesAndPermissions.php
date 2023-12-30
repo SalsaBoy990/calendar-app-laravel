@@ -4,7 +4,6 @@ namespace App\Trait;
 
 use App\Models\Permission;
 use App\Models\Role;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 

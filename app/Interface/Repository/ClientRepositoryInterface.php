@@ -10,6 +10,11 @@ interface ClientRepositoryInterface
 {
 
     /**
+     * @return Collection
+     */
+    public function getAllClients(): Collection;
+
+    /**
      * @return LengthAwarePaginator
      */
     public function getPaginatedClients(): LengthAwarePaginator;

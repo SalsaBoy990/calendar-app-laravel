@@ -49,7 +49,7 @@ class Widget extends Component
     /**
      * @throws Exception
      */
-    public function mount()
+    public function mount(): void
     {
         $this->cleaningJobs = null;
         $this->clientId = 0;
@@ -85,7 +85,7 @@ class Widget extends Component
     /**
      * @throws Exception
      */
-    public function getJobList()
+    public function getJobList(): void
     {
         // validate user input
         $this->validate();
