@@ -3,7 +3,7 @@
 @section('content')
 
     <main class="padding-1">
-        <nav class="breadcrumb">
+        <nav class="breadcrumb breadcrumb-left">
             <ol>
                 <li>
                     <a href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
@@ -74,7 +74,7 @@
                     @endforeach
                     </tbody>
                 </table>
-                {{ $workers->links('components.pagination') }}
+                {{ $workers->links('global.components.pagination', [ 'pageName' => 'page']) }}
             @else
                 <p>{{ __('There are no workers yet.') }}</p>
             @endif

@@ -81,7 +81,7 @@
 
                     </tbody>
                 </table>
-                {{ $clients->links('components.pagination') }}
+                {{ $clients->links('global.components.pagination', [ 'pageName' => 'page']) }}
 
             @else
                 <p>{{ __('There are no clients yet.') }}</p>
