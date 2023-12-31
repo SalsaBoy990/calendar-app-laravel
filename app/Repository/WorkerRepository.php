@@ -16,7 +16,7 @@ class WorkerRepository implements WorkerRepositoryInterface
 
     public function getPaginatedWorkers(): LengthAwarePaginator
     {
-        Worker::orderBy('created_at', 'DESC')
+        return Worker::orderBy('created_at', 'DESC')
             //->with('worker_availabilities')
             ->paginate(Worker::RECORDS_PER_PAGE)
             ->withQueryString();
@@ -29,7 +29,7 @@ class WorkerRepository implements WorkerRepositoryInterface
 
     public function getAllWorkerAvailabilities(): Collection
     {
-        // TODO: Implement getAllWorkerAvailabilities() method.
+        return WorkerAvailability::all();
     }
 
 
