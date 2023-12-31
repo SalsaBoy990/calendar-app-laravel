@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Admin\Worker;
 
+use App\Interface\Repository\WorkerRepositoryInterface;
 use App\Models\Event;
 use App\Models\Worker;
 use App\Models\WorkerAvailability;
@@ -21,36 +22,107 @@ class Calendar extends Component
 {
     use InteractsWithBanner;
 
+
+    /**
+     * @var WorkerRepositoryInterface
+     */
+    private WorkerRepositoryInterface $workerRepository;
+
+
     // used by blade / alpinejs
+    /**
+     * @var string
+     */
     public string $modalId;
+
+
+    /**
+     * @var string
+     */
     public string $deleteModalId;
+
+
+    /**
+     * @var bool
+     */
     public bool $isModalOpen;
+
+
+    /**
+     * @var bool
+     */
     public bool $isDeleteModalOpen;
 
+
     // inputs
-    // uuid for new availability
+    /**
+     * uuid for new availability
+     * @var string
+     */
     public string $newId;
 
-    // uui for existing availability
+
+    /**
+     * uui for existing availability
+     * @var string
+     */
     public string $updateId;
+
+
+    /**
+     * @var WorkerAvailability|null
+     */
     public ?WorkerAvailability $availability;
 
+
     // basic availability properties
+    /**
+     * @var string
+     */
     public string $start;
+
+
+    /**
+     * @var string
+     */
     public string $end;
 
+
     // not used currently
+    /**
+     * @var string
+     */
     public string $description;
 
+
+    /**
+     * @var Collection
+     */
     public Collection $workers;
+
+
+    /**
+     * @var Collection
+     */
     public Collection $availabilities;
+
+
+    /**
+     * @var int|null
+     */
     public ?int $selectedWorkerId;
 
 
     // Is all-day event?
+    /**
+     * @var bool
+     */
     public bool $allDay;
 
 
+    /**
+     * @var array|array[]
+     */
     protected array $rules = [
         'updateId' => ['nullable', 'uuid', 'max:255'],
         'selectedWorkerId' => ['required', 'int', 'min:1'],
@@ -58,29 +130,55 @@ class Calendar extends Component
         'end' => ['nullable', 'string'],
     ];
 
+
+    /**
+     * @var string[]
+     */
     protected $listeners = [
         'deleteAvailabilityListener' => 'deleteAvailability',
         'openDeleteAvailabilityModal' => 'openDeleteAvailabilityModal',
         'closeAvailabilityModal' => 'closeAvailabilityModal',
     ];
 
-    public function mount()
+
+    /**
+     * @param  WorkerRepositoryInterface  $workerRepository
+     * @return void
+     */
+    public function boot(WorkerRepositoryInterface $workerRepository): void
+    {
+        $this->workerRepository = $workerRepository;
+    }
+
+
+    /**
+     * @return void
+     */
+    public function mount(): void
     {
         $this->initializeProperties();
 
         // query workers
-        $this->workers = Worker::all();
+        $this->workers = $this->workerRepository->getAllWorkers();
 
         $this->selectedWorkerId = null;
 
     }
 
-    public function updatedIsModalOpen()
+
+    /**
+     * @return void
+     */
+    public function updatedIsModalOpen(): void
     {
         $this->initializeProperties();
     }
 
-    public function initializeProperties()
+
+    /**
+     * @return void
+     */
+    public function initializeProperties(): void
     {
         // Alpine
         $this->modalId = 'worker-modal';
@@ -92,7 +190,6 @@ class Calendar extends Component
         $this->start = '';
         $this->end = '';
 
-        //
         $this->allDay = false;
         $this->newId = '';
         $this->updateId = '';
@@ -107,20 +204,28 @@ class Calendar extends Component
      */
     public function render(): View|Factory|Application
     {
-        $this->availabilities = WorkerAvailability::with('worker')->get();
+        $this->availabilities = $this->workerRepository->getAllWorkerAvailabilitiesWithWorker();
 
         return view('admin.livewire.worker.calendar');
     }
 
 
+    /**
+     * @param $availability
+     * @return void
+     * @throws \Exception
+     */
     public function availabilityChange($availability): void
     {
-        $changedAvailability = WorkerAvailability::where('id', $availability['id'])->first();
-        $changedAvailability->start = WorkerAvailability::convertFromLocalToUtc($availability['start'], WorkerAvailability::TIMEZONE, false,
+        $changedAvailability = $this->workerRepository->getWorkerAvailabilityById($availability['id']);
+
+        $changedAvailability->start = WorkerAvailability::convertFromLocalToUtc($availability['start'],
+            WorkerAvailability::TIMEZONE, false,
             'Y-m-d\\TH:i:sP');
 
         if (Arr::exists($availability, 'end')) {
-            $changedAvailability->end = WorkerAvailability::convertFromLocalToUtc($availability['end'], WorkerAvailability::TIMEZONE, false,
+            $changedAvailability->end = WorkerAvailability::convertFromLocalToUtc($availability['end'],
+                WorkerAvailability::TIMEZONE, false,
                 'Y-m-d\\TH:i:sP');
         }
 
@@ -133,6 +238,7 @@ class Calendar extends Component
      *
      * @param  array  $args
      * @return RedirectResponse|void
+     * @throws \Exception
      */
     public function availabilityModal(array $args)
     {
@@ -322,6 +428,7 @@ class Calendar extends Component
 
     /**
      * @return array
+     * @throws \Exception
      */
     private function getAvailabilityProps(): array
     {

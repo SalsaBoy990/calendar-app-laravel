@@ -14,20 +14,56 @@ class Delete extends Component
     use AuthorizesRequests;
 
     // used by blade / alpinejs
+    /**
+     * @var string
+     */
     public string $modalId;
+
+
+    /**
+     * @var bool
+     */
     public bool $isModalOpen;
+
+
+    /**
+     * @var bool
+     */
     public bool $hasSmallButton;
 
     // inputs
+    /**
+     * @var int
+     */
     public int $workerId;
+
+
+    /**
+     * @var Worker
+     */
     private Worker $user;
+
+
+    /**
+     * @var string
+     */
     public string $name;
 
 
+    /**
+     * @var array|string[]
+     */
     protected array $rules = [
         'workerId' => 'required|int|min:1',
     ];
 
+
+    /**
+     * @param  string  $modalId
+     * @param $worker
+     * @param  bool  $hasSmallButton
+     * @return void
+     */
     public function mount(string $modalId, $worker, bool $hasSmallButton = false)
     {
         $this->modalId = $modalId;
@@ -39,12 +75,19 @@ class Delete extends Component
     }
 
 
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Foundation\Application
+     */
     public function render()
     {
         return view('admin.livewire.worker.delete');
     }
 
 
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function deleteWorker()
     {
         $worker = Worker::findOrFail($this->workerId);

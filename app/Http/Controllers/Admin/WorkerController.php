@@ -3,8 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Interface\Repository\WorkerRepositoryInterface;
 use App\Models\Worker;
 use App\Support\InteractsWithBanner;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Request;
 
 class WorkerController extends Controller
@@ -12,67 +16,29 @@ class WorkerController extends Controller
     use InteractsWithBanner;
 
     /**
+     * @var WorkerRepositoryInterface
+     */
+    private WorkerRepositoryInterface $workerRepository;
+
+
+    /**
+     * @param  WorkerRepositoryInterface  $workerRepository
+     */
+    public function __construct(WorkerRepositoryInterface $workerRepository)
+    {
+        $this->workerRepository = $workerRepository;
+    }
+
+
+    /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View|Application|Factory|\Illuminate\Contracts\Foundation\Application
     {
         $this->authorize('viewAny', Worker::class);
 
-        $workers = Worker::orderBy('created_at', 'DESC')
-            //->with('worker_availabilities')
-            ->paginate(Worker::RECORDS_PER_PAGE)
-            ->withQueryString();
-
         return view('admin.pages.worker.manage')->with([
-            'workers' => $workers,
+            'workers' => $this->workerRepository->getPaginatedWorkers(),
         ]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Worker $worker)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Worker $worker)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Worker $worker)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Worker $worker)
-    {
-        //
     }
 }
