@@ -246,6 +246,7 @@ class Calendar extends Component
      */
     private DateTimeServiceInterface $dateTimeService;
 
+
     /**
      * dynamically set rules based on event type (recurring or regular)
      * @return array[]

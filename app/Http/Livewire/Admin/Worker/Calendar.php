@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Admin\Worker;
 
 use App\Interface\Repository\WorkerRepositoryInterface;
+use App\Interface\Services\DateTimeServiceInterface;
 use App\Models\Event;
 use App\Models\Worker;
 use App\Models\WorkerAvailability;
@@ -14,7 +15,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\Redirector;
 
@@ -57,16 +57,16 @@ class Calendar extends Component
     // inputs
     /**
      * id for new availability
-     * @var string
+     * @var int|null
      */
-    public string $newId;
+    public ?int $newId;
 
 
     /**
      * id for existing availability
-     * @var string
+     * @var int|null
      */
-    public string $updateId;
+    public ?int $updateId;
 
 
     /**
@@ -142,12 +142,20 @@ class Calendar extends Component
 
 
     /**
+     * @var DateTimeServiceInterface
+     */
+    private DateTimeServiceInterface $dateTimeService;
+
+
+    /**
      * @param  WorkerRepositoryInterface  $workerRepository
+     * @param  DateTimeServiceInterface  $dateTimeService
      * @return void
      */
-    public function boot(WorkerRepositoryInterface $workerRepository): void
+    public function boot(WorkerRepositoryInterface $workerRepository, DateTimeServiceInterface $dateTimeService): void
     {
         $this->workerRepository = $workerRepository;
+        $this->dateTimeService = $dateTimeService;
     }
 
 
@@ -160,9 +168,7 @@ class Calendar extends Component
 
         // query workers
         $this->workers = $this->workerRepository->getAllWorkers();
-
         $this->selectedWorkerId = null;
-
     }
 
 
@@ -191,8 +197,8 @@ class Calendar extends Component
         $this->end = '';
 
         $this->allDay = false;
-        $this->newId = '';
-        $this->updateId = '';
+        $this->newId = null;
+        $this->updateId = null;
         $this->availability = null;
         $this->selectedWorkerId = null;
 
@@ -217,14 +223,14 @@ class Calendar extends Component
      */
     public function availabilityChange($availability): void
     {
-        $changedAvailability = $this->workerRepository->getWorkerAvailabilityById($availability['id']);
+        $changedAvailability = $this->workerRepository->getWorkerAvailabilityById((int) $availability['id']);
 
-        $changedAvailability->start = WorkerAvailability::convertFromLocalToUtc($availability['start'],
+        $changedAvailability->start = $this->dateTimeService->convertFromLocalToUtc($availability['start'],
             WorkerAvailability::TIMEZONE, false,
             'Y-m-d\\TH:i:sP');
 
         if (Arr::exists($availability, 'end')) {
-            $changedAvailability->end = WorkerAvailability::convertFromLocalToUtc($availability['end'],
+            $changedAvailability->end = $this->dateTimeService->convertFromLocalToUtc($availability['end'],
                 WorkerAvailability::TIMEZONE, false,
                 'Y-m-d\\TH:i:sP');
         }
@@ -246,7 +252,7 @@ class Calendar extends Component
         // existing event update flattening
         if (array_key_exists('event', $args)) {
             $args = $args['event'];
-            $this->updateId = $args['id'];
+            $this->updateId = (int) $args['id'];
 
             foreach ($this->availabilities as $availability) {
                 if ($availability->id === $this->updateId) {
@@ -268,11 +274,12 @@ class Calendar extends Component
 
             $this->start = isset($this->availability->start) ?
                 $this->availability->start->setTimezone(Event::TIMEZONE) :
-                Event::convertFromUtcToLocal($args['start'], Event::TIMEZONE, false, 'Y-m-d\TH:i:s.uP');
+                $this->dateTimeService->convertFromUtcToLocal($args['start'], Event::TIMEZONE, false,
+                    'Y-m-d\TH:i:s.uP');
 
             $this->end = isset($this->availability->end) ?
                 $this->availability->end->setTimezone(Event::TIMEZONE) :
-                Event::convertFromUtcToLocal($args['end'], Event::TIMEZONE, false, 'Y-m-d\TH:i:s.uP');
+                $this->dateTimeService->convertFromUtcToLocal($args['end'], Event::TIMEZONE, false, 'Y-m-d\TH:i:s.uP');
 
         } else {
             $this->start = date("Y-m-d\TH:i:s", strtotime($this->availability->start ?? $args['start']));
@@ -311,7 +318,7 @@ class Calendar extends Component
             function () use ($workerEntity) {
 
                 // if we have an id, update existing availability
-                if ($this->updateId !== '') {
+                if (isset($this->updateId)) {
                     $updateAvailability = null;
                     foreach ($this->availabilities as $availability) {
                         if ($availability->id === $this->updateId) {
@@ -343,7 +350,6 @@ class Calendar extends Component
                 } else {
 
                     $data = $this->getAvailabilityProps();
-                    $data['id'] = Str::uuid();
 
                     // create
                     $newAvailability = WorkerAvailability::create($data);
@@ -356,7 +362,7 @@ class Calendar extends Component
         );
 
 
-        $this->updateId !== '' ?
+        isset($this->updateId) ?
             $this->banner(__('Successfully updated the worker availability ":name"!',
                 ['name' => htmlspecialchars($workerEntity->name)]))
             :
@@ -378,9 +384,9 @@ class Calendar extends Component
     {
 
         // if we have an id, delete existing event
-        if ($this->updateId !== '') {
+        if (isset($this->updateId)) {
 
-            $availability = WorkerAvailability::where('id', $this->updateId)->with('worker')->first();
+            $availability = WorkerAvailability::where('id', (int) $this->updateId)->with('worker')->first();
             $title = htmlspecialchars($availability->worker->name);
 
             // delete role, rollback transaction if fails
@@ -432,29 +438,29 @@ class Calendar extends Component
      */
     private function getAvailabilityProps(): array
     {
-        $start = WorkerAvailability::convertFromLocalToUtc($this->start, WorkerAvailability::TIMEZONE);
+        $start = $this->dateTimeService->convertFromLocalToUtc($this->start, WorkerAvailability::TIMEZONE);
 
         // inconsistent formats workaround
         if ($start === false) {
-            $start = WorkerAvailability::convertFromLocalToUtc($this->start, WorkerAvailability::TIMEZONE,
+            $start = $this->dateTimeService->convertFromLocalToUtc($this->start, WorkerAvailability::TIMEZONE,
                 false, 'Y-m-d\\TH:i:s');
 
             if ($start === false) {
-                $start = WorkerAvailability::convertFromLocalToUtc($this->start, WorkerAvailability::TIMEZONE,
+                $start = $this->dateTimeService->convertFromLocalToUtc($this->start, WorkerAvailability::TIMEZONE,
                     false, 'Y-m-d\\TH:i');
             }
         }
 
+
         // inconsistent formats workaround
-        $end = WorkerAvailability::convertFromLocalToUtc($this->end, WorkerAvailability::TIMEZONE);
+        $end = $this->dateTimeService->convertFromLocalToUtc($this->end, WorkerAvailability::TIMEZONE);
         if ($end === false) {
-            $end = WorkerAvailability::convertFromLocalToUtc($this->end, WorkerAvailability::TIMEZONE,
+            $end = $this->dateTimeService->convertFromLocalToUtc($this->end, WorkerAvailability::TIMEZONE,
                 false, 'Y-m-d\\TH:i:s');
 
             if ($end === false) {
-                $end = WorkerAvailability::convertFromLocalToUtc($this->end, WorkerAvailability::TIMEZONE,
+                $end = $this->dateTimeService->convertFromLocalToUtc($this->end, WorkerAvailability::TIMEZONE,
                     false, 'Y-m-d\\TH:i');
-
             }
         }
 

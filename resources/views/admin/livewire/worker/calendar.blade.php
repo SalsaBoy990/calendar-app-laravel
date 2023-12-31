@@ -163,7 +163,7 @@
                 id="{{ $deleteModalId }}"
             >
                 <div>
-                    <h3 class="h5">{{ $availability->worker->name }}</h3>
+                    <h3 class="h5">{{ $availability->worker->name ?? '' }}</h3>
                     <hr class="divider">
 
                     <div class="actions">
