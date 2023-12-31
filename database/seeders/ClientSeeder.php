@@ -18,7 +18,6 @@ class ClientSeeder extends Seeder {
             [
                 'name'       => 'MAHART Zrt.',
                 'address'    => 'Tápé, Komp u. 1.',
-                'order'      => 1,
                 'type'       => 'company',
                 'created_at' => $now,
                 'updated_at' => $now,
@@ -27,7 +26,6 @@ class ClientSeeder extends Seeder {
             [
                 'name'       => 'Florin Group Kft.',
                 'address'    => 'Szeged, Fonógyári út 65.',
-                'order'      => 2,
                 'type'       => 'company',
                 'created_at' => $now,
                 'updated_at' => $now,
@@ -36,7 +34,6 @@ class ClientSeeder extends Seeder {
             [
                 'name'       => 'Magyar Antal',
                 'address'    => 'Tápé, Barack u. 10.',
-                'order'      => 3,
                 'type'       => 'private person',
                 'created_at' => $now,
                 'updated_at' => $now,

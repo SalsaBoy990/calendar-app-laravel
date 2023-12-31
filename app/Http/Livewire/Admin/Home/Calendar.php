@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Admin\Home;
 
 use App\Interface\Repository\ClientRepositoryInterface;
 use App\Interface\Repository\EventRepositoryInterface;
+use App\Interface\Services\DateTimeServiceInterface;
 use App\Models\Event;
 use App\Models\Worker;
 use App\Support\InteractsWithBanner;
@@ -16,7 +17,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 use Livewire\Component;
 use Livewire\Redirector;
 
@@ -51,18 +51,19 @@ class Calendar extends Component
 
     // inputs
     /**
-     * uuid for new event
+     * id for new event
      *
-     * @var string
+     * @var int|null
      */
-    public string $newId;
+    public ?int $newId;
 
 
     /**
-     * uui for existing event
-     * @var string
+     * id for existing event
+     *
+     * @var int|null
      */
-    public string $updateId;
+    public ?int $updateId;
 
 
     /**
@@ -241,6 +242,11 @@ class Calendar extends Component
 
 
     /**
+     * @var DateTimeServiceInterface
+     */
+    private DateTimeServiceInterface $dateTimeService;
+
+    /**
      * dynamically set rules based on event type (recurring or regular)
      * @return array[]
      */
@@ -248,7 +254,7 @@ class Calendar extends Component
     {
         // shared property validation rules
         $rules = [
-            'updateId' => ['nullable', 'uuid', 'max:255'],
+            'updateId' => ['nullable', 'integer', 'min:1'],
             'workerIds' => ['array'],
             'clientId' => ['required', 'integer', 'min:0'],
             'description' => ['nullable', 'string', 'max:255'],
@@ -288,12 +294,17 @@ class Calendar extends Component
     /**
      * @param  EventRepositoryInterface  $eventRepository
      * @param  ClientRepositoryInterface  $clientRepository
+     * @param  DateTimeServiceInterface  $dateTimeService
      * @return void
      */
-    public function boot(EventRepositoryInterface $eventRepository, ClientRepositoryInterface $clientRepository): void
-    {
+    public function boot(
+        EventRepositoryInterface $eventRepository,
+        ClientRepositoryInterface $clientRepository,
+        DateTimeServiceInterface $dateTimeService
+    ): void {
         $this->eventRepository = $eventRepository;
         $this->clientRepository = $clientRepository;
+        $this->dateTimeService = $dateTimeService;
     }
 
 
@@ -304,7 +315,6 @@ class Calendar extends Component
     public function mount(): void
     {
         $this->initializeProperties();
-
         $this->workers = Worker::all();
     }
 
@@ -345,8 +355,8 @@ class Calendar extends Component
 
         //
         $this->allDay = false;
-        $this->newId = '';
-        $this->updateId = '';
+        $this->newId = null;
+        $this->updateId = null;
         $this->event = null;
         $this->clientId = null;
         $this->clientName = '';
@@ -416,7 +426,7 @@ class Calendar extends Component
         $changedEvent = null;
 
         foreach ($this->events as $singleEvent) {
-            if ($singleEvent->id === $event['id']) {
+            if ($singleEvent->id === (int) $event['id']) {
                 $changedEvent = $singleEvent;
             }
         }
@@ -430,12 +440,14 @@ class Calendar extends Component
 
         if (!$changedEvent->is_recurring) {
             // input 'Y-m-d\TH:i:sP', output: 'Y-m-d H:i:s'
-            $changedEvent->start = Event::convertFromLocalToUtc($event['start'], Event::TIMEZONE, false,
+            $changedEvent->start = $this->dateTimeService->convertFromLocalToUtc($event['start'], Event::TIMEZONE,
+                false,
                 DateTimeInterface::ATOM);
 
             if (Arr::exists($event, 'end')) {
                 // input 'Y-m-d\TH:i:sP', output: 'Y-m-d H:i:s'
-                $changedEvent->end = Event::convertFromLocalToUtc($event['end'], Event::TIMEZONE, false,
+                $changedEvent->end = $this->dateTimeService->convertFromLocalToUtc($event['end'], Event::TIMEZONE,
+                    false,
                     DateTimeInterface::ATOM);
             }
             $changedEvent->save();
@@ -443,7 +455,7 @@ class Calendar extends Component
         } else {
             // always use the uuid column here (which is the 'id')!
             $eventId = $changedEvent->id;
-            $this->updateId = $eventId;
+            $this->updateId = (int) $eventId;
             $this->event = $this->eventRepository->getEventById($eventId);
 
             if ($this->checkIfEventExists() === null) {
@@ -456,7 +468,8 @@ class Calendar extends Component
             $newRules = $this->event->rrule;
 
             // input 'Y-m-d\TH:i:s', output: 'Y-m-d H:i:s'
-            $newRules['dtstart'] = Event::convertFromLocalToUtc($event['start'], Event::TIMEZONE, false,
+            $newRules['dtstart'] = $this->dateTimeService->convertFromLocalToUtc($event['start'], Event::TIMEZONE,
+                false,
                 DateTimeInterface::ATOM, 'Y-m-d\TH:i:s\Z');
 
             // On resize, overwrite the duration field (the right way with DateTime class etc.)
@@ -497,6 +510,7 @@ class Calendar extends Component
      * @param  array  $args
      *
      * @return RedirectResponse|void
+     * @throws \Exception
      */
     public function eventModal(array $args)
     {
@@ -504,7 +518,7 @@ class Calendar extends Component
         // existing event update
         if (array_key_exists('event', $args)) {
             $args = $args['event'];
-            $this->updateId = $args['id'];
+            $this->updateId = (int) $args['id'];
             $this->setCurrentEvent();
 
             if ($this->checkIfEventExists() === null) {
@@ -538,7 +552,7 @@ class Calendar extends Component
                 ];
 
                 // if we have an id, update existing event
-                if ($this->updateId !== '') {
+                if (isset($this->updateId)) {
 
                     $eventEntity = $this->getCurrentEvent();
                     if ($eventEntity === null) {
@@ -558,9 +572,6 @@ class Calendar extends Component
                     $this->banner(__('Successfully updated the event ":name"!',
                         ['name' => htmlspecialchars($eventEntity->client->name)]));
                 } else {
-
-                    $eventProps['id'] = Str::uuid();
-
                     $this->setEventProperties($eventProps);
 
                     $eventEntity = $this->eventRepository->createEvent($eventProps, $this->workerIds);
@@ -576,7 +587,6 @@ class Calendar extends Component
 
         // Need to clear previous event data
         $this->initializeProperties();
-
         return redirect()->route('calendar');
     }
 
@@ -590,12 +600,11 @@ class Calendar extends Component
     {
 
         // if we have an id, delete existing event
-        if ($this->updateId !== '') {
+        if (isset($this->updateId)) {
 
             $event = $this->getCurrentEvent();
             if ($event === null) {
                 $this->banner(__('Event does not exists!'), 'danger');
-
                 return redirect()->route('calendar');
             }
 
@@ -680,12 +689,14 @@ class Calendar extends Component
                 // The format can be either 'Y-m-d H:i:s', or 'Y-m-d\TH:i'
                 // Datetime need to be saved with the letters T and Z, so that it is recognized by fullcalendar as UTC,
                 // and will be converted to local timezone using moment.js
-                $this->rrule['dtstart'] = Event::convertFromLocalToUtc($this->dtstart, Event::TIMEZONE, false,
+                $this->rrule['dtstart'] = $this->dateTimeService->convertFromLocalToUtc($this->dtstart, Event::TIMEZONE,
+                    false,
                     'Y-m-d H:i:s', 'Y-m-d\TH:i:s\Z');
 
 
                 if ($this->rrule['dtstart'] === false) {
-                    $this->rrule['dtstart'] = Event::convertFromLocalToUtc($this->dtstart, Event::TIMEZONE, false,
+                    $this->rrule['dtstart'] = $this->dateTimeService->convertFromLocalToUtc($this->dtstart,
+                        Event::TIMEZONE, false,
                         'Y-m-d\TH:i', 'Y-m-d\TH:i:s\Z');
                 }
             }
@@ -703,9 +714,9 @@ class Calendar extends Component
             }
         } else {
             // regular events; input 'Y-m-d H:i:s', output: 'Y-m-d H:i:s'
-            $eventProps['start'] = Event::convertFromLocalToUtc($this->start, Event::TIMEZONE);
+            $eventProps['start'] = $this->dateTimeService->convertFromLocalToUtc($this->start, Event::TIMEZONE);
             // input 'Y-m-d H:i:s', output: 'Y-m-d H:i:s'
-            $eventProps['end'] = Event::convertFromLocalToUtc($this->end, Event::TIMEZONE);
+            $eventProps['end'] = $this->dateTimeService->convertFromLocalToUtc($this->end, Event::TIMEZONE);
         }
 
         // If a client need to be associated with the event
@@ -725,8 +736,7 @@ class Calendar extends Component
     private function setCurrentEvent(): void
     {
         foreach ($this->events as $event) {
-            if ($event->id === $this->updateId) {
-                // $this->event = $event;
+            if ($event->id === (int) $this->updateId) {
                 $this->event = $this->eventRepository->getEventById($this->updateId);
                 break;
             }
@@ -742,8 +752,7 @@ class Calendar extends Component
     private function getCurrentEvent(): Model|Event|null
     {
         foreach ($this->events as $event) {
-            if ($event->id === $this->updateId) {
-                // return $event;
+            if ($event->id === (int) $this->updateId) {
                 return $this->eventRepository->getEventById($this->updateId);
             }
         }
@@ -807,7 +816,8 @@ class Calendar extends Component
 
         if (isset($this->event->rrule['dtstart'])) {
             // input 'Y-m-d\TH:i:s\Z', output: 'Y-m-d H:i:s'
-            $this->dtstart = Event::convertFromUtcToLocal($this->event->rrule['dtstart'], Event::TIMEZONE, false,
+            $this->dtstart = $this->dateTimeService->convertFromUtcToLocal($this->event->rrule['dtstart'],
+                Event::TIMEZONE, false,
                 'Y-m-d\TH:i:s\Z');
         } else {
             $this->dtstart = '';
@@ -838,13 +848,15 @@ class Calendar extends Component
             // datetime-local (input 'Y-m-d\TH:i:s.uP', output: 'Y-m-d H:i:s')
             $this->start = isset($this->event->start) ?
                 $this->event->start->setTimezone(Event::TIMEZONE) :
-                Event::convertFromUtcToLocal($args['start'], Event::TIMEZONE, false, 'Y-m-d\TH:i:s.uP');
+                $this->dateTimeService->convertFromUtcToLocal($args['start'], Event::TIMEZONE, false,
+                    'Y-m-d\TH:i:s.uP');
 
             if (isset($args['end'])) {
                 // input 'Y-m-d\TH:i:s.uP', output: 'Y-m-d H:i:s'
                 $this->end = isset($this->event->end) ?
                     $this->event->end->setTimezone(Event::TIMEZONE) :
-                    Event::convertFromUtcToLocal($args['end'], Event::TIMEZONE, false, 'Y-m-d\TH:i:s.uP');
+                    $this->dateTimeService->convertFromUtcToLocal($args['end'], Event::TIMEZONE, false,
+                        'Y-m-d\TH:i:s.uP');
 
             } else {
                 $this->end = $this->event->end->setTimezone(Event::TIMEZONE) ?? null;
@@ -856,7 +868,8 @@ class Calendar extends Component
             /* Need to set dtstart for the modal for recurring events */
             $this->dtstart = isset($this->event->start) ?
                 $this->event->start->setTimezone(Event::TIMEZONE) :
-                Event::convertFromUtcToLocal($args['start'], Event::TIMEZONE, false, 'Y-m-d\TH:i:s.uP');
+                $this->dateTimeService->convertFromUtcToLocal($args['start'], Event::TIMEZONE, false,
+                    'Y-m-d\TH:i:s.uP');
         }
 
         $this->isModalOpen = true;

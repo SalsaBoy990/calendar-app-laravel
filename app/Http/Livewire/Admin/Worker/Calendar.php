@@ -56,14 +56,14 @@ class Calendar extends Component
 
     // inputs
     /**
-     * uuid for new availability
+     * id for new availability
      * @var string
      */
     public string $newId;
 
 
     /**
-     * uui for existing availability
+     * id for existing availability
      * @var string
      */
     public string $updateId;

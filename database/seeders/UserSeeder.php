@@ -18,24 +18,12 @@ class UserSeeder extends Seeder {
 
         $worker            = Role::where( 'slug', 'worker' )->first();
         $admin             = Role::where( 'slug', 'administrator' )->first();
-        $manageUsers       = Permission::where( 'slug', 'manage-users' )->first();
-        $manageAccount     = Permission::where( 'slug', 'manage-account' )->first();
-        $manageRoles       = Permission::where( 'slug', 'manage-roles' )->first();
-        $managePermissions = Permission::where( 'slug', 'manage-permissions' )->first();
-        $manageEvents      = Permission::where( 'slug', 'manage-events' )->first();
 
         $user1           = new User();
         $user1->name     = 'Gulácsi András';
         $user1->email    = 'gulandras90@gmail.com';
         $user1->password = bcrypt( 'password' );
         $user1->role()->associate( $admin );
-        $user1->permissions()->saveMany( [
-            $manageAccount->id,
-            $manageUsers->id,
-            $manageRoles->id,
-            $managePermissions->id,
-            $manageEvents->id
-        ] );
         $user1->save();
 
         $user2           = new User();
@@ -44,7 +32,6 @@ class UserSeeder extends Seeder {
         $user2->password = bcrypt( 'password' );
         $user2->save();
         $user2->role()->associate( $worker );
-        $user2->permissions()->attach( $manageAccount->id );
 
         $user3           = new User();
         $user3->name     = 'Mike Thomas';
@@ -52,7 +39,6 @@ class UserSeeder extends Seeder {
         $user3->password = bcrypt( 'password' );
         $user3->save();
         $user3->role()->associate( $worker );
-        $user3->permissions()->saveMany( [ $manageUsers->id ] );
 
     }
 }

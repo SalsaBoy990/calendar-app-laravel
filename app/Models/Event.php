@@ -17,7 +17,7 @@ class Event extends Model
     // no need for timestamps
     public $timestamps = false;
 
-    protected $primaryKey = "event_id";
+    protected $primaryKey = "id";
 
     public const RECORDS_PER_PAGE = 10;
     public const TIMEZONE = 'Europe/Budapest';
