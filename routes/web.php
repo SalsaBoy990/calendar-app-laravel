@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\StatsController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\WorkerController;
 use App\Http\Controllers\Auth\UserCodeController;
+use App\Http\Controllers\Social\FacebookController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -84,6 +85,13 @@ Route::group(
         Route::post('email/resend',
             'App\Http\Controllers\Auth\VerificationController@resend')->name('verification.resend');
         /* Email END */
+
+
+        /* Social Login endpoints */
+        Route::get('auth/facebook', [FacebookController::class, 'facebookRedirect'])->name('facebook.redirect');
+        Route::get('auth/facebook/callback', [FacebookController::class, 'loginWithFacebook'])->name('facebook.callback');
+        /* Social Login endpoints END */
+
 
     });
 

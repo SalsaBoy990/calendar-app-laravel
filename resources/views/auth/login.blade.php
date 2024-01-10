@@ -7,6 +7,13 @@
             <h1 class="h3 text-white">{{ __('Login') }}</h1>
         </div>
         <div class="padding-1-5">
+            @php $error = session('login_error') @endphp
+            @isset($error)
+                <div class="alert error" role="alert">
+                    {{ $error }}
+                </div>
+            @endisset
+
             <form method="POST" action="{{ route('login') }}">
                 @csrf
 
@@ -45,6 +52,16 @@
                             {{ __('Forgot Your Password?') }}
                         </a>
                     @endif
+                </div>
+
+                <hr class="divider">
+
+                {{-- Login with Facebook --}}
+                <div class="">
+                    <a class="button primary" href="{{ route('facebook.redirect') }}"
+                       style="background: #3B5499; color: #ffffff; padding: 10px; width: 100%; display: block;">
+                        <i class="fa-brands fa-facebook-f"></i> Login with Facebook
+                    </a>
                 </div>
 
             </form>
